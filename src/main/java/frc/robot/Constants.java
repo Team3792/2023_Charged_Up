@@ -62,7 +62,12 @@ public final class Constants {
       public static final double kDrivekP = 0;
       public static final double kDrivekI = 0;
       public static final double kDrivekD = 0;
-    
+
+      //Drivetrina Feedforward
+
+      public static final double kDriveKS = 0;
+      public static final double kDriveKV = 0;
+      public static final double kDriveKA = 0;
       //Drive Speed Constants
       public static final double kMaxDriveSpeed = 0;           // meters per second
       public static final double kMaxDriveAngularSpeed = 0; //rotations per second
