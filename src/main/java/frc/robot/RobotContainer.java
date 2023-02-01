@@ -5,19 +5,9 @@
 package frc.robot;
 
 import frc.robot.Constants.*;
-import frc.robot.commands.DriveCommands.*;
-import frc.robot.commands.ArmCommands.*;
-import frc.robot.commands.ElevatorCommands.*;
-import frc.robot.commands.IntakeCommands.*;
-import frc.robot.commands.TurretCommands.*;
-
-
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.commands.*;
+import frc.robot.commands.DriveCommands.DriveCommand;
+import frc.robot.subsystems.*;
 
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -33,8 +23,21 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+
+  //subsystems
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  private final ArmSubsystem armSubsystem = new ArmSubsystem();
+  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
+  private final TurretSubsystem turretSubsystem = new TurretSubsystem();
+  private final LEDSubsystem ledSubystem = new LEDSubsystem();
+  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+
+
+  //controller definitions:
   final Joystick driveJoystick = new Joystick(0);
+  final Joystick operatorJoystick = new Joystick(1);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
