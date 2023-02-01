@@ -1,6 +1,11 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+//PURPOSE
+//This subsystem is the PID drive subsystem. Most PID is in here
+//This has a drive train with 4 falcon motors
+
+
+//TODO:
+//      Find out exact drive train details
+//      possibly change PID to the command and not the subsystem
 
 package frc.robot.subsystems;
 
