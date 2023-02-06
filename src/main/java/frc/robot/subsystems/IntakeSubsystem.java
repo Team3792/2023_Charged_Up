@@ -9,12 +9,42 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
+  private TalonSRX intakeMotor = new TalonSRX(Constants.MotorID.kIntakeMotor);
+
+  public IntakeSubsystem() {
+
+  }
+
+  public void cubeIntake(){
+    intakeMotor.set(ControlMode.PercentOutput, Constants.IntakeConstants.kCubeIntakeVelocity); 
+  }
+
+  public void coneIntake(){
+    intakeMotor.set(ControlMode.PercentOutput, Constants.IntakeConstants.kConeIntakeVelocity); 
+  }
+
+  public void cubeExtake(){
+    intakeMotor.set(ControlMode.PercentOutput, Constants.IntakeConstants.kCubeExtakeelocity); 
+  }
+
+  public void coneExtake(){
+    intakeMotor.set(ControlMode.PercentOutput, Constants.IntakeConstants.kConeExtakeVelocity); 
+  }
+
+  public void stopIntake(){
+
+    intakeMotor.set(ControlMode.PercentOutput, 0);
+      
+    }
   
-  public IntakeSubsystem() {}
 
   @Override
   public void periodic() {
