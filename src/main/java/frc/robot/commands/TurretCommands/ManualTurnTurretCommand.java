@@ -11,7 +11,6 @@ import java.util.function.Supplier;
 import frc.robot.Constants;
 import frc.robot.HelperClasses.*;
 
-
 public class ManualTurnTurretCommand extends CommandBase {
   /** Creates a new ManualTurnTurretCommand. */
   private TurretSubsystem turretSubsystem;

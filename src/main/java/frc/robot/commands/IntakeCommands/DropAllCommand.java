@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DropAllCommand extends CommandBase {
   /** Creates a new DropAllCommand. */
@@ -33,9 +34,9 @@ public class DropAllCommand extends CommandBase {
   @Override
   public void execute() {
     //Checking intake status and extaking accordingly
-    if(intakeStatus == "cube"){
+    if(SmartDashboard.getString("Intake", "none")  == "cube"){
       intakeSubsystem.cubeExtake();
-    }else if(intakeStatus == "cone"){
+    }else if(SmartDashboard.getString("Intake", "none") == "cone"){
       intakeSubsystem.coneExtake();
     }
 

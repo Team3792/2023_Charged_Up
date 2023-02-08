@@ -35,7 +35,6 @@ public class IntakeCubeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.intakeStatus = "intaking cube";
 
   }
 
@@ -49,8 +48,8 @@ public class IntakeCubeCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     intakeSubsystem.stopIntake();
-    RobotContainer.intakeStatus = "cube";
-  }
+    SmartDashboard.putString("Intake", "Cube");
+    }
 
   // Returns true when the command should end.
   @Override
