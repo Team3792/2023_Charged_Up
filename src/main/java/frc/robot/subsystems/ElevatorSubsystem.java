@@ -10,18 +10,20 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import java.lang.UnsatisfiedLinkError;
 
 public class ElevatorSubsystem extends SubsystemBase {
   //CHANGE THIS ONCE WE KNOW WHAT MOTOR CONTROLLER WE'RE USING
   //Do we need feedforward? I don't think so
-   private TalonFX elevatorMotor = new TalonFX(Constants.MotorID.kElevatorMotor);
+   private WPI_TalonSRX elevatorMotor = new WPI_TalonSRX(Constants.MotorID.kElevatorMotor);
    private PIDController elevatorPID = new PIDController
   (
   Constants.ElevatorConstants.kElevatorkP, 
@@ -30,7 +32,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   );
 
   public ElevatorSubsystem(){
-
+    elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+    elevatorMotor.setSelectedSensorPosition(0);
     //Add code to zero sensors.
   }
 //Later, we can do these in terms of heights, instead of ticks

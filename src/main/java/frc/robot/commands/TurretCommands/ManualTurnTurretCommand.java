@@ -14,13 +14,14 @@ import frc.robot.HelperClasses.*;
 public class ManualTurnTurretCommand extends CommandBase {
   /** Creates a new ManualTurnTurretCommand. */
   private TurretSubsystem turretSubsystem;
-  Supplier<Double> joystickZRotation;
+  Supplier<Double> joystickZRotation, joystickSlider;
   SignalProcessor signalProcessor = new SignalProcessor(Constants.TurretConstants.kMaxTurretAngle, Constants.TurretConstants.kTurretDeadzone, 0);
   
 
-  public ManualTurnTurretCommand(TurretSubsystem subsystem, Supplier<Double> joystickZRotation) {
+  public ManualTurnTurretCommand(TurretSubsystem subsystem, Supplier<Double> joystickZRotation, Supplier<Double> joystickSlider) {
 
     turretSubsystem = subsystem;
+    this.joystickSlider = joystickSlider;
     this.joystickZRotation = joystickZRotation;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(turretSubsystem);
@@ -36,8 +37,12 @@ public class ManualTurnTurretCommand extends CommandBase {
 //Note: It might be benificial to use max angle as the max angle for joystick, so there is a better physical connection for operator
     double rawInput = joystickZRotation.get();
     double processedInput = signalProcessor.getOutput(rawInput);
+    double desiredAngle = rawInput * Constants.TurretConstants.kMaxTurretAngle;
+    if(joystickSlider.get() > 0){
+      desiredAngle += 180;
+    }
 
-    turretSubsystem.setPosition(processedInput);
+    turretSubsystem.setPosition(desiredAngle);
 
 
   }

@@ -13,7 +13,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.robot.Constants;
 import edu.wpi.first.math.controller.PIDController;
 
@@ -21,28 +22,33 @@ import edu.wpi.first.math.controller.PIDController;
 
 public class TurretSubsystem extends SubsystemBase {
   //assumIng talonFX, CORRECT LATER
-  TalonFX turretMotor = new TalonFX(Constants.MotorID.kTurretMotor);
+  WPI_TalonSRX turretMotor = new WPI_TalonSRX(Constants.MotorID.kTurretMotor);
 
   PIDController turretPidController = new PIDController(
     Constants.TurretConstants.kTurretkP, 
     Constants.TurretConstants.kTurretkI, 
     Constants.TurretConstants.kTurretkD);
 
-  public TurretSubsystem() {}
+  public TurretSubsystem() {
+
+    turretMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+    turretMotor.setSelectedSensorPosition(0);
+    
+  }
 
   public void setPosition(double degrees){
     double setPointTicks = degreesToTicks(degrees);
 
       double output = turretPidController.calculate(turretMotor.getSelectedSensorPosition(), setPointTicks);
       //Should we set PIDs with voltage instead?
-      turretMotor.set(ControlMode.PercentOutput, output);
+      turretMotor.setVoltage(output);
   }
 
   private double degreesToTicks(double degrees){
     //Assuming 20248 ticks per rev
     double rotationsTurret = degrees / 360;
-    double rotationsDriver = rotationsTurret * 462.2;
-    double ticks = rotationsDriver * 2048;
+    //The encoder on the turret already takes the gear ratio into account
+    double ticks = rotationsTurret * 2048;
 
     return ticks;
   }

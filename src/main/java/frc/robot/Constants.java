@@ -66,6 +66,7 @@ public final class Constants {
 
     //For now, this is interpreted as being in encoder ticks. We might want to make a conversion function later if it helps with the math of positioning or other things
     public static final double kBooomMaxReach = 0;
+    public static final double kBoomIntakeReach = 0;
   }
 
 
@@ -115,6 +116,12 @@ public final class Constants {
       public static final int kConeMiddleHeight = 0;
       public static final int kConeGroundHeight = 0;
 
+      //Intake heights
+      public static final double kConeHighIntake = 0;
+      public static final double kCubeHighIntake = 0;
+      public static final double kConeLowIntake = 0;
+      public static final double kCubeLowIntake = 0;
+
     }
 
   public static final class LEDConstants
@@ -141,6 +148,8 @@ public final class Constants {
 
       //Maximum turret angle, where 0 is straight ahead. (this is for both sides)
       public static final double kMaxTurretAngle = 0;
+
+  
       
     }
 

@@ -9,10 +9,13 @@ import java.util.function.Supplier;
 //import frc.robot.commands.*;
 import frc.robot.commands.IntakeCommands.*;
 import frc.robot.commands.LEDCommands.LEDShowIntakeStatusCommand;
+import frc.robot.IntakePreparationCommands.AdjustForCubeIntakeCommand;
+import frc.robot.IntakePreparationCommands.HighIntakeConePreparation;
 import frc.robot.commands.BoomCommands.ManualExtendBoomCommand;
 import frc.robot.commands.DriveCommands.DriveCommand;
 import frc.robot.commands.ElevatorCommands.ElevatorMoveAutoCommand;
 import frc.robot.subsystems.*;
+import frc.robot.IntakePreparationCommands.LowIntakeConePreparation;
 
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -58,14 +61,24 @@ public class RobotContainer {
   final Trigger middleElevatorButton = new JoystickButton(operatorJoystick, 11);
   final Trigger highElevatorButton = new JoystickButton(operatorJoystick, 12);
 
+  //Intake Elevator buttons
+
+  final Trigger coneIntakeHigh = new JoystickButton(operatorJoystick, 6);
+  final Trigger coneIntakeLow = new JoystickButton(operatorJoystick, 4);
+
+
 
 
 
   //Variables that include global information of state of robot
 
    public static String intakeStatus = "none";
-
+  
   //"none" "cube" "cone" "intaking cube" "intaking cone" "dropping"
+
+   public static String lastIntakeHeight = "none";
+   //Will be "none" "high" or "low"
+
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -119,6 +132,11 @@ public class RobotContainer {
     middleElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 1));
     highElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 2));
 
+    //Intake Levels
+
+    coneIntakeHigh.onTrue(new HighIntakeConePreparation(elevatorSubsystem));
+    coneIntakeLow.onTrue(new LowIntakeConePreparation(elevatorSubsystem));
+    cubeIntakeButton.onTrue(new AdjustForCubeIntakeCommand(elevatorSubsystem));
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

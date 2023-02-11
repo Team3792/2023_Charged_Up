@@ -34,19 +34,19 @@ public class LEDShowIntakeStatusCommand extends CommandBase {
       ledSubsystem.sendCode(0);
         break;
       case "cone":
-      ledSubsystem.sendCode(0);
+      ledSubsystem.sendCode(1);
         break;
       case "intake cube":
-      ledSubsystem.sendCode(0);
+      ledSubsystem.sendCode(2);
         break;
       case "intaking cone":
-      ledSubsystem.sendCode(0);
+      ledSubsystem.sendCode(3);
         break;
       case "dropping":
-      ledSubsystem.sendCode(0);
+      ledSubsystem.sendCode(4);
         break;
       case "none":
-      ledSubsystem.sendCode(0);
+      ledSubsystem.sendCode(5);
         break;
     }
 

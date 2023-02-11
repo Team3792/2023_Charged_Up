@@ -5,11 +5,19 @@
 package frc.robot.IntakePreparationCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.*;
 
 public class AdjustForCubeIntakeCommand extends CommandBase {
   /** Creates a new AdjustForCubeIntakeCommand. */
-  public AdjustForCubeIntakeCommand() {
+  ElevatorSubsystem elevatorSubsystem;
+
+  public AdjustForCubeIntakeCommand(ElevatorSubsystem subsystem) {
+
+    elevatorSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(elevatorSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -18,7 +26,15 @@ public class AdjustForCubeIntakeCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if(RobotContainer.lastIntakeHeight == "low"){
+      elevatorSubsystem.setPosition(Constants.ElevatorConstants.kCubeLowIntake);
+    }else if(RobotContainer.lastIntakeHeight == "high"){
+
+      elevatorSubsystem.setPosition(Constants.ElevatorConstants.kCubeHighIntake);
+
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
