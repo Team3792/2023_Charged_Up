@@ -24,6 +24,23 @@ public final class Constants {
 
       //Operator Joystick
       public static final int kOperatorJoystick = 1;
+
+      //Intake 
+      public static final int kConeIntakeButton = 5;
+      public static final int kCubeIntakeButton = 3;
+      public static final int kDropAllButton = 1;
+    
+      //Elevator
+    
+      public static final int kGroundElevatorButton = 9;
+      public static final int kMiddleElevatorButton = 11;
+      public static final int kHighElevatorButton = 12;
+    
+      //Intake Elevator buttons
+    
+      public static final int kConeIntakeHigh = 6;
+      public static final int kConeIntakeLow = 4;
+
     }
 
   public static final class MotorID
@@ -164,6 +181,141 @@ public final class Constants {
 
 
     }
+
+  public static final class FieldLayoutConstants
+  {
+
+    /*Standard:
+    Start with blue, top to bottom, ground node to high node. 
+    For red, still go top to bottom, groun node to high node
+
+    */
+
+    //I know this is ugly:
+    //Outside array is the three grids
+    //Inside arrays are the individual spots
+    //inner, inner arrays hold the x and y locations
+      public static final double[][][] kRedCubeDropLocations = {
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        },
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        },
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        }
+      };
+      public static final double[][][] kBlueCubeDropLocations = {
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        },
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        },
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        }
+      };
+      public static final double[][][] kRedConeDropLocations = {
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        },
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        },
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        },
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        },
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        },
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        }
+      };
+      public static final double[][][] kBlueConeDropLocations = {
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        },
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        },
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        },
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        },
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        },
+        {
+          {0, 0},
+          {0, 0},
+          {0, 0}
+        }
+        };
+      //First number in the array represents the x-coordinate, the second number represents the y-coordinate
+      //I, Keaton, consider using some vector object, but we only need to store 2 numbers, so this seems more memory efficient.
+
+
+
+
+  }
+
+  public static final class RobotLayoutConstants
+  {
+    //Each of the following are locations {x, y} relative to bottom left corner to robot
+    //WHAT DEMENSIONS SHOULD WE USE?
+
+    //camera locations
+    public static final double[] kCamera1Location = {0, 0};
+    public static final double[] kCamera2Location = {0, 0};
+
+    //Turret location
+    public static final double[] kTurretLocation = {0, 0};
+    
+
+
+  }
 
 }
 

@@ -45,26 +45,26 @@ public class RobotContainer {
 
 
   //controller definitions:
-  final Joystick driveJoystick = new Joystick(0);
-  final Joystick operatorJoystick = new Joystick(1);
+  final Joystick driveJoystick = new Joystick(Constants.ButtonConstant.kDriveJoystick);
+  final Joystick operatorJoystick = new Joystick(Constants.ButtonConstant.kOperatorJoystick);
 
   //Button definitions - should we have these in the constants class?
 
   //Intake/Extake
-  final Trigger coneIntakeButton = new JoystickButton(operatorJoystick, 5);
-  final Trigger cubeIntakeButton = new JoystickButton(operatorJoystick, 3);
-  final Trigger dropAllButton = new JoystickButton(operatorJoystick, 1);
+  final Trigger coneIntakeButton = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kConeIntakeButton);
+  final Trigger cubeIntakeButton = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kCubeIntakeButton);
+  final Trigger dropAllButton = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kDropAllButton);
 
   //Elevator
 
-  final Trigger groundElevatorButton = new JoystickButton(operatorJoystick, 9);
-  final Trigger middleElevatorButton = new JoystickButton(operatorJoystick, 11);
-  final Trigger highElevatorButton = new JoystickButton(operatorJoystick, 12);
+  final Trigger groundElevatorButton = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kGroundElevatorButton);
+  final Trigger middleElevatorButton = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kMiddleElevatorButton);
+  final Trigger highElevatorButton = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kHighElevatorButton);
 
   //Intake Elevator buttons
 
-  final Trigger coneIntakeHigh = new JoystickButton(operatorJoystick, 6);
-  final Trigger coneIntakeLow = new JoystickButton(operatorJoystick, 4);
+  final Trigger coneIntakeHigh = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kConeIntakeHigh);
+  final Trigger coneIntakeLow = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kConeIntakeLow);
 
 
 
@@ -92,6 +92,7 @@ public class RobotContainer {
 
     //Manual Aiming bindings (elevator in button bindings)
     turretSubsystem.setDefaultCommand(new ManualTurnTurretCommand(turretSubsystem,
+    () -> operatorJoystick.getRawAxis(0),
     () -> operatorJoystick.getRawAxis(3)
     ));
 
