@@ -3,9 +3,9 @@
 //This has one 775 pro motor
 
 
-//TODO:
-//      Get the API library downloaded for this motor 
-//      Define motors
+//TODO: Build some optimization code so the turret never rotates fully around;
+
+
 
 package frc.robot.subsystems;
 
@@ -42,6 +42,16 @@ public class TurretSubsystem extends SubsystemBase {
       double output = turretPidController.calculate(turretMotor.getSelectedSensorPosition(), setPointTicks);
       //Should we set PIDs with voltage instead?
       turretMotor.setVoltage(output);
+  }
+
+  private double getAngleDegrees(){
+    return ticksToDegrees(turretMotor.getSelectedSensorPosition());
+  }
+
+  private double ticksToDegrees(double ticks){
+    double rotationsTurret = ticks/2048;
+    double angleDegrees = rotationsTurret * 360;
+    return angleDegrees;
   }
 
   private double degreesToTicks(double degrees){

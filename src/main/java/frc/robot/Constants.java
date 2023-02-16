@@ -3,6 +3,9 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -199,109 +202,105 @@ public final class Constants {
     //I know this is ugly:
     //Outside array is the three grids
     //Inside arrays are the individual spots
-    //inner, inner arrays hold the x and y locations
-      public static final double[][][] kRedCubeDropLocations = {
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        },
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        },
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        }
+    
+    public static final Pose2d[][] kRedCubeDropLocations = {
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      },
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      },
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      }
+    };
+    public static final Pose2d[][] kBlueCubeDropLocations = {
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      },
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      },
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      }
+    };
+    public static final Pose2d[][] kRedConeDropLocations = {
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      },
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      },
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      },
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      },
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      },
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      }
+    };
+    public static final Pose2d[][] kBlueConeDropLocations = {
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      },
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      },
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      },
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      },
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      },
+      {
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0)),
+        new Pose2d(0, 0, new Rotation2d(0))
+      }
       };
-      public static final double[][][] kBlueCubeDropLocations = {
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        },
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        },
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        }
-      };
-      public static final double[][][] kRedConeDropLocations = {
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        },
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        },
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        },
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        },
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        },
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        }
-      };
-      public static final double[][][] kBlueConeDropLocations = {
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        },
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        },
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        },
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        },
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        },
-        {
-          {0, 0},
-          {0, 0},
-          {0, 0}
-        }
-        };
-      //First number in the array represents the x-coordinate, the second number represents the y-coordinate
-      //I, Keaton, consider using some vector object, but we only need to store 2 numbers, so this seems more memory efficient.
-
-
 
 
   }
@@ -309,7 +308,7 @@ public final class Constants {
   public static final class RobotLayoutConstants
   {
     //Each of the following are locations {x, y} relative to bottom left corner to robot
-    //WHAT DEMENSIONS SHOULD WE USE?
+    //WHAT UNITS SHOULD WE USE?
 
     //TODO: Find how far from turret center to camera center
     //TODO: also find distance from boom to turret center

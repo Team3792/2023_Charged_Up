@@ -80,7 +80,7 @@ public class AutoAim extends CommandBase {
 
     //setting turret to that angle
     //Note: add 
-    turretSubsystem.setPosition(turretRelativeTargetAngleDegrees);
+    turretSubsystem.setPosition(turretRelativeTargetAngleDegrees + turretSubsystem.getAngleDegrees());
 
     //Finding absolute distance from turret center to target
 
