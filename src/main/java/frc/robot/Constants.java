@@ -47,25 +47,24 @@ public final class Constants {
     {
       //Drive Train (Talon FX/Falcon)
       public static final int kLeftDriveLeadMotor = 0;
-      public static final int kLeftDriveFollowMotor = 0;
-      public static final int kRightDriveLeadMotor = 0;
-      public static final int kRightDriveFollowMotor = 0;
+      public static final int kLeftDriveFollowMotor = 1;
+      public static final int kRightDriveLeadMotor = 2;
+      public static final int kRightDriveFollowMotor = 4;
 
 
       //Gyro
-      public static final int kGyro = 0;
+      public static final int kGyro = 5;
 
       //Elevator
-      public static final int kElevatorMotor = 0;
+      public static final int kElevatorMotor = 10;
 
       //Turret
-      public static final int kTurretMotor = 0;
+      public static final int kTurretMotor = 20;
 
       //Arm/Intake
-      public static final int kBoomMotor = 0;
+      public static final int kBoomMotor = 30;
       //public static final int kArmMotor2 = 0;  //might not exist
-      public static final int kIntakeMotor = 0;
-
+      public static final int kIntakeMotor = 40;
 
     }
 
@@ -143,10 +142,16 @@ public final class Constants {
 
   public static final class LEDConstants
   {
-    //DIO channels
+    //DIO channels 
+    //These are the channels that the LEDs are connected to
+    //The LEDs are connected to the DIO ports on the RoboRIO
     public static final int kLEDChannel0 = 0;
-    public static final int kLEDChannel1 = 0;
-    public static final int kLEDChannel2 = 0;
+    public static final int kLEDChannel1 = 1;
+    public static final int kLEDChannel2 = 2;
+    public static final int kLEDChannel3 = 3;
+    
+    //public static final int kLEDChannelHumanPlayer = 5;
+    //public static final int kLEDChannelHUmanPlayer2 = 6;
   }
 
   public static final class TurretConstants
@@ -305,6 +310,9 @@ public final class Constants {
   {
     //Each of the following are locations {x, y} relative to bottom left corner to robot
     //WHAT DEMENSIONS SHOULD WE USE?
+
+    //TODO: Find how far from turret center to camera center
+    //TODO: also find distance from boom to turret center
 
     //camera locations
     public static final double[] kCamera1Location = {0, 0};
