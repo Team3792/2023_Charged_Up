@@ -4,6 +4,7 @@
 
 package frc.robot.HelperClasses;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
@@ -13,7 +14,7 @@ import frc.robot.Constants;
 
 public class ConeTargetFinder {
 
-    double[][][] dropLocations; //These should be in meters, fill them in later in constants
+    Pose2d[][] dropLocations; //These should be in meters, fill them in later in constants
     double [] dropboundaries;
 
 
@@ -29,10 +30,10 @@ public class ConeTargetFinder {
     private void findBoundaries (){
         //This loops through all but the last location and defines the boundary as the midpoint between i and i+1
         for(int i = 0; i < dropLocations.length - 1; i++){
-            dropboundaries[i] = (dropLocations[i][0][1] + dropLocations[i+1][0][1])/2;
+            dropboundaries[i] = (dropLocations[i][0].getY() + dropLocations[i+1][0].getY())/2;
             //Use the ground nodes y value to get reference y locations
             //the rhs takes the average of 2 consecutive locations
-            //[i][1] is the y-coordinate (what separates the zones/what will define the zones) of the i-th drop location
+            //[i].getY() is the y-coordinate (what separates the zones/what will define the zones) of the i-th drop location
         }
     }
 
@@ -46,18 +47,16 @@ public class ConeTargetFinder {
         for(int i = 0; i < dropboundaries.length; i++){
             if(robotYLocation< dropboundaries[i]){
                 allianceRelativeZoneKey = i;
+                break;
             }
         }
         return allianceRelativeZoneKey;
     }
 
-    public double[] getTarget(int elevatorHeight, double robotYLocation){
+    public Pose2d getTarget(int elevatorHeight, double robotYLocation){
         int zone = getZone(robotYLocation);
         //Depending on which alliance we are on, access a different field layout.
-        double[][][] layout = (DriverStation.getAlliance() == DriverStation.Alliance.Red)? 
-            Constants.FieldLayoutConstants.kRedCubeDropLocations : 
-            Constants.FieldLayoutConstants.kBlueCubeDropLocations;
-        double[] target = layout[zone][elevatorHeight];
+        Pose2d target = dropLocations[zone][elevatorHeight];
 
         return target; 
     }

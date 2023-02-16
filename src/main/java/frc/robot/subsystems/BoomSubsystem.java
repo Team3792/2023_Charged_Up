@@ -42,6 +42,10 @@ public class BoomSubsystem extends SubsystemBase {
     boomMotor.set(ControlMode.PercentOutput, output);
  }
 
+ public void setPositionDistance(double distanceMeters){
+  
+ }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

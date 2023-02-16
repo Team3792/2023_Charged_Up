@@ -79,6 +79,12 @@ public class RobotContainer {
    public static String lastIntakeHeight = "none";
    //Will be "none" "high" or "low"
 
+   public static int elevatorHeight = 0;
+  /* 0 = ground
+   * 1 = mid
+   * 2 = high
+   */
+
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
