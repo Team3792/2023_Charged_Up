@@ -11,6 +11,7 @@ import frc.robot.commands.IntakeCommands.*;
 import frc.robot.commands.LEDCommands.LEDShowIntakeStatusCommand;
 import frc.robot.IntakePreparationCommands.AdjustForCubeIntakeCommand;
 import frc.robot.IntakePreparationCommands.HighIntakeConePreparation;
+import frc.robot.commands.AutoAimingCommands.BasicAutoAim;
 import frc.robot.commands.BoomCommands.ManualExtendBoomCommand;
 import frc.robot.commands.DriveCommands.DriveCommand;
 import frc.robot.commands.ElevatorCommands.ElevatorMoveAutoCommand;
@@ -35,13 +36,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   //subsystems
-  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  // private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final BoomSubsystem boomSubsystem = new BoomSubsystem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final LEDSubsystem ledSubsystem = new LEDSubsystem();
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
-  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+ // private final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
 
   //controller definitions:
@@ -67,7 +68,7 @@ public class RobotContainer {
   final Trigger coneIntakeLow = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kConeIntakeLow);
 
 
-
+  final Trigger engageAutoAim = new JoystickButton(operatorJoystick, 2);
 
 
   //Variables that include global information of state of robot
@@ -92,13 +93,13 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, 
-    () -> driveJoystick.getRawAxis(1), 
-    () -> driveJoystick.getRawAxis(2)));
+    // driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, 
+    // () -> -driveJoystick.getRawAxis(1), 
+    // () -> driveJoystick.getRawAxis(2)));
 
     //Manual Aiming bindings (elevator in button bindings)
     turretSubsystem.setDefaultCommand(new ManualTurnTurretCommand(turretSubsystem,
-    () -> operatorJoystick.getRawAxis(0),
+    () -> operatorJoystick.getRawAxis(2),
     () -> operatorJoystick.getRawAxis(3)
     ));
 
@@ -111,6 +112,8 @@ public class RobotContainer {
     //Setting up LED system where the lights change depending on intake status
 
     ledSubsystem.setDefaultCommand(new LEDShowIntakeStatusCommand(ledSubsystem));
+
+    
 
     
     
@@ -144,6 +147,10 @@ public class RobotContainer {
     coneIntakeHigh.onTrue(new HighIntakeConePreparation(elevatorSubsystem));
     coneIntakeLow.onTrue(new LowIntakeConePreparation(elevatorSubsystem));
     cubeIntakeButton.onTrue(new AdjustForCubeIntakeCommand(elevatorSubsystem));
+
+    engageAutoAim.whileTrue(new BasicAutoAim(turretSubsystem));
+
+    
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

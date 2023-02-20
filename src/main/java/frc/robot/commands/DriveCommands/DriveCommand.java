@@ -31,7 +31,7 @@ public class DriveCommand extends CommandBase {
   private final DriveSubsystem driveSubsystem;
 
   //Creating gyro
-  private final WPI_Pigeon2 gyro = new WPI_Pigeon2(Constants.MotorID.kGyro);
+ // private final WPI_Pigeon2 gyro = new WPI_Pigeon2(Constants.MotorID.kGyro);
 
   //Defining PID and Feedforward controllers
   private final PIDController leftPIDController = new PIDController(
@@ -55,8 +55,8 @@ public class DriveCommand extends CommandBase {
 
   //Define signal processors
 
-  SignalProcessor forwardSignalProcessor = new SignalProcessor(Constants.DriveConstants.kMaxDriveSpeed, 0.05, 2);
-  SignalProcessor rotationSignalProcessor = new SignalProcessor(Constants.DriveConstants.kMaxDriveSpeed, 0.05, 2);
+  SignalProcessor forwardSignalProcessor = new SignalProcessor(Constants.DriveConstants.kMaxDriveSpeed, 0.01, 0);
+  SignalProcessor rotationSignalProcessor = new SignalProcessor(Constants.DriveConstants.kMaxDriveSpeed, 0.01, 0);
 
 
   /**
@@ -98,7 +98,7 @@ public class DriveCommand extends CommandBase {
   
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
     double leftSpeed = toMeters(driveSubsystem.leftLead.getSelectedSensorVelocity());
-    double rightSpeed = -toMeters(driveSubsystem.rightLead.getSelectedSensorVelocity());
+    double rightSpeed = toMeters(driveSubsystem.rightLead.getSelectedSensorVelocity());
 
     return new DifferentialDriveWheelSpeeds(leftSpeed, rightSpeed);
   }
@@ -117,7 +117,7 @@ public class DriveCommand extends CommandBase {
       currentWheelsSpeeds.leftMetersPerSecond, 
       speeds.leftMetersPerSecond) + leftFeedforward;
 
-      driveSubsystem.setVolts(rightOutput, leftOutput);
+      driveSubsystem.setVolts(leftOutput, rightOutput);
   }
 
 

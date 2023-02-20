@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TurretSubsystem;
 import java.util.function.Supplier;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import frc.robot.Constants;
 import frc.robot.HelperClasses.*;
 
@@ -35,7 +37,8 @@ public class ManualTurnTurretCommand extends CommandBase {
   @Override
   public void execute() {
 //Note: It might be benificial to use max angle as the max angle for joystick, so there is a better physical connection for operator
-    double rawInput = joystickZRotation.get();
+    double rawInput = -joystickZRotation.get();
+    
     double processedInput = signalProcessor.getOutput(rawInput);
     double desiredAngle = rawInput * Constants.TurretConstants.kMaxTurretAngle;
     if(joystickSlider.get() > 0){
@@ -43,6 +46,7 @@ public class ManualTurnTurretCommand extends CommandBase {
     }
 
     turretSubsystem.setPosition(desiredAngle);
+   // turretSubsystem.turretMotor.set(ControlMode.PercentOutput, rawInput);
 
 
   }

@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import java.util.ResourceBundle.Control;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -16,8 +21,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private VisionWrapper vision;
+ // public static VisionWrapper vision;
   private RobotContainer m_robotContainer;
+  // WPI_TalonFX talon = new WPI_TalonFX(2);
+  // WPI_TalonFX talon2 = new WPI_TalonFX(3);
 
   /**KAKS
    * This function is run when the robot is first started up and should be used for any
@@ -28,7 +35,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    vision = new VisionWrapper();
+   // vision = new VisionWrapper();
   }
 
   /**
@@ -44,7 +51,7 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    vision.periodic();
+   // vision.periodic();
     CommandScheduler.getInstance().run();
   }
 
@@ -83,7 +90,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    //talon.set(ControlMode.PercentOutput, 0.25);
+    // talon.setVoltage(1);
+    // talon2.setVoltage(1);
+  }
 
   @Override
   public void testInit() {

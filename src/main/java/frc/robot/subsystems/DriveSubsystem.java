@@ -72,8 +72,10 @@ public class DriveSubsystem extends SubsystemBase {
  
 
   public void setVolts(double leftVolts, double rightVolts){
-    leftLead.setVoltage(leftVolts);
-    rightLead.setVoltage(rightVolts);
+    leftLead.setVoltage(6);
+    leftFollow.setVoltage(6);
+    rightLead.setVoltage(0);
+    rightFollow.setVoltage(0);
   }
 
   @Override

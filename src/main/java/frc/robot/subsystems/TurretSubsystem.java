@@ -22,7 +22,7 @@ import edu.wpi.first.math.controller.PIDController;
 
 public class TurretSubsystem extends SubsystemBase {
   //assumIng talonFX, CORRECT LATER
-  WPI_TalonSRX turretMotor = new WPI_TalonSRX(Constants.MotorID.kTurretMotor);
+  public WPI_TalonSRX turretMotor = new WPI_TalonSRX(Constants.MotorID.kTurretMotor);
 
   PIDController turretPidController = new PIDController(
     Constants.TurretConstants.kTurretkP, 
@@ -41,15 +41,16 @@ public class TurretSubsystem extends SubsystemBase {
 
       double output = turretPidController.calculate(turretMotor.getSelectedSensorPosition(), setPointTicks);
       //Should we set PIDs with voltage instead?
-      turretMotor.setVoltage(output);
+      turretMotor.set(ControlMode.PercentOutput, output);
   }
 
-  private double getAngleDegrees(){
+  public double getAngleDegrees(){
+    System.out.println(ticksToDegrees(turretMotor.getSelectedSensorPosition()));
     return ticksToDegrees(turretMotor.getSelectedSensorPosition());
   }
 
   private double ticksToDegrees(double ticks){
-    double rotationsTurret = ticks/2048;
+    double rotationsTurret = ticks/4096;
     double angleDegrees = rotationsTurret * 360;
     return angleDegrees;
   }
@@ -58,7 +59,7 @@ public class TurretSubsystem extends SubsystemBase {
     //Assuming 20248 ticks per rev
     double rotationsTurret = degrees / 360;
     //The encoder on the turret already takes the gear ratio into account
-    double ticks = rotationsTurret * 2048;
+    double ticks = rotationsTurret * 4096;
 
     return ticks;
   }

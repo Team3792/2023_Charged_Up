@@ -52,7 +52,7 @@ public final class Constants {
       public static final int kLeftDriveLeadMotor = 0;
       public static final int kLeftDriveFollowMotor = 1;
       public static final int kRightDriveLeadMotor = 2;
-      public static final int kRightDriveFollowMotor = 4;
+      public static final int kRightDriveFollowMotor = 3;
 
 
       //Gyro
@@ -62,7 +62,7 @@ public final class Constants {
       public static final int kElevatorMotor = 10;
 
       //Turret
-      public static final int kTurretMotor = 20;
+      public static final int kTurretMotor = 61;
 
       //Arm/Intake
       public static final int kBoomMotor = 30;
@@ -96,7 +96,7 @@ public final class Constants {
       public static final double kDriveTrainWidthMeters = 0.5842;
     
       //Drivetrain PID Vars
-      public static final double kDrivekP = 0;
+      public static final double kDrivekP = 0.8;
       public static final double kDrivekI = 0;
       public static final double kDrivekD = 0;
 
@@ -106,7 +106,7 @@ public final class Constants {
       public static final double kDriveKV = 0;
       public static final double kDriveKA = 0;
       //Drive Speed Constants
-      public static final double kMaxDriveSpeed = 0;           // meters per second
+      public static final double kMaxDriveSpeed = 5;           // meters per second
       public static final double kMaxDriveAngularSpeed = 0; //rotations per second
 
       //Deadzone
@@ -160,19 +160,19 @@ public final class Constants {
   public static final class TurretConstants
     {
       //TurretConstants PID Vars
-      public static final double kTurretkP = 0;
+      public static final double kTurretkP = 0.001;
       public static final double kTurretkI = 0;
       public static final double kTurretkD = 0;
 
       //Turret Speed Constants
-      public static final double kMaxTurretSpeed = 0;
+      public static final double kMaxTurretSpeed = 3;
       public static final double kMaxTurretAngularSpeed = 0;     //rotations per second
 
       //Deadzone
       public static final int kTurretDeadzone = 0;
 
       //Maximum turret angle, where 0 is straight ahead. (this is for both sides)
-      public static final double kMaxTurretAngle = 0;
+      public static final double kMaxTurretAngle = 60;
 
   
       
