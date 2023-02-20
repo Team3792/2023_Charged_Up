@@ -4,31 +4,40 @@
 
 package frc.robot.commands.AutoAimingCommands;
 
+
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.HelperClasses.*;
 import frc.robot.subsystems.BoomSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class AutoAim extends CommandBase {
+public class AutoAimCommand extends CommandBase {
   /** Creates a new AutoAim. */
   ConeTargetFinder coneTargetFinder = new ConeTargetFinder();
   CubeTargetFinder cubeTargetFinder = new CubeTargetFinder();
   TurretSubsystem turretSubsystem;
   BoomSubsystem boomSubsystem;
   VisionSubsystem visionSubsystem;
-  Pose2d robotPose;
+  Pose2d turretPose;
+  
   Pose2d target;
   
 
-  public AutoAim(TurretSubsystem turretSubsystem, BoomSubsystem boomSubsystem, VisionSubsystem visionSubsystem) {
+  public AutoAimCommand(TurretSubsystem turretSubsystem, BoomSubsystem boomSubsystem) {
 
     this.turretSubsystem = turretSubsystem;
     this.boomSubsystem = boomSubsystem;
-    this.visionSubsystem = visionSubsystem;
+    
+
 
     addRequirements(boomSubsystem);
     addRequirements(turretSubsystem);
@@ -44,17 +53,19 @@ public class AutoAim extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+   
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     
-    robotPose = visionSubsystem.robotPose;
+    turretPose = Robot.field.getRobotPose();
     if(RobotContainer.intakeStatus == "cube"){
-     target = cubeTargetFinder.getTarget(RobotContainer.elevatorHeight, robotPose.getY());
+     target = cubeTargetFinder.getTarget(RobotContainer.elevatorHeight, turretPose.getY());
     }else if(RobotContainer.intakeStatus == "cone"){
-     target = coneTargetFinder.getTarget(RobotContainer.elevatorHeight, robotPose.getY());
+     target = coneTargetFinder.getTarget(RobotContainer.elevatorHeight, turretPose.getY());
     }
     Pose2d targetPose2d = new Pose2d(target.getX(), target.getY(), new Rotation2d(0));
     //visionSubsystem.addTarget(targetPose2d);
@@ -66,7 +77,7 @@ public class AutoAim extends CommandBase {
 
   private void aimAtTarget(Pose2d target){
     //Finding angle of target -> turret center ->Red alliance wall (ccw rotation)
-    double targetToTurretCenterSlope = (target.getY() - robotPose.getY())/(target.getX() - robotPose.getX());
+    double targetToTurretCenterSlope = (target.getY() - turretPose.getY())/(target.getX() - turretPose.getX());
     double targetToTurretCenterAngle = Math.atan(targetToTurretCenterSlope);
     //Correct slope for the other possible angle atan could be
     if(targetToTurretCenterSlope < 0){
@@ -74,7 +85,7 @@ public class AutoAim extends CommandBase {
     }
 
     //Finding the angle the turret should turn (converting targetToTurretCenterAngle to turret relative)
-    double turretRelativeTargetAngle = targetToTurretCenterAngle - robotPose.getRotation().getRadians();
+    double turretRelativeTargetAngle = targetToTurretCenterAngle - turretPose.getRotation().getRadians();
 
     double turretRelativeTargetAngleDegrees = Math.toDegrees(turretRelativeTargetAngle);
 
@@ -85,8 +96,8 @@ public class AutoAim extends CommandBase {
     //Finding absolute distance from turret center to target
 
     double distanceTurretToTarget = Math.hypot(
-      robotPose.getX() - target.getX(),
-      robotPose.getY() - target.getY() 
+      turretPose.getX() - target.getX(),
+      turretPose.getY() - target.getY() 
       );
 
 

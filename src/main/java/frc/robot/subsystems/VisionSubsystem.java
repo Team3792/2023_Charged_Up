@@ -29,8 +29,9 @@ public class VisionSubsystem extends SubsystemBase {
   private AprilTagFieldLayout aprilTagFieldLayout;
   private PhotonCamera leftCamera;
   private PhotonPoseEstimator photonPoseEstimator;
-  public  Pose2d robotPose = new Pose2d();
-  private final Field2d field = new Field2d();
+  public  Pose2d turretPose = new Pose2d();
+  public boolean seesTargets = false;
+ // private final Field2d field = new Field2d();
 
   public VisionSubsystem() {
     // The parameter for loadFromResource() will be different depending on the game.
@@ -41,25 +42,28 @@ public class VisionSubsystem extends SubsystemBase {
     }
     // Left Camera
     leftCamera = new PhotonCamera("leftCam");
-    Transform3d robotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
-    photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_LAST_POSE, leftCamera, robotToCam);
-    SmartDashboard.putData("Field", field);
+    Transform3d robotToCamLeft = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
+    photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_LAST_POSE, leftCamera, robotToCamLeft);
+   // SmartDashboard.putData("Field", field);
   }
 
   private void getRobotPose(){
 
-    photonPoseEstimator.setLastPose(robotPose);
+    //Updating the seeTargets bool to the cameras result
+    seesTargets = leftCamera.getLatestResult().hasTargets();
+
+    photonPoseEstimator.setLastPose(turretPose);
     Optional<EstimatedRobotPose> currentPose = photonPoseEstimator.update();
     if (currentPose.isPresent()) {
       //Pose2d cameraPose = currentPose.get().estimatedPose.toPose2d();
       //System.out.println(camPose);
-      robotPose = currentPose.get().estimatedPose.toPose2d();
-      field.setRobotPose(robotPose);
+      turretPose = currentPose.get().estimatedPose.toPose2d();
+    //  field.setRobotPose(robotPose);
     }
      
   }
 
-  public void periodic() {
+  public void updateAndGetTurretPose() {
     // This method will be called once per scheduler run
     getRobotPose();
   }

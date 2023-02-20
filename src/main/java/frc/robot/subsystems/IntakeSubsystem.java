@@ -10,6 +10,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -20,7 +21,8 @@ public class IntakeSubsystem extends SubsystemBase {
   private TalonSRX intakeMotor = new TalonSRX(Constants.MotorID.kIntakeMotor);
 
   public IntakeSubsystem() {
-
+    //When the intake stops, we don't want it to let the cone/cube go, so we break it
+    intakeMotor.setNeutralMode(NeutralMode.Brake);
   }
 
   public void cubeIntake(){

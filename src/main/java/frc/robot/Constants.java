@@ -62,14 +62,28 @@ public final class Constants {
       public static final int kElevatorMotor = 10;
 
       //Turret
-      public static final int kTurretMotor = 61;
+      public static final int kTurretMotor = 20;
 
       //Arm/Intake
       public static final int kBoomMotor = 30;
       //public static final int kArmMotor2 = 0;  //might not exist
       public static final int kIntakeMotor = 40;
 
+      //PDH board
+
+      public static final int kPowerDistribution = 50;
+
     }
+
+  public static final class PowerDistributionHubConstants
+  {
+    public static final int kPDHIntakeChannel = 0;
+    
+    //Limiting currents for intake
+
+    public static final double kCubeShutoffCurrent = 0;
+    public static final double kConeShutoffCurrent = 0;
+  }
 
   public static final class BoomConstants
   {
@@ -305,6 +319,12 @@ public final class Constants {
 
   }
 
+  public static final class VisionCosntnats{
+
+    public static double kAmbiguityThreshold = 0;
+
+  }
+
   public static final class RobotLayoutConstants
   {
     //Each of the following are locations {x, y} relative to bottom left corner to robot
@@ -317,7 +337,7 @@ public final class Constants {
     public static final double[] kCamera1Location = {0, 0};
     public static final double[] kCamera2Location = {0, 0};
 
-    //Turret location
+    //Turret location relative to center chassis
     public static final double[] kTurretLocation = {0, 0};
     
 

@@ -10,8 +10,12 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.HelperClasses.VisionOdemetryPoseEstimator;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -20,11 +24,15 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
- // public static VisionWrapper vision;
-  private RobotContainer m_robotContainer;
-  // WPI_TalonFX talon = new WPI_TalonFX(2);
-  // WPI_TalonFX talon2 = new WPI_TalonFX(3);
+  private Command autonomousCommand;
+ 
+  private RobotContainer robotContainer;
+
+  //Backend vision + odemetry calulation
+  private  VisionOdemetryPoseEstimator visionOdemetryPoseEstimator = new VisionOdemetryPoseEstimator(robotContainer.driveSubsystem, robotContainer.visionSubsystem, robotContainer.turretSubsystem);
+  public static Field2d field = new Field2d();
+
+  
 
   /**KAKS
    * This function is run when the robot is first started up and should be used for any
@@ -34,8 +42,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-   // vision = new VisionWrapper();
+    SmartDashboard.putData("Field", field);
+    robotContainer = new RobotContainer();
+ 
   }
 
   /**
@@ -51,8 +60,14 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-   // vision.periodic();
+
     CommandScheduler.getInstance().run();
+    visionOdemetryPoseEstimator.update();
+
+    field.setRobotPose(visionOdemetryPoseEstimator.chassisLocation);
+    
+    //SmartDashboard.putData("Field", m_field);
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -83,17 +98,15 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
     }
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    //talon.set(ControlMode.PercentOutput, 0.25);
-    // talon.setVoltage(1);
-    // talon2.setVoltage(1);
+
   }
 
   @Override

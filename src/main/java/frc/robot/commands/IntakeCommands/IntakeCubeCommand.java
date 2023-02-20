@@ -10,10 +10,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSubsystem;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import frc.robot.Constants;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
 public class IntakeCubeCommand extends CommandBase {
   /** Creates a new IntakeCubeCommand. */
   IntakeSubsystem intakeSubsystem;
+  PowerDistribution powerDistribution = new PowerDistribution(Constants.MotorID.kPowerDistribution, ModuleType.kRev);
+
   
 
   public IntakeCubeCommand(IntakeSubsystem subsystem) {
@@ -41,7 +46,12 @@ public class IntakeCubeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.cubeIntake();
+    if(powerDistribution.getCurrent(Constants.PowerDistributionHubConstants.kPDHIntakeChannel) < Constants.PowerDistributionHubConstants.kCubeShutoffCurrent){
+      intakeSubsystem.cubeIntake();
+      }else {
+        //If the current draw is too much, end the command and break the intake
+        end(true);
+      }
   }
 
   // Called once the command ends or is interrupted.

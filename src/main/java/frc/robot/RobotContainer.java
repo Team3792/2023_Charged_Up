@@ -9,16 +9,16 @@ import java.util.function.Supplier;
 //import frc.robot.commands.*;
 import frc.robot.commands.IntakeCommands.*;
 import frc.robot.commands.LEDCommands.LEDShowIntakeStatusCommand;
+import frc.robot.HelperClasses.VisionOdemetryPoseEstimator;
 import frc.robot.IntakePreparationCommands.AdjustForCubeIntakeCommand;
 import frc.robot.IntakePreparationCommands.HighIntakeConePreparation;
-import frc.robot.commands.AutoAimingCommands.BasicAutoAim;
+import frc.robot.commands.AutoAimingCommands.AutoAimCommand;
 import frc.robot.commands.BoomCommands.ManualExtendBoomCommand;
 import frc.robot.commands.DriveCommands.DriveCommand;
 import frc.robot.commands.ElevatorCommands.ElevatorMoveAutoCommand;
 import frc.robot.subsystems.*;
 import frc.robot.IntakePreparationCommands.LowIntakeConePreparation;
-
-
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -36,13 +36,18 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   //subsystems
-  // private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+
+  //These three subsystems must be accesable to Robot.java to run the odemetry vision calcultions
+  public final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  public final TurretSubsystem turretSubsystem = new TurretSubsystem();
+  public final VisionSubsystem visionSubsystem = new VisionSubsystem();
+
   private final BoomSubsystem boomSubsystem = new BoomSubsystem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final LEDSubsystem ledSubsystem = new LEDSubsystem();
-  private final TurretSubsystem turretSubsystem = new TurretSubsystem();
- // private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  
+
 
 
   //controller definitions:
@@ -88,14 +93,18 @@ public class RobotContainer {
 
 
 
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+   
+   
+   
     // Configure the trigger bindings
     configureBindings();
 
-    // driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, 
-    // () -> -driveJoystick.getRawAxis(1), 
-    // () -> driveJoystick.getRawAxis(2)));
+    driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, 
+    () -> -driveJoystick.getRawAxis(1), 
+    () -> driveJoystick.getRawAxis(2)));
 
     //Manual Aiming bindings (elevator in button bindings)
     turretSubsystem.setDefaultCommand(new ManualTurnTurretCommand(turretSubsystem,
@@ -148,7 +157,8 @@ public class RobotContainer {
     coneIntakeLow.onTrue(new LowIntakeConePreparation(elevatorSubsystem));
     cubeIntakeButton.onTrue(new AdjustForCubeIntakeCommand(elevatorSubsystem));
 
-    engageAutoAim.whileTrue(new BasicAutoAim(turretSubsystem));
+
+    engageAutoAim.whileTrue(new AutoAimCommand(turretSubsystem, boomSubsystem));
 
     
 
