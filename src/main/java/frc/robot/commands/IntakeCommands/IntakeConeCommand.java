@@ -16,15 +16,19 @@ import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.util.function.Supplier;
+
 
 public class IntakeConeCommand extends CommandBase {
   IntakeSubsystem intakeSubsystem;
-  PowerDistribution powerDistribution = new PowerDistribution(Constants.MotorID.kPowerDistribution, ModuleType.kRev);
+  Supplier<Double> intakeCurrent;
+
   
   /** Creates a new IntakeConeCommand. */
-  public  IntakeConeCommand(IntakeSubsystem subsystem) {
+  public  IntakeConeCommand(IntakeSubsystem subsystem, Supplier<Double> intakeCurrent) {
 
     intakeSubsystem = subsystem;
+    this.intakeCurrent = intakeCurrent;
   
     
     // Use addRequirements() here to declare subsystem dependencies.
@@ -41,14 +45,7 @@ public class IntakeConeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    if(powerDistribution.getCurrent(Constants.PowerDistributionHubConstants.kPDHIntakeChannel) < Constants.PowerDistributionHubConstants.kConeShutoffCurrent){
     intakeSubsystem.coneIntake();
-    }else {
-      //If the current draw is too much, end the command and break the intake
-      end(true);
-    }
-
   }
 
   // Called once the command ends or is interrupted.
@@ -61,6 +58,7 @@ public class IntakeConeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    //If the intakeCurrent is too high, return true for isFinished, ending the command
+    return (intakeCurrent.get() > Constants.PowerDistributionHubConstants.kConeShutoffCurrent);
   }
 }

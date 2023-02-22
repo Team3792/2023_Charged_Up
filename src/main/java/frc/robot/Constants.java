@@ -49,25 +49,25 @@ public final class Constants {
   public static final class MotorID
     {
       //Drive Train (Talon FX/Falcon)
-      public static final int kLeftDriveLeadMotor = 0;
-      public static final int kLeftDriveFollowMotor = 1;
-      public static final int kRightDriveLeadMotor = 2;
-      public static final int kRightDriveFollowMotor = 3;
+      public static final int kLeftDriveLeadMotor = 10;
+      public static final int kLeftDriveFollowMotor = 11;
+      public static final int kRightDriveLeadMotor = 12;
+      public static final int kRightDriveFollowMotor = 13;
 
 
       //Gyro
-      public static final int kGyro = 5;
+      public static final int kGyro = 15;
 
       //Elevator
-      public static final int kElevatorMotor = 10;
+      public static final int kElevatorMotor = 20;
 
       //Turret
-      public static final int kTurretMotor = 20;
+      public static final int kTurretMotor = 30;
 
       //Arm/Intake
-      public static final int kBoomMotor = 30;
+      public static final int kBoomMotor = 40;
       //public static final int kArmMotor2 = 0;  //might not exist
-      public static final int kIntakeMotor = 40;
+      public static final int kIntakeMotor = 50;
 
       //PDH board
 

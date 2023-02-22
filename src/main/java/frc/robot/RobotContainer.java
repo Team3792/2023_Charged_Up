@@ -20,6 +20,8 @@ import frc.robot.subsystems.*;
 import frc.robot.IntakePreparationCommands.LowIntakeConePreparation;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -46,6 +48,8 @@ public class RobotContainer {
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final LEDSubsystem ledSubsystem = new LEDSubsystem();
+
+  private final PowerDistribution powerDistribution = new PowerDistribution(1, ModuleType.kRev);
   
 
 
@@ -57,8 +61,8 @@ public class RobotContainer {
   //Button definitions - should we have these in the constants class?
 
   //Intake/Extake
-  final Trigger coneIntakeButton = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kConeIntakeButton);
-  final Trigger cubeIntakeButton = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kCubeIntakeButton);
+  final Trigger coneIntakeButton = new JoystickButton(driveJoystick, Constants.ButtonConstant.kConeIntakeButton);
+  final Trigger cubeIntakeButton = new JoystickButton(driveJoystick, Constants.ButtonConstant.kCubeIntakeButton);
   final Trigger dropAllButton = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kDropAllButton);
 
   //Elevator
@@ -140,9 +144,18 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
-    //Intake and drop buttons
-    coneIntakeButton.whileTrue(new IntakeConeCommand(intakeSubsystem));
-    cubeIntakeButton.whileTrue(new IntakeCubeCommand(intakeSubsystem));
+    //Intake and drop buttons - Pass in PDH intake currents
+
+    coneIntakeButton.whileTrue(new IntakeConeCommand(
+      intakeSubsystem, 
+      () -> powerDistribution.getCurrent(Constants.PowerDistributionHubConstants.kPDHIntakeChannel)
+    ));
+
+    cubeIntakeButton.whileTrue(new IntakeCubeCommand(
+      intakeSubsystem,
+      () -> powerDistribution.getCurrent(Constants.PowerDistributionHubConstants.kPDHIntakeChannel)
+      ));
+
     dropAllButton.whileTrue(new DropAllCommand(intakeSubsystem, intakeStatus));
 
     //Elevator buttons

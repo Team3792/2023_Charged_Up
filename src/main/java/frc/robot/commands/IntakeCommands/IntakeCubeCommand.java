@@ -13,16 +13,18 @@ import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import java.util.function.Supplier;
 
 public class IntakeCubeCommand extends CommandBase {
   /** Creates a new IntakeCubeCommand. */
   IntakeSubsystem intakeSubsystem;
-  PowerDistribution powerDistribution = new PowerDistribution(Constants.MotorID.kPowerDistribution, ModuleType.kRev);
+  Supplier<Double> intakeCurrent;
 
   
 
-  public IntakeCubeCommand(IntakeSubsystem subsystem) {
+  public IntakeCubeCommand(IntakeSubsystem subsystem, Supplier<Double> intakeCurrent) {
     intakeSubsystem = subsystem;
+    this.intakeCurrent = intakeCurrent;
 
     
     // Use addRequirements() here to declare subsystem dependencies.
@@ -46,12 +48,7 @@ public class IntakeCubeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(powerDistribution.getCurrent(Constants.PowerDistributionHubConstants.kPDHIntakeChannel) < Constants.PowerDistributionHubConstants.kCubeShutoffCurrent){
       intakeSubsystem.cubeIntake();
-      }else {
-        //If the current draw is too much, end the command and break the intake
-        end(true);
-      }
   }
 
   // Called once the command ends or is interrupted.
@@ -64,6 +61,7 @@ public class IntakeCubeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    //If the intakeCurrent is too high, return true for isFinished, ending the command
+    return (intakeCurrent.get() > Constants.PowerDistributionHubConstants.kCubeShutoffCurrent);
   }
 }

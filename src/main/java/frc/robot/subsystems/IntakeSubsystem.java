@@ -16,13 +16,15 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private TalonSRX intakeMotor = new TalonSRX(Constants.MotorID.kIntakeMotor);
+  private WPI_VictorSPX intakeMotor = new WPI_VictorSPX(Constants.MotorID.kIntakeMotor);
 
   public IntakeSubsystem() {
     //When the intake stops, we don't want it to let the cone/cube go, so we break it
     intakeMotor.setNeutralMode(NeutralMode.Brake);
+    
   }
 
   public void cubeIntake(){
