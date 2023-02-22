@@ -3,13 +3,11 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import java.util.function.Supplier;
 
 // import frc.robot.Constants.*;
 //import frc.robot.commands.*;
 import frc.robot.commands.IntakeCommands.*;
 import frc.robot.commands.LEDCommands.LEDShowIntakeStatusCommand;
-import frc.robot.HelperClasses.VisionOdemetryPoseEstimator;
 import frc.robot.IntakePreparationCommands.AdjustForCubeIntakeCommand;
 import frc.robot.IntakePreparationCommands.HighIntakeConePreparation;
 import frc.robot.commands.AutoAimingCommands.AutoAimCommand;
@@ -18,11 +16,9 @@ import frc.robot.commands.DriveCommands.DriveCommand;
 import frc.robot.commands.ElevatorCommands.ElevatorMoveAutoCommand;
 import frc.robot.subsystems.*;
 import frc.robot.IntakePreparationCommands.LowIntakeConePreparation;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;

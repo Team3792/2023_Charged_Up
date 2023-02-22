@@ -11,7 +11,7 @@ import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.HelperClasses.RobotLayout;
+
 
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -26,7 +26,6 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionSubsystem extends SubsystemBase {
@@ -170,7 +169,7 @@ public class VisionSubsystem extends SubsystemBase {
       //This create a linear transformation from the time (out of 3 secs) since last update to 0 - 1
       //1 = most reliable
       //0 = least reliable
-      
+
       return 1.0 - (secondsSinceLastUpdate / 3.0);
     }
     

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TurretSubsystem;
 import java.util.function.Supplier;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
+
 
 import frc.robot.Constants;
 import frc.robot.HelperClasses.*;
@@ -40,7 +40,7 @@ public class ManualTurnTurretCommand extends CommandBase {
     double rawInput = -joystickZRotation.get();
     
     double processedInput = signalProcessor.getOutput(rawInput);
-    double desiredAngle = rawInput * Constants.TurretConstants.kMaxTurretAngle;
+    double desiredAngle = processedInput * Constants.TurretConstants.kMaxTurretAngle;
     if(joystickSlider.get() > 0){
       desiredAngle += 180;
     }

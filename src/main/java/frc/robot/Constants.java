@@ -198,7 +198,7 @@ public final class Constants {
       //Notice that if we need to spin backward, 
       public static final double kCubeIntakeVelocity = 0;
       public static final double kConeIntakeVelocity = 0;
-      public static final double kCubeExtakeelocity = 0;
+      public static final double kCubeExtakeVelocity = 0;
       public static final double kConeExtakeVelocity = 0;
 
 

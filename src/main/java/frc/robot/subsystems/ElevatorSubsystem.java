@@ -11,14 +11,12 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import java.lang.UnsatisfiedLinkError;
+
 
 public class ElevatorSubsystem extends SubsystemBase {
   //CHANGE THIS ONCE WE KNOW WHAT MOTOR CONTROLLER WE'RE USING
