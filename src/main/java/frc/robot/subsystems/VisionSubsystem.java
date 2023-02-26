@@ -27,6 +27,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.util.Units;
 
 public class VisionSubsystem extends SubsystemBase {
 
@@ -38,7 +39,7 @@ public class VisionSubsystem extends SubsystemBase {
   public  Pose2d turretPose = new Pose2d();
 
   public boolean seesTargets = false;
-  public boolean twoCameraMode = true;
+  public boolean twoCameraMode = false;
 
   public double visionReliabilityIndex = 0.0;
 
@@ -57,9 +58,9 @@ public class VisionSubsystem extends SubsystemBase {
     
      // Left Camera
      leftCamera = new PhotonCamera("leftCam");
-     Transform3d robotToCamLeft = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
+     Transform3d robotToCamLeft = new Transform3d(new Translation3d(0, 0.0, Units.inchesToMeters(26.5)), new Rotation3d(0,0,0)); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
      leftPhotonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_LAST_POSE, leftCamera, robotToCamLeft);
- 
+  
     
     if (twoCameraMode) {
       // Right Camera 
@@ -118,7 +119,7 @@ public class VisionSubsystem extends SubsystemBase {
       //Same code as the twoCameraMode, but only doing it once for left cam (cases/scenarios are different too)
 
       //Updating the seeTargets bool to the cameras result
-      seesTargets = leftCamera.getLatestResult().hasTargets();
+      seesTargets = leftCamera.getLatestResult().hasTargets() && (leftCamera.getLatestResult().getBestTarget().getPoseAmbiguity() < .5);
 
       if (seesTargets) {
         lastVisionUpdate = LocalTime.now();

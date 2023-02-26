@@ -71,7 +71,7 @@ public final class Constants {
 
       //PDH board
 
-      public static final int kPowerDistribution = 50;
+     // public static final int kPowerDistribution = 50;
 
     }
 
@@ -81,8 +81,8 @@ public final class Constants {
     
     //Limiting currents for intake
 
-    public static final double kCubeShutoffCurrent = 0;
-    public static final double kConeShutoffCurrent = 0;
+    public static final double kCubeShutoffCurrent = 15;
+    public static final double kConeShutoffCurrent = 15;
   }
 
   public static final class BoomConstants
@@ -196,10 +196,13 @@ public final class Constants {
     {
       //Setting intake and extake (I know that's not a word) velocities
       //Notice that if we need to spin backward, 
-      public static final double kCubeIntakeVelocity = 0;
-      public static final double kConeIntakeVelocity = 0;
-      public static final double kCubeExtakeVelocity = 0;
-      public static final double kConeExtakeVelocity = 0;
+      public static final double kCubeIntakeVoltage = 8;
+      public static final double kConeIntakeVoltage = -8;
+      public static final double kCubeExtakeVoltage = -8;
+      public static final double kConeExtakeVoltage = 8;
+
+      //How many seconds it should take for the slew rate limiter to ramp up
+      public static final double kIntakeRampTime = 0.25;
 
 
     }
@@ -325,23 +328,10 @@ public final class Constants {
 
   }
 
-  public static final class RobotLayoutConstants
+  public static final class RobotDimensionConstants
   {
-    //Each of the following are locations {x, y} relative to bottom left corner to robot
-    //WHAT UNITS SHOULD WE USE?
-
-    //TODO: Find how far from turret center to camera center
-    //TODO: also find distance from boom to turret center
-
-    //camera locations
-    public static final double[] kCamera1Location = {0, 0};
-    public static final double[] kCamera2Location = {0, 0};
-
-    //Turret location relative to center chassis
-    public static final double[] kTurretLocation = {0, 0};
-    
-
-
+    public static double kWheelDiameterInches = 4;
+    public static double kMotorToWheelShaftGearRatio = 7.62;
   }
 
 }

@@ -108,7 +108,7 @@ public class DriveCommand extends CommandBase {
     DifferentialDriveWheelSpeeds currentWheelsSpeeds = getWheelSpeeds();
     double rightOutput = rightPIDController.calculate(
       currentWheelsSpeeds.rightMetersPerSecond, 
-      speeds.rightMetersPerSecond) + rightFeedforward;
+      -speeds.rightMetersPerSecond) + rightFeedforward;
 
     double leftOutput = leftPIDController.calculate(
       currentWheelsSpeeds.leftMetersPerSecond, 
@@ -121,8 +121,8 @@ public class DriveCommand extends CommandBase {
   public double toMeters(double ticksPerSecond){
     double motorRotationsPerSecond = ticksPerSecond/2048;
     //replace 10 with gear ratio
-    double wheelRotationsPerSecond = motorRotationsPerSecond/10;
-    double distancePerRotations = Math.PI*Units.inchesToMeters(6);
+    double wheelRotationsPerSecond = motorRotationsPerSecond/Constants.RobotDimensionConstants.kMotorToWheelShaftGearRatio;
+    double distancePerRotations = Math.PI*Units.inchesToMeters(Constants.RobotDimensionConstants.kWheelDiameterInches);
     double metersPerSecond = distancePerRotations * wheelRotationsPerSecond;
     return metersPerSecond;
   }

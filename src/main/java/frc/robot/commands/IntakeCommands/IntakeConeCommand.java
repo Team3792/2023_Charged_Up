@@ -10,6 +10,7 @@ package frc.robot.commands.IntakeCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.function.Supplier;
@@ -36,18 +37,25 @@ public class IntakeConeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {   
+    //Reset the SRL right at the moment of starting the ramp to make it not jump
+    intakeSubsystem.slewRateLimiter.reset(0);
+
+    //Update intake status to intaking
+    RobotContainer.intakeStatus = "intaking cube";
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     intakeSubsystem.coneIntake();
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     SmartDashboard.putString("Intake", "Cube");
+    RobotContainer.intakeStatus = "cube";
     intakeSubsystem.stopIntake();
   }
 

@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
   private RobotContainer robotContainer;
 
   //Backend vision + odemetry calulation
-  private  VisionOdemetryPoseEstimator visionOdemetryPoseEstimator = new VisionOdemetryPoseEstimator(robotContainer.driveSubsystem, robotContainer.visionSubsystem, robotContainer.turretSubsystem);
+  private  VisionOdemetryPoseEstimator visionOdemetryPoseEstimator; 
   public static Field2d field = new Field2d();
 
   
@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     SmartDashboard.putData("Field", field);
     robotContainer = new RobotContainer();
+    visionOdemetryPoseEstimator = new VisionOdemetryPoseEstimator(robotContainer.driveSubsystem, robotContainer.visionSubsystem);
  
   }
 
@@ -59,10 +60,12 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().run();
     visionOdemetryPoseEstimator.update();
-
     field.setRobotPose(visionOdemetryPoseEstimator.chassisLocation);
+   
+
+    //field.setRobotPose(visionOdemetryPoseEstimator.chassisLocation);
     
-    //SmartDashboard.putData("Field", m_field);
+    SmartDashboard.putData("Field", field);
 
   }
 
@@ -76,12 +79,12 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-  //  m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+  // autonomousCommand = robotContainer.getAutonomousCommand();
 
-    // schedule the autonomous command (example)
-    // if (m_autonomousCommand != null) {
-    //   m_autonomousCommand.schedule();
-    // }
+   // schedule the autonomous command (example)
+    if (autonomousCommand != null) {
+      autonomousCommand.schedule();
+    }
   }
 
   /** This function is called periodically during autonomous. */

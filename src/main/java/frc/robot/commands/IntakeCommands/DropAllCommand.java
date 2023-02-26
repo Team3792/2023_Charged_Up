@@ -12,12 +12,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DropAllCommand extends CommandBase {
   /** Creates a new DropAllCommand. */
   IntakeSubsystem intakeSubsystem;
-  String intakeStatus;
+
 
   public DropAllCommand(IntakeSubsystem subsystem, String intakeStatus) {
 
     intakeSubsystem = subsystem;
-    this.intakeStatus = intakeStatus;
+ 
+
 
     addRequirements(intakeSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -33,11 +34,18 @@ public class DropAllCommand extends CommandBase {
   @Override
   public void execute() {
     //Checking intake status and extaking accordingly
-    if(SmartDashboard.getString("Intake", "none")  == "cube"){
+
+    if(RobotContainer.intakeStatus == "cube"){
       intakeSubsystem.cubeExtake();
-    }else if(SmartDashboard.getString("Intake", "none") == "cone"){
+    }else if(RobotContainer.intakeStatus == "cone"){
       intakeSubsystem.coneExtake();
     }
+    
+    // if(SmartDashboard.getString("Intake", "none")  == "Cube"){
+    //   intakeSubsystem.cubeExtake();
+    // }else if(SmartDashboard.getString("Intake", "none") == "Cone"){
+    //   intakeSubsystem.coneExtake();
+    // }
 
 
   }
@@ -45,6 +53,7 @@ public class DropAllCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    //After dropping, set intake status to "none"
     RobotContainer.intakeStatus = "none";
   }
 

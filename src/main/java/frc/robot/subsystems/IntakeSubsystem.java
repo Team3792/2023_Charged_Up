@@ -11,40 +11,60 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private WPI_VictorSPX intakeMotor = new WPI_VictorSPX(Constants.MotorID.kIntakeMotor);
+  public WPI_VictorSPX intakeMotor = new WPI_VictorSPX(Constants.MotorID.kIntakeMotor);
 
+  //Calculate how much the slew rate limiter should go up each second, based on desired voltage and desired time
+  //Absolute value is included to prevent sign mistakes/differing setups
+  public SlewRateLimiter slewRateLimiter = new SlewRateLimiter(
+    Math.abs(Constants.IntakeConstants.kConeIntakeVoltage) / Constants.IntakeConstants.kIntakeRampTime, 
+    Math.abs(Constants.IntakeConstants.kConeIntakeVoltage) / Constants.IntakeConstants.kIntakeRampTime, 
+    0);
+    
   public IntakeSubsystem() {
     //When the intake stops, we don't want it to let the cone/cube go, so we break it
-    intakeMotor.setNeutralMode(NeutralMode.Brake);
+   intakeMotor.setNeutralMode(NeutralMode.Brake);
+
     
   }
 
+  
+
   public void cubeIntake(){
-    intakeMotor.set(ControlMode.PercentOutput, Constants.IntakeConstants.kCubeIntakeVelocity); 
+    double output =  slewRateLimiter.calculate(Constants.IntakeConstants.kCubeIntakeVoltage);
+
+    intakeMotor.setVoltage(output); 
   }
 
+
   public void coneIntake(){
-    intakeMotor.set(ControlMode.PercentOutput, Constants.IntakeConstants.kConeIntakeVelocity); 
+    double output =  slewRateLimiter.calculate(Constants.IntakeConstants.kConeIntakeVoltage);
+    intakeMotor.setVoltage(output); 
+   
   }
 
   public void cubeExtake(){
-    intakeMotor.set(ControlMode.PercentOutput, Constants.IntakeConstants.kCubeExtakeVelocity); 
+    intakeMotor.set(ControlMode.PercentOutput, Constants.IntakeConstants.kCubeExtakeVoltage); 
   }
 
   public void coneExtake(){
-    intakeMotor.set(ControlMode.PercentOutput, Constants.IntakeConstants.kConeExtakeVelocity); 
+    intakeMotor.set(ControlMode.PercentOutput, Constants.IntakeConstants.kConeExtakeVoltage); 
   }
 
   public void stopIntake(){
 
-    intakeMotor.set(ControlMode.PercentOutput, 0);
+   intakeMotor.setVoltage(0);
+
       
     }
+
+    
   
 
   @Override
