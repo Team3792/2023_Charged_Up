@@ -37,13 +37,13 @@ public class RobotContainer {
 
   //These three subsystems must be accesable to Robot.java to run the odemetry vision calcultions
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  public final TurretSubsystem turretSubsystem = new TurretSubsystem();
-  public final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  // public final TurretSubsystem turretSubsystem = new TurretSubsystem();
+   public final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
-  private final BoomSubsystem boomSubsystem = new BoomSubsystem();
-  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+  // private final BoomSubsystem boomSubsystem = new BoomSubsystem();
+  // private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
+  // private final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
   private final PowerDistribution powerDistribution = new PowerDistribution(1, ModuleType.kRev);
   
@@ -104,23 +104,23 @@ public class RobotContainer {
 
     driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, 
     () -> -driveJoystick.getRawAxis(1), 
-    () -> driveJoystick.getRawAxis(2)));
+    () -> -driveJoystick.getRawAxis(2)));
 
     //Manual Aiming bindings (elevator in button bindings)
-    turretSubsystem.setDefaultCommand(new ManualTurnTurretCommand(turretSubsystem,
-    () -> operatorJoystick.getRawAxis(2),
-    () -> operatorJoystick.getRawAxis(3)
-    ));
+    // turretSubsystem.setDefaultCommand(new ManualTurnTurretCommand(turretSubsystem,
+    // () -> operatorJoystick.getRawAxis(2),
+    // () -> operatorJoystick.getRawAxis(3)
+    // ));
 
-    boomSubsystem.setDefaultCommand(new ManualExtendBoomCommand(boomSubsystem, 
-    () -> operatorJoystick.getRawAxis(1)
-    ));
+    // boomSubsystem.setDefaultCommand(new ManualExtendBoomCommand(boomSubsystem, 
+    // () -> operatorJoystick.getRawAxis(1)
+    // ));
 
     
 
     //Setting up LED system where the lights change depending on intake status
 
-    ledSubsystem.setDefaultCommand(new LEDShowIntakeStatusCommand(ledSubsystem));
+    //ledSubsystem.setDefaultCommand(new LEDShowIntakeStatusCommand(ledSubsystem));
 
     
 
@@ -156,18 +156,18 @@ public class RobotContainer {
 
     //Elevator buttons
 
-    groundElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 0));
-    middleElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 1));
-    highElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 2));
+    // groundElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 0));
+    // middleElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 1));
+    // highElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 2));
 
-    //Intake Levels
+    // //Intake Levels
 
-    coneIntakeHigh.onTrue(new HighIntakeConePreparation(elevatorSubsystem));
-    coneIntakeLow.onTrue(new LowIntakeConePreparation(elevatorSubsystem));
-    cubeIntakeButton.onTrue(new AdjustForCubeIntakeCommand(elevatorSubsystem));
+    // coneIntakeHigh.onTrue(new HighIntakeConePreparation(elevatorSubsystem));
+    // coneIntakeLow.onTrue(new LowIntakeConePreparation(elevatorSubsystem));
+    // cubeIntakeButton.onTrue(new AdjustForCubeIntakeCommand(elevatorSubsystem));
 
 
-    engageAutoAim.whileTrue(new AutoAimCommand(turretSubsystem, boomSubsystem));
+   // engageAutoAim.whileTrue(new AutoAimCommand(turretSubsystem, boomSubsystem));
 
     
 
@@ -178,7 +178,7 @@ public class RobotContainer {
    */
   // public Command getAutonomousCommand() {
   //   // An example command will be run in autonomous
-  //  // return Autos.exampleAuto(m_exampleSubsystem);
+  //  return Autos.exampleAuto(m_exampleSubsystem);
   // }
 }
 }

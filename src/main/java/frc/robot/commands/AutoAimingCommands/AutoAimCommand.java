@@ -59,7 +59,7 @@ public class AutoAimCommand extends CommandBase {
   @Override
   public void execute() {
     
-    turretPose = Robot.field.getRobotPose();
+    turretPose = new Pose2d(0, 0, new Rotation2d(0));
     if(RobotContainer.intakeStatus == "cube"){
      target = cubeTargetFinder.getTarget(RobotContainer.elevatorHeight, turretPose.getY());
     }else if(RobotContainer.intakeStatus == "cone"){
