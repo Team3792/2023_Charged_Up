@@ -24,6 +24,7 @@ import edu.wpi.first.math.util.Units;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
@@ -46,10 +47,13 @@ public class DriveSubsystem extends SubsystemBase {
 
   //Differential drive objects
   public final DifferentialDriveKinematics differentialDriveKinematics = new DifferentialDriveKinematics(Constants.DriveConstants.kDriveTrainWidthMeters);
+  public final DifferentialDrive differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
 
   public DifferentialDriveOdometry differentialDriveOdometry = new DifferentialDriveOdometry(
     new Rotation2d(0),0, 0);
   public Pose2d robotPose = new Pose2d();
+
+  
 
  // private W pigeonMotor  = new WPI_TalonFX(2);
 
@@ -101,6 +105,10 @@ public class DriveSubsystem extends SubsystemBase {
     
   }
 
+  public double getPitch(){
+    return pigeon.getPitch();
+  }
+
   public void updatePigeonAngle(double angleDegrees){
    pigeon.setYaw(angleDegrees);
   }
@@ -118,6 +126,19 @@ public class DriveSubsystem extends SubsystemBase {
     double rightMetersPerSecond = -toMeters(rightLead.getActiveTrajectoryVelocity()*10);
     double leftMetersPerSecond = toMeters(leftLead.getActiveTrajectoryVelocity()*10);
     return new DifferentialDriveWheelSpeeds(leftMetersPerSecond, rightMetersPerSecond);
+  }
+//Use this method to stop the bot and break it, used for auto and charge station balanceing
+  public void stopAndBreak(){
+    setNeutral(NeutralMode.Brake);
+    differentialDrive.arcadeDrive(0, 0);
+    
+  }
+
+  public void setNeutral(NeutralMode neutralMode){
+    rightLead.setNeutralMode(neutralMode);
+    leftLead.setNeutralMode(neutralMode);
+    rightFollow.setNeutralMode(neutralMode);
+    leftFollow.setNeutralMode(neutralMode);
   }
 
   @Override

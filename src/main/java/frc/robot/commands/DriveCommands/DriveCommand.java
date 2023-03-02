@@ -12,6 +12,9 @@ package frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.Supplier;
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import frc.robot.Constants;
 import frc.robot.HelperClasses.SignalProcessor;
 import edu.wpi.first.math.controller.PIDController;
@@ -74,7 +77,9 @@ public class DriveCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    driveSubsystem.setNeutral(NeutralMode.Coast);
+  }
 
 
 
@@ -90,6 +95,8 @@ public class DriveCommand extends CommandBase {
 
     var wheelSpeeds = driveSubsystem.differentialDriveKinematics.toWheelSpeeds(new ChassisSpeeds(forwardOutput, 0, rotationOutput));
     setSpeeds(wheelSpeeds);
+
+    driveSubsystem.differentialDrive.feed();
 
   } 
   
