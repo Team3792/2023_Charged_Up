@@ -44,6 +44,10 @@ public final class Constants {
       public static final int kConeIntakeHigh = 6;
       public static final int kConeIntakeLow = 4;
 
+      //Flipper toggle buttons
+
+      public static final int kFlipperToggleButton = 0;
+
     }
 
   public static final class MotorID
@@ -68,6 +72,8 @@ public final class Constants {
       public static final int kBoomMotor = 40;
       //public static final int kArmMotor2 = 0;  //might not exist
       public static final int kIntakeMotor = 50;
+
+      public static final int kFlipperMotor = 60;
 
       //PDH board
 
@@ -332,6 +338,13 @@ public final class Constants {
   {
     public static double kWheelDiameterInches = 6;
     public static double kMotorToWheelShaftGearRatio = 7.62;
+  }
+
+  public static final class FlipperConstants
+  {
+    public static double kExtendVoltage = 4;
+    public static double kRetractVoltage = -4;
+
   }
 
 }

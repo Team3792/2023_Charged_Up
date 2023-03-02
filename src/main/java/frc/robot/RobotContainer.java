@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.TurretCommands.ManualTurnTurretCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.Autonomous.Routines.TwoConeAutoMantis;
 
 /**
@@ -48,6 +49,7 @@ public class RobotContainer {
   // private final BoomSubsystem boomSubsystem = new BoomSubsystem();
    private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private final FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
   // private final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
   private final PowerDistribution powerDistribution = new PowerDistribution(1, ModuleType.kRev);
@@ -79,6 +81,8 @@ public class RobotContainer {
 
 
   final Trigger engageAutoAim = new JoystickButton(operatorJoystick, 2);
+
+  final Trigger toggleFlipper = new JoystickButton(driveJoystick, Constants.ButtonConstant.kFlipperToggleButton);
 
 
   //Variables that include global information of state of robot
@@ -123,7 +127,13 @@ public class RobotContainer {
     // boomSubsystem.setDefaultCommand(new ManualExtendBoomCommand(boomSubsystem, 
     // () -> operatorJoystick.getRawAxis(1)
     // ));
-
+//By default, retract the flipper
+    flipperSubsystem.setDefaultCommand(
+      new StartEndCommand(
+        flipperSubsystem::retract, 
+        flipperSubsystem::extend, 
+        flipperSubsystem)
+    );
     
 
     //Setting up LED system where the lights change depending on intake status
@@ -160,9 +170,26 @@ public class RobotContainer {
       () -> powerDistribution.getCurrent(Constants.PowerDistributionHubConstants.kPDHIntakeChannel)
       ));
 
-    dropAllButton.whileTrue(new DropAllCommand(intakeSubsystem, intakeStatus));
+      //When the toggle flipper button is on true, extend, on false, retract
+
+    toggleFlipper.toggleOnTrue(
+      new StartEndCommand(
+        flipperSubsystem::extend, 
+        flipperSubsystem::retract, 
+        flipperSubsystem)
+    );
+
+    toggleFlipper.toggleOnFalse(
+      new StartEndCommand(
+        flipperSubsystem::retract, 
+        flipperSubsystem::extend, 
+        flipperSubsystem
+        )
+    );
 
     //Elevator buttons
+
+    
 
     // groundElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 0));
     // middleElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 1));
