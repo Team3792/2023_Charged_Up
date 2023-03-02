@@ -2,21 +2,28 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.IntakeCommands;
+package frc.robot.Autonomous.Actions;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
 
-public class DropAllCommand extends CommandBase {
+
+public class DropAllAutoCommand extends CommandBase {
   /** Creates a new DropAllCommand. */
   IntakeSubsystem intakeSubsystem;
+  Timer timer = new Timer();
+  String element;
 
 
-  public DropAllCommand(IntakeSubsystem subsystem, String intakeStatus) {
+
+  public DropAllAutoCommand(IntakeSubsystem subsystem, String element) {
 
     intakeSubsystem = subsystem;
+
+   
  
 
 
@@ -27,6 +34,9 @@ public class DropAllCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //reset and start the timer that will shut off the intake
+    timer.reset();
+    timer.start();
     RobotContainer.intakeStatus = "dropping";
   }
 
@@ -35,9 +45,9 @@ public class DropAllCommand extends CommandBase {
   public void execute() {
     //Checking intake status and extaking accordingly
 
-    if(RobotContainer.intakeStatus == "cube"){
+    if(element == "cube"){
       intakeSubsystem.cubeExtake();
-    }else if(RobotContainer.intakeStatus == "cone"){
+    }else if(element == "cone"){
       intakeSubsystem.coneExtake();
     }
     
@@ -60,6 +70,7 @@ public class DropAllCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    //if the timer has elapsed 2 seconds, stop the command
+    return timer.hasElapsed(2);
   }
 }

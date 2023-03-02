@@ -13,15 +13,16 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 
 public class ElevatorSubsystem extends SubsystemBase {
-  //CHANGE THIS ONCE WE KNOW WHAT MOTOR CONTROLLER WE'RE USING
+
   //Do we need feedforward? I don't think so
-   private WPI_TalonSRX elevatorMotor = new WPI_TalonSRX(Constants.MotorID.kElevatorMotor);
+   private WPI_TalonFX elevatorMotor = new WPI_TalonFX(Constants.MotorID.kElevatorMotor);
    private PIDController elevatorPID = new PIDController
   (
   Constants.ElevatorConstants.kElevatorkP, 
@@ -30,15 +31,23 @@ public class ElevatorSubsystem extends SubsystemBase {
   );
 
   public ElevatorSubsystem(){
-    elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
     elevatorMotor.setSelectedSensorPosition(0);
-    //Add code to zero sensors.
+    //zero sensors, this should be done at buttom,
   }
 //Later, we can do these in terms of heights, instead of ticks
 
  public void setPosition(double encoderTicks){
     double output = elevatorPID.calculate(elevatorMotor.getSelectedSensorPosition(),encoderTicks);
     elevatorMotor.set(ControlMode.PercentOutput, output);
+ }
+
+ //This is a temperary method used to test elevator and find setpoints
+ public void setVoltage(double voltage){
+  elevatorMotor.setVoltage(voltage);
+
+  //Put ticks on smart dashboard to determine setpoints
+  SmartDashboard.putNumber("volts", voltage);
+  SmartDashboard.putNumber("elevator encoder ticks", elevatorMotor.getSelectedSensorPosition());
  }
 
 

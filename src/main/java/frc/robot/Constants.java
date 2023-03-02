@@ -107,10 +107,10 @@ public final class Constants {
   public static final class DriveConstants
     {
       //Drive Kinematics
-      public static final double kDriveTrainWidthMeters = 0.5842;
+      public static final double kDriveTrainWidthMeters = 0.72;
     
       //Drivetrain PID Vars
-      public static final double kDrivekP = 0.8;
+      public static final double kDrivekP = 2.4;
       public static final double kDrivekI = 0;
       public static final double kDrivekD = 0;
 
@@ -196,13 +196,13 @@ public final class Constants {
     {
       //Setting intake and extake (I know that's not a word) velocities
       //Notice that if we need to spin backward, 
-      public static final double kCubeIntakeVoltage = 8;
-      public static final double kConeIntakeVoltage = -8;
-      public static final double kCubeExtakeVoltage = -8;
-      public static final double kConeExtakeVoltage = 8;
+      public static final double kCubeIntakeVoltage = 6;
+      public static final double kConeIntakeVoltage = -6;
+      public static final double kCubeExtakeVoltage = -6;
+      public static final double kConeExtakeVoltage = 6;
 
       //How many seconds it should take for the slew rate limiter to ramp up
-      public static final double kIntakeRampTime = 0.25;
+      public static final double kIntakeRampTime = 0.5;
 
 
     }
@@ -330,7 +330,7 @@ public final class Constants {
 
   public static final class RobotDimensionConstants
   {
-    public static double kWheelDiameterInches = 4;
+    public static double kWheelDiameterInches = 6;
     public static double kMotorToWheelShaftGearRatio = 7.62;
   }
 

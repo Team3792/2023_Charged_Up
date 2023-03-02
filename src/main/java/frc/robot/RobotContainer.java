@@ -8,12 +8,14 @@ package frc.robot;
 //import frc.robot.commands.*;
 import frc.robot.commands.IntakeCommands.*;
 import frc.robot.commands.LEDCommands.LEDShowIntakeStatusCommand;
+import frc.robot.Autonomous.Routines.TwoConeAutoMantis;
 import frc.robot.IntakePreparationCommands.AdjustForCubeIntakeCommand;
 import frc.robot.IntakePreparationCommands.HighIntakeConePreparation;
 import frc.robot.commands.AutoAimingCommands.AutoAimCommand;
 import frc.robot.commands.BoomCommands.ManualExtendBoomCommand;
 import frc.robot.commands.DriveCommands.DriveCommand;
 import frc.robot.commands.ElevatorCommands.ElevatorMoveAutoCommand;
+import frc.robot.commands.ElevatorCommands.ElevatorMoveManualCommand;
 import frc.robot.subsystems.*;
 import frc.robot.IntakePreparationCommands.LowIntakeConePreparation;
 import edu.wpi.first.wpilibj.Joystick;
@@ -23,6 +25,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.TurretCommands.ManualTurnTurretCommand;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Autonomous.Routines.TwoConeAutoMantis;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -41,7 +46,7 @@ public class RobotContainer {
    public final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
   // private final BoomSubsystem boomSubsystem = new BoomSubsystem();
-  // private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // private final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
@@ -106,6 +111,9 @@ public class RobotContainer {
     () -> -driveJoystick.getRawAxis(1), 
     () -> -driveJoystick.getRawAxis(2)));
 
+    elevatorSubsystem.setDefaultCommand(new ElevatorMoveManualCommand(elevatorSubsystem, 
+    () -> -operatorJoystick.getRawAxis(1)));
+
     //Manual Aiming bindings (elevator in button bindings)
     // turretSubsystem.setDefaultCommand(new ManualTurnTurretCommand(turretSubsystem,
     // () -> operatorJoystick.getRawAxis(2),
@@ -169,16 +177,17 @@ public class RobotContainer {
 
    // engageAutoAim.whileTrue(new AutoAimCommand(turretSubsystem, boomSubsystem));
 
-    
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  // public Command getAutonomousCommand() {
-  //   // An example command will be run in autonomous
-  //  return Autos.exampleAuto(m_exampleSubsystem);
-  // }
-}
+
+  public SequentialCommandGroup getAutonomousCommand() {
+    // An example command will be run in autonomous
+   return new TwoConeAutoMantis(driveSubsystem, intakeSubsystem, powerDistribution);
+  }
+
 }

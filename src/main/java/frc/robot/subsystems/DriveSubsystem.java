@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,7 +35,9 @@ public class DriveSubsystem extends SubsystemBase {
   private final WPI_TalonFX leftFollow = new WPI_TalonFX(Constants.MotorID.kLeftDriveFollowMotor);
   public final WPI_TalonFX rightLead = new WPI_TalonFX(Constants.MotorID.kRightDriveLeadMotor);
   private final WPI_TalonFX rightFollow = new WPI_TalonFX(Constants.MotorID.kRightDriveFollowMotor);
-private final WPI_TalonSRX pigeonTalon = new WPI_TalonSRX(15);
+  
+  //Using a pigeon connectd to talon on Mantis for testing
+  private final WPI_TalonSRX pigeonTalon = new WPI_TalonSRX(15);
   public final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(pigeonTalon);
 
   // Motor Controller Groups 
@@ -92,9 +95,9 @@ private final WPI_TalonSRX pigeonTalon = new WPI_TalonSRX(15);
 
  
 
-  public void setPercentOutput(double leftPercentOutput, double rightPercentOuput){
-    leftLead.set(leftPercentOutput);
-    rightLead.set(rightPercentOuput);
+  public void setVoltage(double leftVoltage, double rightVoltage){
+    leftLead.setVoltage(leftVoltage);
+    rightLead.setVoltage(leftVoltage);
     
   }
 
@@ -106,9 +109,15 @@ private final WPI_TalonSRX pigeonTalon = new WPI_TalonSRX(15);
     double motorRotations = ticks/2048;
     //replace 10 with gear ratio
     double wheelRotations = motorRotations/Constants.RobotDimensionConstants.kMotorToWheelShaftGearRatio;
-    double distancePerRotation = Math.PI*Units.inchesToMeters(Constants.RobotDimensionConstants.kWheelDiameterInches);
-    double metersPerSecond = distancePerRotation * wheelRotations;
-    return metersPerSecond;
+    double distancePerRotationMeters = Math.PI*Units.inchesToMeters(Constants.RobotDimensionConstants.kWheelDiameterInches);
+    double meters = distancePerRotationMeters * wheelRotations;
+    return meters;
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+    double rightMetersPerSecond = -toMeters(rightLead.getActiveTrajectoryVelocity()*10);
+    double leftMetersPerSecond = toMeters(leftLead.getActiveTrajectoryVelocity()*10);
+    return new DifferentialDriveWheelSpeeds(leftMetersPerSecond, rightMetersPerSecond);
   }
 
   @Override
@@ -123,6 +132,10 @@ private final WPI_TalonSRX pigeonTalon = new WPI_TalonSRX(15);
      // System.out.println(pigeon.getRotation2d().getDegrees());
     // This method will be called once per scheduler run
 
+  }
+
+  public Pose2d getPose(){
+    return robotPose;
   }
 
 

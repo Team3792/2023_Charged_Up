@@ -25,8 +25,8 @@ public class Robot extends TimedRobot {
   private RobotContainer robotContainer;
 
   //Backend vision + odemetry calulation
-  private  VisionOdemetryPoseEstimator visionOdemetryPoseEstimator; 
-  public static Field2d field = new Field2d();
+ // private  VisionOdemetryPoseEstimator visionOdemetryPoseEstimator; 
+  ///public static Field2d field = new Field2d();
 
   
 
@@ -38,9 +38,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    SmartDashboard.putData("Field", field);
+   // SmartDashboard.putData("Field", field);
     robotContainer = new RobotContainer();
-    visionOdemetryPoseEstimator = new VisionOdemetryPoseEstimator(robotContainer.driveSubsystem, robotContainer.visionSubsystem);
+    //visionOdemetryPoseEstimator = new VisionOdemetryPoseEstimator(robotContainer.driveSubsystem, robotContainer.visionSubsystem);
  
   }
 
@@ -59,13 +59,13 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
 
     CommandScheduler.getInstance().run();
-    visionOdemetryPoseEstimator.update();
-    field.setRobotPose(visionOdemetryPoseEstimator.chassisLocation);
+    //visionOdemetryPoseEstimator.update();
+    //field.setRobotPose(visionOdemetryPoseEstimator.chassisLocation);
    
 
     //field.setRobotPose(visionOdemetryPoseEstimator.chassisLocation);
     
-    SmartDashboard.putData("Field", field);
+    //SmartDashboard.putData("Field", field);
 
   }
 
@@ -79,7 +79,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-  // autonomousCommand = robotContainer.getAutonomousCommand();
+    
+    autonomousCommand = robotContainer.getAutonomousCommand();
 
    // schedule the autonomous command (example)
     if (autonomousCommand != null) {
@@ -97,6 +98,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+    autonomousCommand = robotContainer.getAutonomousCommand();
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }

@@ -18,13 +18,14 @@ import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 public class IntakeSubsystem extends SubsystemBase {
+  
   public WPI_VictorSPX intakeMotor = new WPI_VictorSPX(Constants.MotorID.kIntakeMotor);
 
   //Calculate how much the slew rate limiter should go up each second, based on desired voltage and desired time
   //Absolute value is included to prevent sign mistakes/differing setups
   public SlewRateLimiter slewRateLimiter = new SlewRateLimiter(
     Math.abs(Constants.IntakeConstants.kConeIntakeVoltage) / Constants.IntakeConstants.kIntakeRampTime, 
-    Math.abs(Constants.IntakeConstants.kConeIntakeVoltage) / Constants.IntakeConstants.kIntakeRampTime, 
+    -Math.abs(Constants.IntakeConstants.kConeIntakeVoltage) / Constants.IntakeConstants.kIntakeRampTime, 
     0);
     
   public IntakeSubsystem() {
@@ -50,11 +51,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void cubeExtake(){
-    intakeMotor.set(ControlMode.PercentOutput, Constants.IntakeConstants.kCubeExtakeVoltage); 
+    intakeMotor.setVoltage(Constants.IntakeConstants.kCubeExtakeVoltage); 
   }
 
   public void coneExtake(){
-    intakeMotor.set(ControlMode.PercentOutput, Constants.IntakeConstants.kConeExtakeVoltage); 
+    intakeMotor.setVoltage(Constants.IntakeConstants.kConeExtakeVoltage); 
   }
 
   public void stopIntake(){

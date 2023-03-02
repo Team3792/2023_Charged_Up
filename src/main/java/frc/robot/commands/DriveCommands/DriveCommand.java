@@ -114,7 +114,7 @@ public class DriveCommand extends CommandBase {
       currentWheelsSpeeds.leftMetersPerSecond, 
       speeds.leftMetersPerSecond) + leftFeedforward;
 
-      driveSubsystem.setPercentOutput(leftOutput, rightOutput);
+      driveSubsystem.setVoltage(leftOutput, rightOutput);
   }
 
 
