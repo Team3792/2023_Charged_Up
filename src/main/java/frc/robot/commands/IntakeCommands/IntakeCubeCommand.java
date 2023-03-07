@@ -65,6 +65,7 @@ public class IntakeCubeCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     //If the intakeCurrent is too high, return true for isFinished, ending the command
-    return (intakeCurrent.get() > Constants.PowerDistributionHubConstants.kCubeShutoffCurrent);
+    ///return (intakeCurrent.get() > Constants.PowerDistributionHubConstants.kCubeShutoffCurrent);
+    return false;
   }
 }

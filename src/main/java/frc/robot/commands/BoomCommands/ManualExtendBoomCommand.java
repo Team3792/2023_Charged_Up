@@ -11,6 +11,9 @@ package frc.robot.commands.BoomCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.Supplier;
+
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import frc.robot.Constants;
 import frc.robot.HelperClasses.*;
 
@@ -19,13 +22,15 @@ public class ManualExtendBoomCommand extends CommandBase {
   /** Creates a new MoveArmCommand. */
   private BoomSubsystem boomSubsystem;
   private Supplier<Double> joystickXRotation;
-  SignalProcessor signalProcessor = new SignalProcessor(Constants.BoomConstants.kBooomMaxReach, Constants.BoomConstants.kBoomDeadband, 0);
+  SignalProcessor signalProcessor = new SignalProcessor(12, 0.05, 0);
+  Supplier<Boolean> engage;
 
 
-  public ManualExtendBoomCommand(BoomSubsystem subsystem, Supplier<Double> joystickXRotation) {
+  public ManualExtendBoomCommand(BoomSubsystem subsystem, Supplier<Double> joystickXRotation, Supplier<Boolean> engage) {
 
     boomSubsystem = subsystem;
     this.joystickXRotation = joystickXRotation;
+    this.engage = engage;
 
     addRequirements(boomSubsystem);
 
@@ -39,10 +44,11 @@ public class ManualExtendBoomCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+//if(engage.get()){
     double rawInput = joystickXRotation.get();
     double processedInput = signalProcessor.getOutput(rawInput);
-    boomSubsystem.setPosition(processedInput);
+    boomSubsystem.setVoltage(processedInput);
+//}
     
   }
 

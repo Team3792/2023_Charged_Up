@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TurretSubsystem;
 import java.util.function.Supplier;
 
-
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import frc.robot.Constants;
 import frc.robot.HelperClasses.*;
@@ -17,7 +17,7 @@ public class ManualTurnTurretCommand extends CommandBase {
   /** Creates a new ManualTurnTurretCommand. */
   private TurretSubsystem turretSubsystem;
   Supplier<Double> joystickZRotation, joystickSlider;
-  SignalProcessor signalProcessor = new SignalProcessor(Constants.TurretConstants.kMaxTurretAngle, Constants.TurretConstants.kTurretDeadzone, 0);
+  SignalProcessor signalProcessor = new SignalProcessor(12, Constants.TurretConstants.kTurretDeadzone, 0);
   
 
   public ManualTurnTurretCommand(TurretSubsystem subsystem, Supplier<Double> joystickZRotation, Supplier<Double> joystickSlider) {
@@ -31,7 +31,9 @@ public class ManualTurnTurretCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    turretSubsystem.turretMotor.setNeutralMode(NeutralMode.Brake);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -40,12 +42,13 @@ public class ManualTurnTurretCommand extends CommandBase {
     double rawInput = -joystickZRotation.get();
     
     double processedInput = signalProcessor.getOutput(rawInput);
-    double desiredAngle = processedInput * Constants.TurretConstants.kMaxTurretAngle;
+   // double desiredAngle = processedInput * Constants.TurretConstants.kMaxTurretAngle;
     if(joystickSlider.get() > 0){
-      desiredAngle += 180;
+     // desiredAngle += 180;
     }
 
-    turretSubsystem.setPosition(desiredAngle);
+    //turretSubsystem.setPosition(processedInput);
+    turretSubsystem.turretMotor.setVoltage(processedInput);
    // turretSubsystem.turretMotor.set(ControlMode.PercentOutput, rawInput);
 
 

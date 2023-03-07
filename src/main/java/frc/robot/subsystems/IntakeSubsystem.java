@@ -15,10 +15,12 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 public class IntakeSubsystem extends SubsystemBase {
-  
+
   public WPI_VictorSPX intakeMotor = new WPI_VictorSPX(Constants.MotorID.kIntakeMotor);
 
   //Calculate how much the slew rate limiter should go up each second, based on desired voltage and desired time
@@ -59,8 +61,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void stopIntake(){
-
-   intakeMotor.setVoltage(0);
+intakeMotor.setVoltage(0);
 
       
     }
@@ -71,6 +72,7 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
   }
 
   @Override

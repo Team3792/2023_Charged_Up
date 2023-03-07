@@ -39,9 +39,10 @@ public class TurretSubsystem extends SubsystemBase {
   public void setPosition(double degrees){
     double setPointTicks = degreesToTicks(degrees);
 
-      double output = turretPidController.calculate(turretMotor.getSelectedSensorPosition(), setPointTicks);
+      double output = turretPidController.calculate(turretMotor.getSelectedSensorPosition(), 2048);
+     System.out.println(turretMotor.getSelectedSensorPosition());
       //Should we set PIDs with voltage instead?
-      turretMotor.set(ControlMode.PercentOutput, output);
+      turretMotor.setVoltage(output);
   }
 
   public double getAngleDegrees(){

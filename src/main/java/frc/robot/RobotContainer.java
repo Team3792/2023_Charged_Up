@@ -8,6 +8,7 @@ package frc.robot;
 //import frc.robot.commands.*;
 import frc.robot.commands.IntakeCommands.*;
 import frc.robot.commands.LEDCommands.LEDShowIntakeStatusCommand;
+import frc.robot.Autonomous.Actions.DropAllAutoCommand;
 import frc.robot.Autonomous.Routines.TwoConeAutoMantis;
 import frc.robot.IntakePreparationCommands.AdjustForCubeIntakeCommand;
 import frc.robot.IntakePreparationCommands.HighIntakeConePreparation;
@@ -43,13 +44,13 @@ public class RobotContainer {
 
   //These three subsystems must be accesable to Robot.java to run the odemetry vision calcultions
   public final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  // public final TurretSubsystem turretSubsystem = new TurretSubsystem();
-   public final VisionSubsystem visionSubsystem = new VisionSubsystem();
+   public final TurretSubsystem turretSubsystem = new TurretSubsystem();
+   //public final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
-  // private final BoomSubsystem boomSubsystem = new BoomSubsystem();
-   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  private final FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
+ private final BoomSubsystem boomSubsystem = new BoomSubsystem();
+   public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  // private final FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
   // private final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
   private final PowerDistribution powerDistribution = new PowerDistribution(1, ModuleType.kRev);
@@ -84,6 +85,7 @@ public class RobotContainer {
 
   final Trigger toggleFlipper = new JoystickButton(driveJoystick, Constants.ButtonConstant.kFlipperToggleButton);
 
+  final JoystickButton engage = new JoystickButton(operatorJoystick, 5);
 
   //Variables that include global information of state of robot
 
@@ -112,28 +114,29 @@ public class RobotContainer {
     configureBindings();
 
     driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, 
-    () -> -driveJoystick.getRawAxis(1), 
+    () -> driveJoystick.getRawAxis(1), 
     () -> -driveJoystick.getRawAxis(2)));
 
     elevatorSubsystem.setDefaultCommand(new ElevatorMoveManualCommand(elevatorSubsystem, 
     () -> -operatorJoystick.getRawAxis(1)));
 
     //Manual Aiming bindings (elevator in button bindings)
-    // turretSubsystem.setDefaultCommand(new ManualTurnTurretCommand(turretSubsystem,
-    // () -> operatorJoystick.getRawAxis(2),
-    // () -> operatorJoystick.getRawAxis(3)
-    // ));
+    turretSubsystem.setDefaultCommand(new ManualTurnTurretCommand(turretSubsystem,
+    () -> -operatorJoystick.getRawAxis(2),
+    () -> operatorJoystick.getRawAxis(3)
+    ));
 
-    // boomSubsystem.setDefaultCommand(new ManualExtendBoomCommand(boomSubsystem, 
-    // () -> operatorJoystick.getRawAxis(1)
-    // ));
+    boomSubsystem.setDefaultCommand(new ManualExtendBoomCommand(boomSubsystem, 
+    () -> -operatorJoystick.getRawAxis(0),
+    () -> engage.getAsBoolean()
+    ));
 //By default, retract the flipper
-    flipperSubsystem.setDefaultCommand(
-      new StartEndCommand(
-        flipperSubsystem::retract, 
-        flipperSubsystem::extend, 
-        flipperSubsystem)
-    );
+    // flipperSubsystem.setDefaultCommand(
+    //   new StartEndCommand(
+    //     flipperSubsystem::retract, 
+    //     flipperSubsystem::extend, 
+    //     flipperSubsystem)
+    // );
     
 
     //Setting up LED system where the lights change depending on intake status
@@ -160,7 +163,7 @@ public class RobotContainer {
   private void configureBindings() {
     //Intake and drop buttons - Pass in PDH intake currents
 
-    coneIntakeButton.whileTrue(new IntakeConeCommand(
+   coneIntakeButton.whileTrue(new IntakeConeCommand(
       intakeSubsystem, 
       () -> powerDistribution.getCurrent(Constants.PowerDistributionHubConstants.kPDHIntakeChannel)
     ));
@@ -170,30 +173,32 @@ public class RobotContainer {
       () -> powerDistribution.getCurrent(Constants.PowerDistributionHubConstants.kPDHIntakeChannel)
       ));
 
+    dropAllButton.whileTrue(new DropAllCommand(intakeSubsystem, intakeStatus));
+
       //When the toggle flipper button is on true, extend, on false, retract
 
-    toggleFlipper.toggleOnTrue(
-      new StartEndCommand(
-        flipperSubsystem::extend, 
-        flipperSubsystem::retract, 
-        flipperSubsystem)
-    );
+    // toggleFlipper.toggleOnTrue(
+    //   new StartEndCommand(
+    //     flipperSubsystem::extend, 
+    //     flipperSubsystem::retract, 
+    //     flipperSubsystem)
+    // );
 
-    toggleFlipper.toggleOnFalse(
-      new StartEndCommand(
-        flipperSubsystem::retract, 
-        flipperSubsystem::extend, 
-        flipperSubsystem
-        )
-    );
+    // toggleFlipper.toggleOnFalse(
+    //   new StartEndCommand(
+    //     flipperSubsystem::retract, 
+    //     flipperSubsystem::extend, 
+    //     flipperSubsystem
+    //     )
+    // );
 
     //Elevator buttons
 
     
 
     // groundElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 0));
-    // middleElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 1));
-    // highElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 2));
+     middleElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 1));
+   //  highElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 2));
 
     // //Intake Levels
 
@@ -212,9 +217,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
 
-  public SequentialCommandGroup getAutonomousCommand() {
-    // An example command will be run in autonomous
-   return new TwoConeAutoMantis(driveSubsystem, intakeSubsystem, powerDistribution);
-  }
+  // public SequentialCommandGroup getAutonomousCommand() {
+  //   // An example command will be run in autonomous
+  //  // return new SequentialCommandGroup(new Dri);
+  // // return new TwoConeAutoMantis(driveSubsystem, intakeSubsystem, powerDistribution);
+  // }
 
 }

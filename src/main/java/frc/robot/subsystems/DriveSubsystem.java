@@ -38,8 +38,8 @@ public class DriveSubsystem extends SubsystemBase {
   private final WPI_TalonFX rightFollow = new WPI_TalonFX(Constants.MotorID.kRightDriveFollowMotor);
   
   //Using a pigeon connectd to talon on Mantis for testing
-  private final WPI_TalonSRX pigeonTalon = new WPI_TalonSRX(15);
-  public final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(pigeonTalon);
+ // private final WPI_TalonSRX pigeonTalon = new WPI_TalonSRX(15);
+ // public final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(pigeonTalon);
 
   // Motor Controller Groups 
   private final MotorControllerGroup leftMotors = new MotorControllerGroup(leftLead, leftFollow);
@@ -71,7 +71,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     //Inverting right motors
    // leftMotors.setInverted(true);
-    //rightMotors.setInverted(true);
+    rightMotors.setInverted(true);
+    setNeutral(NeutralMode.Coast);
 
     zeroSensors();
 
@@ -88,7 +89,7 @@ public class DriveSubsystem extends SubsystemBase {
     rightLead.setSelectedSensorPosition(0);
     rightFollow.setSelectedSensorPosition(0);
 
-    pigeon.reset();
+   // pigeon.reset();
   }
 
 
@@ -101,16 +102,17 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void setVoltage(double leftVoltage, double rightVoltage){
     leftLead.setVoltage(leftVoltage);
-    rightLead.setVoltage(leftVoltage);
+    rightLead.setVoltage(rightVoltage);
     
   }
 
   public double getPitch(){
-    return pigeon.getPitch();
+   // return pigeon.getPitch();
+    return 0;
   }
 
   public void updatePigeonAngle(double angleDegrees){
-   pigeon.setYaw(angleDegrees);
+  // pigeon.setYaw(angleDegrees);
   }
 
   public double toMeters(double ticks){
@@ -145,7 +147,8 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
 
     robotPose = differentialDriveOdometry.update(
-      pigeon.getRotation2d(), 
+    //  pigeon.getRotation2d(), 
+    new Rotation2d(0),
       toMeters(leftLead.getSelectedSensorPosition()), 
       toMeters(-rightLead.getSelectedSensorPosition())
       );

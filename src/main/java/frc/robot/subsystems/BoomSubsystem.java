@@ -13,6 +13,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -23,7 +24,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 public class BoomSubsystem extends SubsystemBase {
   //Assuming Talon_FX
-  private TalonSRX boomMotor = new TalonSRX(Constants.MotorID.kBoomMotor);
+  private WPI_TalonSRX boomMotor = new WPI_TalonSRX(Constants.MotorID.kBoomMotor);
 
   PIDController boomPidController = new PIDController(
     Constants.BoomConstants.kBoomkP, 
@@ -39,6 +40,10 @@ public class BoomSubsystem extends SubsystemBase {
   public void setPosition(double encoderTicks){
     double output = boomPidController.calculate(boomMotor.getSelectedSensorPosition(),encoderTicks);
     boomMotor.set(ControlMode.PercentOutput, output);
+ }
+
+ public void setVoltage(double voltage){
+boomMotor.setVoltage(voltage);
  }
 
  public void setPositionDistance(double distanceMeters){

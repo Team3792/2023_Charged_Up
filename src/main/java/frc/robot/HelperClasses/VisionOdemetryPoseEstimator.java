@@ -67,7 +67,7 @@ public class VisionOdemetryPoseEstimator {
 
     private void findChassisLocationFromVision(){
       //turret is some constant ahead of chassis center
-      //TODO: replace 0.3 with accuarate measurement (From CAD)
+     // TODO: replace 0.3 with accuarate measurement (From CAD)
     //   Translation2d turretToChassisGeneral = new Translation2d(.3, -0);
 
     //   double turretToFieldAngleDegrees = turretLocation.getRotation().getDegrees();
@@ -90,7 +90,7 @@ public class VisionOdemetryPoseEstimator {
         //Resetting the gryo (pigeon) and the odemetry with new locations
         double newAngle = chassisLocation.getRotation().getDegrees();
 
-        driveSubsystem.pigeon.reset();
+       // driveSubsystem.pigeon.reset();
 
 
         driveSubsystem.zeroSensors();

@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     
-    autonomousCommand = robotContainer.getAutonomousCommand();
+   // autonomousCommand = robotContainer.getAutonomousCommand();
 
    // schedule the autonomous command (example)
     if (autonomousCommand != null) {
@@ -99,10 +99,13 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
 
-    autonomousCommand = robotContainer.getAutonomousCommand();
+   // autonomousCommand = robotContainer.getAutonomousCommand();
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+
+    robotContainer.turretSubsystem.turretMotor.setSelectedSensorPosition(0);
+    robotContainer.elevatorSubsystem.elevatorMotor.setSelectedSensorPosition(0);
   }
 
   /** This function is called periodically during operator control. */

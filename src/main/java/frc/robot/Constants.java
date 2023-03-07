@@ -83,7 +83,7 @@ public final class Constants {
 
   public static final class PowerDistributionHubConstants
   {
-    public static final int kPDHIntakeChannel = 0;
+    public static final int kPDHIntakeChannel = 12;
     
     //Limiting currents for intake
 
@@ -136,7 +136,7 @@ public final class Constants {
   public static final class ElevatorConstants
     {
       //Elevator PID Vars
-      public static final double kElevatorkP = 0;
+      public static final double kElevatorkP = 0.001;
       public static final double kElevatorkI = 0;
       public static final double kElevatorkD = 0;
 
@@ -148,7 +148,7 @@ public final class Constants {
 
       //Heights for placing, in ENCODER TICKS
       public static final int kCubeHighHeight = 0;
-      public static final int kCubeMiddleHeight = 0;
+      public static final int kCubeMiddleHeight = 1000;
       public static final int kCubeGroundHeight = 0;
 
       public static final int kConeHighHeight = 0;
@@ -180,7 +180,7 @@ public final class Constants {
   public static final class TurretConstants
     {
       //TurretConstants PID Vars
-      public static final double kTurretkP = 0.001;
+      public static final double kTurretkP = 0.01;
       public static final double kTurretkI = 0;
       public static final double kTurretkD = 0;
 
@@ -202,10 +202,10 @@ public final class Constants {
     {
       //Setting intake and extake (I know that's not a word) velocities
       //Notice that if we need to spin backward, 
-      public static final double kCubeIntakeVoltage = 6;
-      public static final double kConeIntakeVoltage = -6;
-      public static final double kCubeExtakeVoltage = -6;
-      public static final double kConeExtakeVoltage = 6;
+      public static final double kCubeIntakeVoltage = 8;
+      public static final double kConeIntakeVoltage = -8;
+      public static final double kCubeExtakeVoltage = -8;
+      public static final double kConeExtakeVoltage = 8;
 
       //How many seconds it should take for the slew rate limiter to ramp up
       public static final double kIntakeRampTime = 0.5;
