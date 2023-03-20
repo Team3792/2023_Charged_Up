@@ -23,14 +23,14 @@ public class ManualExtendBoomCommand extends CommandBase {
   private BoomSubsystem boomSubsystem;
   private Supplier<Double> joystickXRotation;
   SignalProcessor signalProcessor = new SignalProcessor(12, 0.05, 0);
-  Supplier<Boolean> engage;
 
 
-  public ManualExtendBoomCommand(BoomSubsystem subsystem, Supplier<Double> joystickXRotation, Supplier<Boolean> engage) {
+
+  public ManualExtendBoomCommand(BoomSubsystem subsystem, Supplier<Double> joystickXRotation) {
 
     boomSubsystem = subsystem;
     this.joystickXRotation = joystickXRotation;
-    this.engage = engage;
+
 
     addRequirements(boomSubsystem);
 

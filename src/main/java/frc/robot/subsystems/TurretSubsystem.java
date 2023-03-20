@@ -25,9 +25,13 @@ public class TurretSubsystem extends SubsystemBase {
   public WPI_TalonSRX turretMotor = new WPI_TalonSRX(Constants.MotorID.kTurretMotor);
 
   PIDController turretPidController = new PIDController(
-    Constants.TurretConstants.kTurretkP, 
+    0.01, 
     Constants.TurretConstants.kTurretkI, 
     Constants.TurretConstants.kTurretkD);
+
+    public double addOn = 0;
+
+   public boolean doneMoving = true;
 
   public TurretSubsystem() {
 
@@ -36,17 +40,30 @@ public class TurretSubsystem extends SubsystemBase {
     
   }
 
-  public void setPosition(double degrees){
-    double setPointTicks = degreesToTicks(degrees);
 
-      double output = turretPidController.calculate(turretMotor.getSelectedSensorPosition(), 2048);
+
+  public void setPosition(double degrees){
+   // double addOn = (moved == true)? -180:0;
+    double setPointTicks = degreesToTicks(degrees + addOn);
+System.out.println(turretMotor.getSelectedSensorPosition() - setPointTicks);
+    doneMoving = 
+      Math.abs(turretMotor.getSelectedSensorPosition() - setPointTicks) < 100;
+
+
+    if(!doneMoving){
+    
+
+      double output = turretPidController.calculate(turretMotor.getSelectedSensorPosition(), setPointTicks);
      System.out.println(turretMotor.getSelectedSensorPosition());
       //Should we set PIDs with voltage instead?
-      turretMotor.setVoltage(output);
+      turretMotor.setVoltage(-output);
+    }else{
+      turretMotor.setVoltage(0);
+    }
   }
 
   public double getAngleDegrees(){
-    System.out.println(ticksToDegrees(turretMotor.getSelectedSensorPosition()));
+   // System.out.println(ticksToDegrees(turretMotor.getSelectedSensorPosition()));
     return ticksToDegrees(turretMotor.getSelectedSensorPosition());
   }
 
@@ -67,6 +84,7 @@ public class TurretSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+   // System.out.println(turretMotor.getSelectedSensorPosition());
     // This method will be called once per scheduler run
   }
 

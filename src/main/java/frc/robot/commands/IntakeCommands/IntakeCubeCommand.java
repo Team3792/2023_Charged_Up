@@ -57,7 +57,7 @@ public class IntakeCubeCommand extends CommandBase {
   public void end(boolean interrupted) {
     intakeSubsystem.stopIntake();
 
-    RobotContainer.intakeStatus = "cone";
+    RobotContainer.intakeStatus = "cube";
    SmartDashboard.putString("Intake", "Cone");
     }
 

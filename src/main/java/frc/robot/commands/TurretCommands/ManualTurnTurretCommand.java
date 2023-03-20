@@ -17,7 +17,7 @@ public class ManualTurnTurretCommand extends CommandBase {
   /** Creates a new ManualTurnTurretCommand. */
   private TurretSubsystem turretSubsystem;
   Supplier<Double> joystickZRotation, joystickSlider;
-  SignalProcessor signalProcessor = new SignalProcessor(12, Constants.TurretConstants.kTurretDeadzone, 0);
+  SignalProcessor signalProcessor = new SignalProcessor(60, Constants.TurretConstants.kTurretDeadzone, 0);
   
 
   public ManualTurnTurretCommand(TurretSubsystem subsystem, Supplier<Double> joystickZRotation, Supplier<Double> joystickSlider) {
@@ -39,7 +39,7 @@ public class ManualTurnTurretCommand extends CommandBase {
   @Override
   public void execute() {
 //Note: It might be benificial to use max angle as the max angle for joystick, so there is a better physical connection for operator
-    double rawInput = -joystickZRotation.get();
+    double rawInput = joystickZRotation.get();
     
     double processedInput = signalProcessor.getOutput(rawInput);
    // double desiredAngle = processedInput * Constants.TurretConstants.kMaxTurretAngle;
@@ -47,8 +47,8 @@ public class ManualTurnTurretCommand extends CommandBase {
      // desiredAngle += 180;
     }
 
-    //turretSubsystem.setPosition(processedInput);
-    turretSubsystem.turretMotor.setVoltage(processedInput);
+    turretSubsystem.setPosition(processedInput);
+   // turretSubsystem.turretMotor.setVoltage(processedInput);
    // turretSubsystem.turretMotor.set(ControlMode.PercentOutput, rawInput);
 
 

@@ -8,24 +8,29 @@ package frc.robot;
 //import frc.robot.commands.*;
 import frc.robot.commands.IntakeCommands.*;
 import frc.robot.commands.LEDCommands.LEDShowIntakeStatusCommand;
+import frc.robot.commands.Sequences.EngageTurtleMode;
+import frc.robot.commands.Sequences.ToElevatorLevel;
 import frc.robot.Autonomous.Actions.DropAllAutoCommand;
+import frc.robot.Autonomous.Routines.CubeTaxi;
 import frc.robot.Autonomous.Routines.TwoConeAutoMantis;
-import frc.robot.IntakePreparationCommands.AdjustForCubeIntakeCommand;
-import frc.robot.IntakePreparationCommands.HighIntakeConePreparation;
+import frc.robot.IntakePreparationCommands.AdjustForConeIntakeCommand;
+import frc.robot.IntakePreparationCommands.HighIntakeCubePreparation;
 import frc.robot.commands.AutoAimingCommands.AutoAimCommand;
 import frc.robot.commands.BoomCommands.ManualExtendBoomCommand;
 import frc.robot.commands.DriveCommands.DriveCommand;
 import frc.robot.commands.ElevatorCommands.ElevatorMoveAutoCommand;
 import frc.robot.commands.ElevatorCommands.ElevatorMoveManualCommand;
 import frc.robot.subsystems.*;
-import frc.robot.IntakePreparationCommands.LowIntakeConePreparation;
+import frc.robot.IntakePreparationCommands.LowIntakeCubePreparation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.TurretCommands.ManualTurnTurretCommand;
+import frc.robot.commands.TurretCommands.TurretOutOfTurtleMode;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -47,7 +52,7 @@ public class RobotContainer {
    public final TurretSubsystem turretSubsystem = new TurretSubsystem();
    //public final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
- private final BoomSubsystem boomSubsystem = new BoomSubsystem();
+ public final BoomSubsystem boomSubsystem = new BoomSubsystem();
    public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // private final FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
@@ -77,16 +82,18 @@ public class RobotContainer {
 
   //Intake Elevator buttons
 
-  final Trigger coneIntakeHigh = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kConeIntakeHigh);
-  final Trigger coneIntakeLow = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kConeIntakeLow);
+  final Trigger cubeIntakeHigh = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kConeIntakeHigh);
+  final Trigger cubeIntakeLow = new JoystickButton(operatorJoystick, 3);
 
 
   final Trigger engageAutoAim = new JoystickButton(operatorJoystick, 2);
 
   final Trigger toggleFlipper = new JoystickButton(driveJoystick, Constants.ButtonConstant.kFlipperToggleButton);
 
-  final JoystickButton engage = new JoystickButton(operatorJoystick, 5);
+  final Trigger engageTurtleMode = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kEngageTurtleModeButton);
 
+  final Trigger elevatorUp = new POVButton(operatorJoystick, 0);
+  final Trigger elevatorDown = new POVButton(operatorJoystick, 180);
   //Variables that include global information of state of robot
 
    public static String intakeStatus = "none";
@@ -114,11 +121,11 @@ public class RobotContainer {
     configureBindings();
 
     driveSubsystem.setDefaultCommand(new DriveCommand(driveSubsystem, 
-    () -> driveJoystick.getRawAxis(1), 
+    () -> -driveJoystick.getRawAxis(1), 
     () -> -driveJoystick.getRawAxis(2)));
 
-    elevatorSubsystem.setDefaultCommand(new ElevatorMoveManualCommand(elevatorSubsystem, 
-    () -> -operatorJoystick.getRawAxis(1)));
+    // elevatorSubsystem.setDefaultCommand(new ElevatorMoveManualCommand(elevatorSubsystem, 
+    // () -> -operatorJoystick.getRawAxis(3)));
 
     //Manual Aiming bindings (elevator in button bindings)
     turretSubsystem.setDefaultCommand(new ManualTurnTurretCommand(turretSubsystem,
@@ -127,9 +134,11 @@ public class RobotContainer {
     ));
 
     boomSubsystem.setDefaultCommand(new ManualExtendBoomCommand(boomSubsystem, 
-    () -> -operatorJoystick.getRawAxis(0),
-    () -> engage.getAsBoolean()
+    () -> -operatorJoystick.getRawAxis(1)
     ));
+
+    intakeSubsystem.setDefaultCommand(new StartEndCommand(
+    intakeSubsystem::stopIntake, intakeSubsystem::stopIntake, intakeSubsystem));
 //By default, retract the flipper
     // flipperSubsystem.setDefaultCommand(
     //   new StartEndCommand(
@@ -173,7 +182,7 @@ public class RobotContainer {
       () -> powerDistribution.getCurrent(Constants.PowerDistributionHubConstants.kPDHIntakeChannel)
       ));
 
-    dropAllButton.whileTrue(new DropAllCommand(intakeSubsystem, intakeStatus));
+   dropAllButton.whileTrue(new DropAllCommand(intakeSubsystem, intakeStatus));
 
       //When the toggle flipper button is on true, extend, on false, retract
 
@@ -196,17 +205,41 @@ public class RobotContainer {
 
     
 
-    // groundElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 0));
-     middleElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 1));
+     groundElevatorButton.onTrue(new ToElevatorLevel(elevatorSubsystem, turretSubsystem, boomSubsystem, 0, intakeStatus));
+     middleElevatorButton.whileTrue(new ToElevatorLevel(elevatorSubsystem, turretSubsystem, boomSubsystem, 1, intakeStatus));
    //  highElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 2));
 
-    // //Intake Levels
+     //Intake Levels
 
-    // coneIntakeHigh.onTrue(new HighIntakeConePreparation(elevatorSubsystem));
-    // coneIntakeLow.onTrue(new LowIntakeConePreparation(elevatorSubsystem));
-    // cubeIntakeButton.onTrue(new AdjustForCubeIntakeCommand(elevatorSubsystem));
+     cubeIntakeHigh.onTrue(new SequentialCommandGroup(
+    new TurretOutOfTurtleMode(turretSubsystem),
+    new HighIntakeCubePreparation(elevatorSubsystem)
 
+     ));
 
+     cubeIntakeLow.onTrue(new SequentialCommandGroup(
+    new TurretOutOfTurtleMode(turretSubsystem),
+    new LowIntakeCubePreparation(elevatorSubsystem)
+
+     ));
+
+    coneIntakeButton.onTrue(new AdjustForConeIntakeCommand(elevatorSubsystem));
+
+   engageTurtleMode.onTrue(new EngageTurtleMode(turretSubsystem, elevatorSubsystem, boomSubsystem));
+
+    elevatorUp.whileTrue(
+      new StartEndCommand(
+      elevatorSubsystem::manualUp, 
+      elevatorSubsystem::stop, 
+      elevatorSubsystem));
+
+      
+
+      elevatorDown.whileTrue(
+        new StartEndCommand(
+        elevatorSubsystem::manualDown, 
+        elevatorSubsystem::stop, 
+        elevatorSubsystem));
    // engageAutoAim.whileTrue(new AutoAimCommand(turretSubsystem, boomSubsystem));
 
   }
@@ -217,10 +250,14 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
 
-  // public SequentialCommandGroup getAutonomousCommand() {
-  //   // An example command will be run in autonomous
-  //  // return new SequentialCommandGroup(new Dri);
-  // // return new TwoConeAutoMantis(driveSubsystem, intakeSubsystem, powerDistribution);
-  // }
+  public Command getAutonomousCommand() {
+    // An example command will be run in autonomous
+   // return new SequentialCommandGroup(new Dri);
+
+
+ return new CubeTaxi(driveSubsystem, turretSubsystem, boomSubsystem, intakeSubsystem, elevatorSubsystem);
+
+
+  }
 
 }

@@ -27,7 +27,7 @@ public class DropAllCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.intakeStatus = "dropping";
+    //RobotContainer.intakeStatus = "dropping";
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -54,7 +54,7 @@ public class DropAllCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     //After dropping, set intake status to "none"
-    RobotContainer.intakeStatus = "none";
+   // RobotContainer.intakeStatus = "none";
   }
 
   // Returns true when the command should end.

@@ -22,6 +22,7 @@ public class DropAllAutoCommand extends CommandBase {
   public DropAllAutoCommand(IntakeSubsystem subsystem, String element) {
 
     intakeSubsystem = subsystem;
+    this.element = element;
 
    
  
@@ -37,14 +38,14 @@ public class DropAllAutoCommand extends CommandBase {
     //reset and start the timer that will shut off the intake
     timer.reset();
     timer.start();
-    RobotContainer.intakeStatus = "dropping";
+    //RobotContainer.intakeStatus = "dropping";
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     //Checking intake status and extaking accordingly
-
+System.out.println(1234);
     if(element == "cube"){
       intakeSubsystem.cubeExtake();
     }else if(element == "cone"){
@@ -64,7 +65,8 @@ public class DropAllAutoCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     //After dropping, set intake status to "none"
-    RobotContainer.intakeStatus = "none";
+    //RobotContainer.intakeStatus = "none";
+    intakeSubsystem.stopIntake();
   }
 
   // Returns true when the command should end.

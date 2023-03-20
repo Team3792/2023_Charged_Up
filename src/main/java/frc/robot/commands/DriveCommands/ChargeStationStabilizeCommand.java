@@ -6,7 +6,10 @@ package frc.robot.commands.DriveCommands;
 
 import java.io.Console;
 
+import org.apache.commons.collections4.map.PassiveExpiringMap.ConstantTimeToLiveExpirationPolicy;
+
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.Constants;
@@ -15,10 +18,17 @@ public class ChargeStationStabilizeCommand extends CommandBase {
   /** Creates a new ChargeStationStabilizeCommand. */
   DriveSubsystem driveSubsystem;
 
-  PIDController pidController = new PIDController(Constants.ChargeStationStabilizeConstants.kPIDkP, 0, 0);
+  //Creates a PID controller that will use the pitch to output a forward component for the arcade drive method
+  PIDController pidController = new PIDController(
+    Constants.ChargeStationStabilizeConstants.kP,
+    Constants.ChargeStationStabilizeConstants.kI,
+    Constants.ChargeStationStabilizeConstants.kD);
 
-  public ChargeStationStabilizeCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public ChargeStationStabilizeCommand(DriveSubsystem driveSubsystem) {
+
+    //define and require the drivesubsystem
+    this.driveSubsystem = driveSubsystem;
+    addRequirements(driveSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -32,10 +42,22 @@ public class ChargeStationStabilizeCommand extends CommandBase {
     double pitch = driveSubsystem.getPitch();
 
     //Calculate the next term fromt the PID
-    double forwardVelocity = pidController.calculate(pitch);
+    //The error = 0-pitch = -pitch, since the setpoint is always 0 degrees (ie. level)
+    double outputVoltage = pidController.calculate(-pitch);
 
-    //Set the driveSubsystem to drive with that scalar
-    driveSubsystem.differentialDrive.arcadeDrive(forwardVelocity, 0);
+//If pitch is in deadband, stop and break 
+if(Math.abs(pitch) < Constants.ChargeStationStabilizeConstants.kPitchDeadband){
+  driveSubsystem.stopAndBreak();
+}
+//Check direction trying to move, if voltage is not enough for that direction, set it to the minimum voltage
+else if(outputVoltage > 0 && outputVoltage < Constants.ChargeStationStabilizeConstants.kMinVoltage){
+      outputVoltage = Constants.ChargeStationStabilizeConstants.kMinVoltage;
+}else if(outputVoltage < 0 && outputVoltage > -Constants.ChargeStationStabilizeConstants.kMinVoltage){
+      outputVoltage = -Constants.ChargeStationStabilizeConstants.kMinVoltage;
+    }
+
+    //Put this voltage on the motors
+    driveSubsystem.setVoltage(outputVoltage, outputVoltage);
   }
 
   // Called once the command ends or is interrupted.

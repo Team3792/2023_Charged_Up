@@ -102,7 +102,7 @@ public class DriveCommand extends CommandBase {
   
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
     double leftSpeed = toMeters(driveSubsystem.leftLead.getSelectedSensorVelocity());
-    double rightSpeed = toMeters(driveSubsystem.rightLead.getSelectedSensorVelocity());
+    double rightSpeed = -toMeters(driveSubsystem.rightLead.getSelectedSensorVelocity());
 
     return new DifferentialDriveWheelSpeeds(leftSpeed, rightSpeed);
   }
@@ -115,11 +115,11 @@ public class DriveCommand extends CommandBase {
     DifferentialDriveWheelSpeeds currentWheelsSpeeds = getWheelSpeeds();
     double rightOutput = rightPIDController.calculate(
       currentWheelsSpeeds.rightMetersPerSecond, 
-      -speeds.rightMetersPerSecond) + rightFeedforward;
+      speeds.rightMetersPerSecond);
 
     double leftOutput = leftPIDController.calculate(
       currentWheelsSpeeds.leftMetersPerSecond, 
-      speeds.leftMetersPerSecond) + leftFeedforward;
+      speeds.leftMetersPerSecond);
 
       driveSubsystem.setVoltage(leftOutput, rightOutput);
   }
