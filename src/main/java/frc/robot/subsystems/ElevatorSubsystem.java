@@ -121,7 +121,7 @@ public void checkArrival(){
   
     // This method will be called once per scheduler run
     //Constantly update motor and PID with set point
-
+    checkArrival();
     //Only use this auto setPostition method if manualMode is false
     if(!manualMode){
     setPosition();

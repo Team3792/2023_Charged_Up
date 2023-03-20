@@ -221,7 +221,8 @@ public final class Constants {
       public static final double kMaxTurretAngularSpeed = 0;     //rotations per second
 
       //Deadzone
-      public static final int kTurretDeadzone = 0;
+      public static final int kTurretArrivedDeadzone = 0;
+      
 
       //Maximum turret angle, where 0 is straight ahead. (this is for both sides)
       public static final double kMaxTurretAngle = 60;

@@ -24,25 +24,26 @@ Timer timer = new Timer();
   public void initialize() {
     timer.reset();
     timer.start();
-    turretSubsystem.doneMoving = false;
-    turretSubsystem.addOn = 180;
+    turretSubsystem.arrived = false;
+    turretSubsystem.setRelativeMark(180);
+    turretSubsystem.setSetPointDegrees(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turretSubsystem.setPosition(0);
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("endingggggg");
+    
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return turretSubsystem.doneMoving||timer.hasElapsed(5);
+    return turretSubsystem.arrived||timer.hasElapsed(5);
   }
 }

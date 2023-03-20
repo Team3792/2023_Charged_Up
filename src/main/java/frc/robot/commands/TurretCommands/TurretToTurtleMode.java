@@ -6,40 +6,47 @@ package frc.robot.commands.TurretCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.TurretSubsystem;
+import edu.wpi.first.wpilibj.Timer;
 
 public class TurretToTurtleMode extends CommandBase {
   /** Creates a new ToTurtleMode. */
   TurretSubsystem turretSubsystem;
+  //This timer is used for a time out if the command takes too long
+  Timer timer = new Timer();
 
   public TurretToTurtleMode(TurretSubsystem turretSubsystem) {
     this.turretSubsystem = turretSubsystem;
     addRequirements(turretSubsystem);
+
+    timer.reset();
+    timer.start();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    turretSubsystem.doneMoving = false;
-    turretSubsystem.addOn = 0;
+    turretSubsystem.arrived = false;
+    turretSubsystem.setRelativeMark(0);
+    turretSubsystem.setSetPointDegrees(0);
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turretSubsystem.setPosition(0);
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("endingggggg");
+   
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return turretSubsystem.doneMoving;
+    return turretSubsystem.arrived||timer.hasElapsed(5);
   }
 }

@@ -17,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.robot.Constants;
 import edu.wpi.first.math.controller.PIDController;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 
 
@@ -29,37 +30,62 @@ public class TurretSubsystem extends SubsystemBase {
     Constants.TurretConstants.kTurretkI, 
     Constants.TurretConstants.kTurretkD);
 
-    public double addOn = 0;
+    public double relativeMark = 0;
+    public double setPointDegrees = 0;
 
-   public boolean doneMoving = true;
+    //booleans for arrived (move on to next action in auto/an auto sequence)
+    public boolean arrived = false;
 
   public TurretSubsystem() {
 
     turretMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
     turretMotor.setSelectedSensorPosition(0);
+    turretMotor.setNeutralMode(NeutralMode.Brake);
     
   }
 
+  public void checkArrival(){
+    arrived = Math.abs(turretMotor.getSelectedSensorPosition() - setPointDegrees) < Constants.TurretConstants.kTurretArrivedDeadzone;
+  }
+
+  public void setSetPointDegrees(double setPointDegrees){
+    this.setPointDegrees = setPointDegrees;
+  }
+
+  public void setRelativeMark(double relativeMark){
+    this.relativeMark = relativeMark;
+  }
+//lockToLeft and lockToRight are used to turn the turret 90 deg left or right, respectively, to score sideways
+//0 deg is turtle mode
+//180 deg is intake mode
+//ccw is positive
+//For reference, picture the robot facing straight right
+
+  public void lockToLeft(){
+    setRelativeMark(270);
+  }
+  
+  public void lockToRight(){
+    setRelativeMark(90);
+
+  }
 
 
-  public void setPosition(double degrees){
-   // double addOn = (moved == true)? -180:0;
-    double setPointTicks = degreesToTicks(degrees + addOn);
-System.out.println(turretMotor.getSelectedSensorPosition() - setPointTicks);
-    doneMoving = 
-      Math.abs(turretMotor.getSelectedSensorPosition() - setPointTicks) < 100;
+  public void setPosition(){
+  
+    double setPointTicks = degreesToTicks(setPointDegrees + relativeMark);
 
-
-    if(!doneMoving){
     
 
+
+    
+    
+    //Calculate and set PID voltage
       double output = turretPidController.calculate(turretMotor.getSelectedSensorPosition(), setPointTicks);
-     System.out.println(turretMotor.getSelectedSensorPosition());
-      //Should we set PIDs with voltage instead?
+     
+      
       turretMotor.setVoltage(-output);
-    }else{
-      turretMotor.setVoltage(0);
-    }
+    
   }
 
   public double getAngleDegrees(){
@@ -86,6 +112,9 @@ System.out.println(turretMotor.getSelectedSensorPosition() - setPointTicks);
   public void periodic() {
    // System.out.println(turretMotor.getSelectedSensorPosition());
     // This method will be called once per scheduler run
+    //Constantly check if the turret has arrived (used for sequencing), and update the volage to achive the wanted angle
+    checkArrival();
+    setPosition();
   }
 
   @Override

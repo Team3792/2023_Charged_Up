@@ -17,13 +17,12 @@ public class ManualTurnTurretCommand extends CommandBase {
   /** Creates a new ManualTurnTurretCommand. */
   private TurretSubsystem turretSubsystem;
   Supplier<Double> joystickZRotation, joystickSlider;
-  SignalProcessor signalProcessor = new SignalProcessor(60, Constants.TurretConstants.kTurretDeadzone, 0);
+  SignalProcessor signalProcessor = new SignalProcessor(Constants.TurretConstants.kMaxTurretAngle, 0, 0);
   
 
-  public ManualTurnTurretCommand(TurretSubsystem subsystem, Supplier<Double> joystickZRotation, Supplier<Double> joystickSlider) {
+  public ManualTurnTurretCommand(TurretSubsystem subsystem, Supplier<Double> joystickZRotation) {
 
     turretSubsystem = subsystem;
-    this.joystickSlider = joystickSlider;
     this.joystickZRotation = joystickZRotation;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(turretSubsystem);
@@ -32,7 +31,7 @@ public class ManualTurnTurretCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    turretSubsystem.turretMotor.setNeutralMode(NeutralMode.Brake);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,15 +41,10 @@ public class ManualTurnTurretCommand extends CommandBase {
     double rawInput = joystickZRotation.get();
     
     double processedInput = signalProcessor.getOutput(rawInput);
-   // double desiredAngle = processedInput * Constants.TurretConstants.kMaxTurretAngle;
-    if(joystickSlider.get() > 0){
-     // desiredAngle += 180;
-    }
+  
 
-    turretSubsystem.setPosition(processedInput);
-   // turretSubsystem.turretMotor.setVoltage(processedInput);
-   // turretSubsystem.turretMotor.set(ControlMode.PercentOutput, rawInput);
-
+    turretSubsystem.setSetPointDegrees(processedInput);
+   
 
   }
 

@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.TurretCommands.ManualTurnTurretCommand;
 import frc.robot.commands.TurretCommands.TurretOutOfTurtleMode;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.Autonomous.Routines.TwoConeAutoMantis;
@@ -92,8 +93,15 @@ public class RobotContainer {
 
   final Trigger engageTurtleMode = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kEngageTurtleModeButton);
 
+  //manual elevator controls
   final Trigger elevatorUp = new POVButton(operatorJoystick, 0);
   final Trigger elevatorDown = new POVButton(operatorJoystick, 180);
+
+  //left and right drop buttons
+ 
+  final Trigger leftLockButton = new POVButton(operatorJoystick, 270);
+  final Trigger rightLockButton = new POVButton(operatorJoystick, 90);
+
   //Variables that include global information of state of robot
 
    public static String intakeStatus = "none";
@@ -129,8 +137,7 @@ public class RobotContainer {
 
     //Manual Aiming bindings (elevator in button bindings)
     turretSubsystem.setDefaultCommand(new ManualTurnTurretCommand(turretSubsystem,
-    () -> -operatorJoystick.getRawAxis(2),
-    () -> operatorJoystick.getRawAxis(3)
+    () -> -operatorJoystick.getRawAxis(2)
     ));
 
     boomSubsystem.setDefaultCommand(new ManualExtendBoomCommand(boomSubsystem, 
@@ -183,6 +190,18 @@ public class RobotContainer {
       ));
 
    dropAllButton.whileTrue(new DropAllCommand(intakeSubsystem, intakeStatus));
+
+    //direction locker buttons
+
+   rightLockButton.onTrue(new InstantCommand(
+    turretSubsystem::lockToRight,
+    turretSubsystem
+   ));
+
+   leftLockButton.onTrue(new InstantCommand(
+    turretSubsystem::lockToLeft,
+    turretSubsystem
+   ));
 
       //When the toggle flipper button is on true, extend, on false, retract
 
