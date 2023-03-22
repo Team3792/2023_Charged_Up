@@ -5,6 +5,7 @@
 package frc.robot.commands.IntakeCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,7 +28,8 @@ public class DropAllCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //RobotContainer.intakeStatus = "dropping";
+//This will make the LEDintakestatus either "dropping cube" or "dropping cone"
+    RobotContainer.LEDIntakeStatus = "dropping " + RobotContainer.lastPieceHeld;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,9 +37,9 @@ public class DropAllCommand extends CommandBase {
   public void execute() {
     //Checking intake status and extaking accordingly
 
-    if(RobotContainer.intakeStatus == "cube"){
+    if(RobotContainer.lastPieceHeld == "cube"){
       intakeSubsystem.cubeExtake();
-    }else if(RobotContainer.intakeStatus == "cone"){
+    }else if(RobotContainer.lastPieceHeld == "cone"){
       intakeSubsystem.coneExtake();
     }
     
@@ -54,7 +56,7 @@ public class DropAllCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     //After dropping, set intake status to "none"
-   // RobotContainer.intakeStatus = "none";
+    RobotContainer.LEDIntakeStatus = "none";
   }
 
   // Returns true when the command should end.

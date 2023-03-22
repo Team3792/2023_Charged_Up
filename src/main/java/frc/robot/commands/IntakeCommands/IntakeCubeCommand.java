@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 import java.util.function.Supplier;
@@ -42,7 +43,7 @@ public class IntakeCubeCommand extends CommandBase {
   @Override
   public void initialize() {
     intakeSubsystem.slewRateLimiter.reset(0);
-    RobotContainer.intakeStatus = "intaking cube";
+    RobotContainer.LEDIntakeStatus = "intaking cube";
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -57,7 +58,8 @@ public class IntakeCubeCommand extends CommandBase {
   public void end(boolean interrupted) {
     intakeSubsystem.stopIntake();
 
-    RobotContainer.intakeStatus = "cube";
+    RobotContainer.LEDIntakeStatus = "cube";
+    RobotContainer.lastPieceHeld = "cube";
    SmartDashboard.putString("Intake", "Cone");
     }
 

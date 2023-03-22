@@ -57,7 +57,7 @@ public class RobotContainer {
    public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   // private final FlipperSubsystem flipperSubsystem = new FlipperSubsystem();
-  // private final LEDSubsystem ledSubsystem = new LEDSubsystem();
+   private final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
   private final PowerDistribution powerDistribution = new PowerDistribution(1, ModuleType.kRev);
   
@@ -104,7 +104,9 @@ public class RobotContainer {
 
   //Variables that include global information of state of robot
 
-   public static String intakeStatus = "none";
+   public static String LEDIntakeStatus = "none";
+
+   public static String lastPieceHeld = "none";
   
   //"none" "cube" "cone" "intaking cube" "intaking cone" "dropping"
 
@@ -157,7 +159,7 @@ public class RobotContainer {
 
     //Setting up LED system where the lights change depending on intake status
 
-    //ledSubsystem.setDefaultCommand(new LEDShowIntakeStatusCommand(ledSubsystem));
+    ledSubsystem.setDefaultCommand(new LEDShowIntakeStatusCommand(ledSubsystem));
 
     
 
@@ -189,7 +191,7 @@ public class RobotContainer {
       () -> powerDistribution.getCurrent(Constants.PowerDistributionHubConstants.kPDHIntakeChannel)
       ));
 
-   dropAllButton.whileTrue(new DropAllCommand(intakeSubsystem, intakeStatus));
+   dropAllButton.whileTrue(new DropAllCommand(intakeSubsystem, lastPieceHeld));
 
     //direction locker buttons
 
@@ -224,8 +226,8 @@ public class RobotContainer {
 
     
 
-     groundElevatorButton.onTrue(new ToElevatorLevel(elevatorSubsystem, turretSubsystem, boomSubsystem, 0, intakeStatus));
-     middleElevatorButton.whileTrue(new ToElevatorLevel(elevatorSubsystem, turretSubsystem, boomSubsystem, 1, intakeStatus));
+     groundElevatorButton.onTrue(new ToElevatorLevel(elevatorSubsystem, turretSubsystem, boomSubsystem, 0, lastPieceHeld));
+     middleElevatorButton.whileTrue(new ToElevatorLevel(elevatorSubsystem, turretSubsystem, boomSubsystem, 1, lastPieceHeld));
    //  highElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 2));
 
      //Intake Levels
