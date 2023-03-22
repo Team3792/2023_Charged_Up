@@ -6,7 +6,7 @@ package frc.robot.commands.DriveCommands;
 
 import java.io.Console;
 
-import org.apache.commons.collections4.map.PassiveExpiringMap.ConstantTimeToLiveExpirationPolicy;
+//import org.apache.commons.collections4.map.PassiveExpiringMap.ConstantTimeToLiveExpirationPolicy;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,22 +42,32 @@ public class ChargeStationStabilizeCommand extends CommandBase {
     double pitch = driveSubsystem.getPitch();
 
     //Calculate the next term fromt the PID
+
     //The error = 0-pitch = -pitch, since the setpoint is always 0 degrees (ie. level)
-    double outputVoltage = pidController.calculate(-pitch);
+    double outputVoltage = pidController.calculate(-pitch*pitch*pitch/Constants.ChargeStationStabilizeConstants.kPitchDeadband/Constants.ChargeStationStabilizeConstants.kPitchDeadband/Constants.ChargeStationStabilizeConstants.kPitchDeadband);
 
 //If pitch is in deadband, stop and break 
 if(Math.abs(pitch) < Constants.ChargeStationStabilizeConstants.kPitchDeadband){
   driveSubsystem.stopAndBreak();
+  outputVoltage = 0;
 }
-//Check direction trying to move, if voltage is not enough for that direction, set it to the minimum voltage
-else if(outputVoltage > 0 && outputVoltage < Constants.ChargeStationStabilizeConstants.kMinVoltage){
-      outputVoltage = Constants.ChargeStationStabilizeConstants.kMinVoltage;
-}else if(outputVoltage < 0 && outputVoltage > -Constants.ChargeStationStabilizeConstants.kMinVoltage){
-      outputVoltage = -Constants.ChargeStationStabilizeConstants.kMinVoltage;
-    }
+// //Check direction trying to move, if voltage is not enough for that direction, set it to the minimum voltage
+// else if(outputVoltage > 0 && outputVoltage < Constants.ChargeStationStabilizeConstants.kMinVoltage){
+//       outputVoltage = Constants.ChargeStationStabilizeConstants.kMinVoltage;
+// }else if(outputVoltage < 0 && outputVoltage > -Constants.ChargeStationStabilizeConstants.kMinVoltage){
+//       outputVoltage = -Constants.ChargeStationStabilizeConstants.kMinVoltage;
+//     }
+
+if(outputVoltage > 6){
+  outputVoltage = 6;
+}else if(outputVoltage < -6){
+  outputVoltage = -6;
+}
 
     //Put this voltage on the motors
     driveSubsystem.setVoltage(outputVoltage, outputVoltage);
+    SmartDashboard.putNumber("pithc", pitch);
+SmartDashboard.putNumber("output", outputVoltage);
   }
 
   // Called once the command ends or is interrupted.

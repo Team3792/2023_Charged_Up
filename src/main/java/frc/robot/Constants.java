@@ -212,8 +212,8 @@ public final class Constants {
   public static final class TurretConstants
     {
       //TurretConstants PID Vars
-      public static final double kTurretkP = 0.01;
-      public static final double kTurretkI = 0;
+      public static final double kTurretkP = 0.025;
+      public static final double kTurretkI = 0.00;
       public static final double kTurretkD = 0;
 
       //Turret Speed Constants
@@ -221,7 +221,7 @@ public final class Constants {
       public static final double kMaxTurretAngularSpeed = 0;     //rotations per second
 
       //Deadzone
-      public static final int kTurretArrivedDeadzone = 0;
+      public static final int kTurretArrivedDeadzone = 100;
       
 
       //Maximum turret angle, where 0 is straight ahead. (this is for both sides)
@@ -389,15 +389,15 @@ public final class Constants {
 
     //TODO: Tune these at competition
     //PID constants that the the pitch angle goes into, outputting a drive voltage
-    public static double kP = 2.4;
+    public static double kP = 1;
     public static double kI = 0.0;
-    public static double kD = 0.0;
+    public static double kD = -0.00;
 
     //This is the minimum absolute voltage required to move up on the charge station
-    public static double kMinVoltage = 2;
+    public static double kMinVoltage = 0;
 
     //Deadband, in degrees, of pitch where the robot should stop and break
-    public static double kPitchDeadband = 4;
+    public static double kPitchDeadband = 10;
   }
 
 }

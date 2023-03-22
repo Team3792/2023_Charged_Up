@@ -26,7 +26,7 @@ public class BoomToTurtleMode extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boomSubsystem.setPosition(0);
+    boomSubsystem.setVoltage(-7);
   }
 
   // Called once the command ends or is interrupted.

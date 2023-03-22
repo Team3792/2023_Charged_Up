@@ -21,11 +21,13 @@ import frc.robot.Constants;
 import edu.wpi.first.math.controller.PIDController;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 
 public class BoomSubsystem extends SubsystemBase {
   //Assuming Talon_FX
-  public WPI_TalonSRX boomMotor = new WPI_TalonSRX(Constants.MotorID.kBoomMotor);
+  public WPI_TalonFX boomMotor = new WPI_TalonFX(Constants.MotorID.kBoomMotor);
 
   PIDController boomPidController = new PIDController(
     Constants.BoomConstants.kBoomkP, 
@@ -36,8 +38,9 @@ public class BoomSubsystem extends SubsystemBase {
     public boolean doneMoving = false;
 
   public BoomSubsystem() {
-   boomMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+   boomMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
    boomMotor.setSelectedSensorPosition(0);
+   boomMotor.setNeutralMode(NeutralMode.Brake);
   }
 
   public void setPosition(double encoderTicks){
@@ -51,13 +54,30 @@ public class BoomSubsystem extends SubsystemBase {
     boomMotor.setVoltage(output);
     }else{
       boomMotor.setVoltage(0);
+     
     }
  }
 
  public void setVoltage(double voltage){
- //if(voltage > 0 || boomMotor.getSelectedSensorPosition() < 50){
-boomMotor.setVoltage(voltage);
- //}
+
+ // Sys
+ if(!(voltage < 0 && boomMotor.getSelectedSensorPosition() < 0) && !(voltage > 0 && boomMotor.getSelectedSensorPosition() > 200000)){
+  doneMoving = false;
+    if(!(voltage < 0 && boomMotor.getSelectedSensorPosition() < 20000) && !(voltage > 0 && boomMotor.getSelectedSensorPosition() > 180000)){
+      boomMotor.setVoltage(voltage);
+    }
+    else{
+      if(voltage>0){
+      boomMotor.setVoltage(1.5);
+    }else if(voltage < 0){
+      boomMotor.setVoltage(-1.5);
+    }
+  }
+  
+ }else {
+  boomMotor.setVoltage(0);
+  doneMoving = true;
+ }
 }
 
  public void setPositionDistance(double distanceMeters){
@@ -66,7 +86,7 @@ boomMotor.setVoltage(voltage);
 
   @Override
   public void periodic() {
-    System.out.println(boomMotor.getSelectedSensorPosition());
+    //System.out.println(boomMotor.getSelectedSensorPosition());
     // This method will be called once per scheduler run
   }
 

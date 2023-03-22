@@ -47,6 +47,6 @@ public class TurretToTurtleMode extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return turretSubsystem.arrived||timer.hasElapsed(5);
+    return turretSubsystem.arrived;//||timer.hasElapsed(5);
   }
 }

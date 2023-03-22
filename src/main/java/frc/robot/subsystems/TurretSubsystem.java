@@ -12,11 +12,15 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.robot.Constants;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 
@@ -26,7 +30,7 @@ public class TurretSubsystem extends SubsystemBase {
   public WPI_TalonSRX turretMotor = new WPI_TalonSRX(Constants.MotorID.kTurretMotor);
 
   PIDController turretPidController = new PIDController(
-    0.01, 
+    Constants.TurretConstants.kTurretkP, 
     Constants.TurretConstants.kTurretkI, 
     Constants.TurretConstants.kTurretkD);
 
@@ -45,11 +49,13 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void checkArrival(){
-    arrived = Math.abs(turretMotor.getSelectedSensorPosition() - setPointDegrees) < Constants.TurretConstants.kTurretArrivedDeadzone;
+    arrived = Math.abs(turretMotor.getSelectedSensorPosition() - degreesToTicks(setPointDegrees)) < Constants.TurretConstants.kTurretArrivedDeadzone;
+    SmartDashboard.putBoolean("arrived", arrived);
   }
 
   public void setSetPointDegrees(double setPointDegrees){
     this.setPointDegrees = setPointDegrees;
+    arrived = false;
   }
 
   public void setRelativeMark(double relativeMark){
@@ -62,6 +68,7 @@ public class TurretSubsystem extends SubsystemBase {
 //For reference, picture the robot facing straight right
 
   public void lockToLeft(){
+    System.out.println(1);
     setRelativeMark(270);
   }
   
@@ -83,9 +90,13 @@ public class TurretSubsystem extends SubsystemBase {
     //Calculate and set PID voltage
       double output = turretPidController.calculate(turretMotor.getSelectedSensorPosition(), setPointTicks);
      
-      
+      if(output > 10){
+        turretMotor.setVoltage(-10);
+      }else if(output < -10){
+        turretMotor.setVoltage(10);
+      }else{
       turretMotor.setVoltage(-output);
-    
+      }
   }
 
   public double getAngleDegrees(){
