@@ -5,6 +5,7 @@
 package frc.robot.commands.BoomCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.BoomSubsystem;
 
 public class BoomToTurtleMode extends CommandBase {
@@ -20,13 +21,13 @@ public class BoomToTurtleMode extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    boomSubsystem.doneMoving = false;
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boomSubsystem.setVoltage(-7);
+    boomSubsystem.setVoltage(-Constants.BoomConstants.kMaxCruiseVoltage);
   }
 
   // Called once the command ends or is interrupted.
@@ -36,6 +37,6 @@ public class BoomToTurtleMode extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return boomSubsystem.doneMoving;
+    return boomSubsystem.isContracted();
   }
 }

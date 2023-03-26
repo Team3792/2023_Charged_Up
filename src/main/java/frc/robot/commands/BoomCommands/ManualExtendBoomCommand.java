@@ -22,7 +22,7 @@ public class ManualExtendBoomCommand extends CommandBase {
   /** Creates a new MoveArmCommand. */
   private BoomSubsystem boomSubsystem;
   private Supplier<Double> joystickXRotation;
-  SignalProcessor signalProcessor = new SignalProcessor(7, 0.05, 1);
+  SignalProcessor signalProcessor = new SignalProcessor(Constants.BoomConstants.kMaxCruiseVoltage, 0.05, 1);
 
 
 

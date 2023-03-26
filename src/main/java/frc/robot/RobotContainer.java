@@ -102,6 +102,13 @@ public class RobotContainer {
   final Trigger leftLockButton = new POVButton(operatorJoystick, 270);
   final Trigger rightLockButton = new POVButton(operatorJoystick, 90);
 
+  //Programmer mode/zero sensors triggers
+
+  final Trigger programmerModeButton7 = new JoystickButton(operatorJoystick, 7);
+  final Trigger programmerModeButton8 = new JoystickButton(operatorJoystick, 8);
+  final Trigger programmerModeButton9 = new JoystickButton(operatorJoystick, 9);
+  final Trigger programmerModeButton10 = new JoystickButton(operatorJoystick, 10);
+
   //Variables that include global information of state of robot
 
    public static String LEDIntakeStatus = "none";
@@ -205,6 +212,17 @@ public class RobotContainer {
     turretSubsystem
    ));
 
+   //button bindings for programmer mode
+
+   programmerModeButton7.and(programmerModeButton8).and(programmerModeButton9).and(programmerModeButton10).onTrue(
+   new InstantCommand(
+      this::zeroSensors,
+      turretSubsystem,
+      elevatorSubsystem,
+      boomSubsystem
+      )
+   );
+
       //When the toggle flipper button is on true, extend, on false, retract
 
     // toggleFlipper.toggleOnTrue(
@@ -279,6 +297,12 @@ public class RobotContainer {
  return new CubeTaxi(driveSubsystem, turretSubsystem, boomSubsystem, intakeSubsystem, elevatorSubsystem);
 
 
+  }
+
+  public void zeroSensors (){
+    turretSubsystem.turretMotor.setSelectedSensorPosition(0);
+    boomSubsystem.boomMotor.setSelectedSensorPosition(0);
+    elevatorSubsystem.elevatorMotor.setSelectedSensorPosition(0);
   }
 
 }

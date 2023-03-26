@@ -106,10 +106,18 @@ public final class Constants {
     public static final double kBoomkI = 0;
     public static final double kBoomkD = 0;
 
-
+    //Reach limiting constraints
     //For now, this is interpreted as being in encoder ticks. We might want to make a conversion function later if it helps with the math of positioning or other things
-    public static final double kBooomMaxReach = 0;
-    public static final double kBoomIntakeReach = 0;
+    public static final double kBooomMaxReach = 200000;
+    public static final double kBoomCreepRadius = 20000;
+    public static final double kContractedRadius = 40000;
+   // public static final double kBoomIntakeReach = 0;
+
+   //Manual voltage constants
+   public static final double kMaxCruiseVoltage = 7;
+   public static final double kCreepVoltage = 1.5;
+
+  
 
     public static final double kStopDeadzone = 50;
     public static final double kStopVelocityMax = 100;

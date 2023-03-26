@@ -19,6 +19,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.math.controller.PIDController;
+
+import org.apache.commons.collections4.functors.ConstantFactory;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -35,7 +38,9 @@ public class BoomSubsystem extends SubsystemBase {
     Constants.BoomConstants.kBoomkD
     );
 
-    public boolean doneMoving = false;
+
+
+    
 
   public BoomSubsystem() {
    boomMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
@@ -45,47 +50,64 @@ public class BoomSubsystem extends SubsystemBase {
 
   public void setPosition(double encoderTicks){
 
-    doneMoving = 
-    Math.abs(boomMotor.getSelectedSensorPosition() - encoderTicks) < Constants.BoomConstants.kStopDeadzone
-    &&
-    Math.abs(boomMotor.getSelectedSensorVelocity()) < Constants.BoomConstants.kStopVelocityMax;
-    if(!doneMoving){
-    double output = boomPidController.calculate(boomMotor.getSelectedSensorPosition(),encoderTicks);
-    boomMotor.setVoltage(output);
-    }else{
-      boomMotor.setVoltage(0);
+    // doneMoving = 
+    // Math.abs(boomMotor.getSelectedSensorPosition() - encoderTicks) < Constants.BoomConstants.kStopDeadzone
+    // &&
+    // Math.abs(boomMotor.getSelectedSensorVelocity()) < Constants.BoomConstants.kStopVelocityMax;
+    // if(!doneMoving){
+    // double output = boomPidController.calculate(boomMotor.getSelectedSensorPosition(),encoderTicks);
+    // boomMotor.setVoltage(output);
+    // }else{
+    //   boomMotor.setVoltage(0);
      
-    }
+    // }
+ }
+//this method takes care of the endpoint deadbands and outputs the voltage to set the motor to
+ public double getSetVoltage(double voltage){
+
+  //by default, set the voltage to the un edited voltage
+  //this will be used if the position is in the cruise zone
+
+  double outputVoltage = voltage;
+
+ double positionTicks = boomMotor.getSelectedSensorPosition();
+
+ if(voltage > 0){ //if going forward
+  //first check if beyond the max reach, then, if not, check if in the creep zone
+  if(positionTicks >= Constants.BoomConstants.kBooomMaxReach){
+    outputVoltage = 0;
+  }else if(positionTicks > Constants.BoomConstants.kBooomMaxReach - Constants.BoomConstants.kBoomCreepRadius){ //if in the creep zone on the extended phase
+    outputVoltage = Constants.BoomConstants.kCreepVoltage; //use the creep voltage if in this zone;
+  }
+ }else if(voltage < 0){ //if going backward
+  //first check if beyond the max contractions, then, if not, check if in the creep zone
+  if(positionTicks <= 0){
+    outputVoltage = 0;
+  }else if(positionTicks < 0 + Constants.BoomConstants.kBoomCreepRadius){ //if in the creep zone on the contraction phase
+    outputVoltage = Constants.BoomConstants.kCreepVoltage; //use the creep voltage if in this zone;
+  }
+ }
+ return outputVoltage;
  }
 
  public void setVoltage(double voltage){
-
- // Sys
- if(!(voltage < 0 && boomMotor.getSelectedSensorPosition() < 0) && !(voltage > 0 && boomMotor.getSelectedSensorPosition() > 200000)){
-  doneMoving = false;
-    if(!(voltage < 0 && boomMotor.getSelectedSensorPosition() < 20000) && !(voltage > 0 && boomMotor.getSelectedSensorPosition() > 180000)){
-      boomMotor.setVoltage(voltage);
-    }
-    else{
-      if(voltage>0){
-      boomMotor.setVoltage(1.5);
-    }else if(voltage < 0){
-      boomMotor.setVoltage(-1.5);
-    }
-  }
-  
- }else {
-  boomMotor.setVoltage(0);
-  doneMoving = true;
- }
+  double editedVoltage = getSetVoltage(voltage);
+  boomMotor.setVoltage(editedVoltage);
 }
 
  public void setPositionDistance(double distanceMeters){
   
  }
 
+ //this method returns whether or not the boom is within the contracted deadband
+ public boolean isContracted(){
+  return boomMotor.getSelectedSensorPosition() < Constants.BoomConstants.kContractedRadius;
+ }
+
+
   @Override
   public void periodic() {
+
     //System.out.println(boomMotor.getSelectedSensorPosition());
     // This method will be called once per scheduler run
   }

@@ -47,7 +47,12 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
    // SmartDashboard.putData("Field", field);
+
+
+
      robotContainer = new RobotContainer();
+     robotContainer.zeroSensors();
+     
      autoRan = false;
 
      //Camera streaming
@@ -94,9 +99,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-    robotContainer.boomSubsystem.boomMotor.setSelectedSensorPosition(0);
-    robotContainer.turretSubsystem.turretMotor.setSelectedSensorPosition(0);
-    robotContainer.elevatorSubsystem.elevatorMotor.setSelectedSensorPosition(0);
+
 
     
     
@@ -129,11 +132,11 @@ public class Robot extends TimedRobot {
       autonomousCommand.cancel();
     }
 //If auto was not run (which is when encoders get reset), reset encoders
-    if(!autoRan){
-      robotContainer.boomSubsystem.boomMotor.setSelectedSensorPosition(0);
-      robotContainer.turretSubsystem.turretMotor.setSelectedSensorPosition(0);
-      robotContainer.elevatorSubsystem.elevatorMotor.setSelectedSensorPosition(0);
-    }
+    // if(!autoRan){
+    //   robotContainer.boomSubsystem.boomMotor.setSelectedSensorPosition(0);
+    //   robotContainer.turretSubsystem.turretMotor.setSelectedSensorPosition(0);
+    //   robotContainer.elevatorSubsystem.elevatorMotor.setSelectedSensorPosition(0);
+    // }
 
     
 
