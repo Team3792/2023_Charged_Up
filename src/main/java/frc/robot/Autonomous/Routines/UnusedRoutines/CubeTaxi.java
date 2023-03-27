@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Autonomous.Routines;
+package frc.robot.Autonomous.Routines.UnusedRoutines;
 
 import org.ejml.dense.row.decomposition.BaseDecomposition_FDRB_to_FDRM;
 
@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Autonomous.Actions.DropAllAutoCommand;
 import frc.robot.Constants.TurretConstants;
 import frc.robot.commands.BoomCommands.BoomFromTurtleMode;
-import frc.robot.commands.DriveCommands.ChargeStationStabilizeCommand;
 import frc.robot.commands.Sequences.EngageTurtleMode;
 import frc.robot.commands.Sequences.ToElevatorLevel;
 import frc.robot.commands.TurretCommands.TurretOutOfTurtleMode;
@@ -19,9 +18,10 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.Autonomous.Actions.ChargeStationStabilizeCommand;
 import frc.robot.Autonomous.Actions.DrivePath;
 import frc.robot.Autonomous.Actions.DriveTaxi;
-import frc.robot.commands.DriveCommands.ChargeStationStabilizeCommand;
+
 import java.nio.file.Path;
 
 import edu.wpi.first.wpilibj.DriverStation;

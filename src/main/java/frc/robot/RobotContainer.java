@@ -11,8 +11,8 @@ import frc.robot.commands.LEDCommands.LEDShowIntakeStatusCommand;
 import frc.robot.commands.Sequences.EngageTurtleMode;
 import frc.robot.commands.Sequences.ToElevatorLevel;
 import frc.robot.Autonomous.Actions.DropAllAutoCommand;
-import frc.robot.Autonomous.Routines.CubeTaxi;
-import frc.robot.Autonomous.Routines.TwoConeAutoMantis;
+import frc.robot.Autonomous.Routines.UnusedRoutines.CubeTaxi;
+import frc.robot.Autonomous.Routines.UnusedRoutines.TwoConeAutoMantis;
 import frc.robot.IntakePreparationCommands.AdjustForConeIntakeCommand;
 import frc.robot.IntakePreparationCommands.HighIntakeCubePreparation;
 import frc.robot.commands.AutoAimingCommands.AutoAimCommand;
@@ -25,6 +25,7 @@ import frc.robot.IntakePreparationCommands.LowIntakeCubePreparation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -35,7 +36,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import frc.robot.Autonomous.Routines.TwoConeAutoMantis;
+
+import frc.robot.Autonomous.Routines.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -126,13 +128,27 @@ public class RobotContainer {
    * 2 = high
    */
 
+   //Creating instances of each autonomous routine
+  private LowCubeClimb lowCubeClimb = new LowCubeClimb(driveSubsystem, turretSubsystem, boomSubsystem, intakeSubsystem, elevatorSubsystem);
+  private MidCubeClimb midCubeClimb = new MidCubeClimb(driveSubsystem, turretSubsystem, boomSubsystem, intakeSubsystem, elevatorSubsystem);
+  private LowCubeTaxi lowCubeTaxi = new LowCubeTaxi(driveSubsystem, turretSubsystem, boomSubsystem, intakeSubsystem, elevatorSubsystem);
+  private MidCubeTaxi midCubeTaxi = new MidCubeTaxi(driveSubsystem, turretSubsystem, boomSubsystem, intakeSubsystem, elevatorSubsystem);
+
+  private SendableChooser<Command> autonomousChooser = new SendableChooser<>();//This will allow us to choose the auto from the Smart Dashboard
+
+
 
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
    
-   
+   //Add auto routines to autonomousChooser
+
+   autonomousChooser.setDefaultOption("6 pts - low cube taxi", lowCubeTaxi);
+   autonomousChooser.addOption("18 pts - low cube climb", lowCubeClimb);
+   autonomousChooser.addOption("7 pts - mid cube taxi", midCubeTaxi);
+   autonomousChooser.addOption("19 pts - mid cube climb", midCubeClimb);
    
     // Configure the trigger bindings
     configureBindings();

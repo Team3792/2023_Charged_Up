@@ -27,7 +27,7 @@ public class DriveTaxi extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveSubsystem.differentialDrive.arcadeDrive(0.5, 0);
+    driveSubsystem.setVoltage(-4, -4);
   }
 
   // Called once the command ends or is interrupted.
@@ -40,7 +40,6 @@ public class DriveTaxi extends CommandBase {
   @Override
   public boolean isFinished() {
     return 
-    driveSubsystem.getTotalDistance() > 4
-    ;
+    driveSubsystem.getTotalDistance() > Constants.DriveConstants.kAutoTaxiDistanceMeters;
   }
 }

@@ -5,15 +5,53 @@
 package frc.robot.Autonomous.Routines;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.TurretConstants;
+import frc.robot.commands.BoomCommands.BoomFromTurtleMode;
+import frc.robot.commands.ElevatorCommands.ElevatorMoveAutoCommand;
+import frc.robot.commands.Sequences.EngageTurtleMode;
+import frc.robot.commands.Sequences.ToElevatorLevel;
+import frc.robot.commands.TurretCommands.TurretOutOfTurtleMode;
+import frc.robot.commands.TurretCommands.TurretToTurtleMode;
+import frc.robot.subsystems.BoomSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.Autonomous.Actions.*;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class LowCubeClimb extends SequentialCommandGroup {
+public class MidCubeTaxi extends SequentialCommandGroup {
   /** Creates a new LowCubeClimb. */
-  public LowCubeClimb() {
+  DriveSubsystem driveSubsystem;
+  TurretSubsystem turretSubsystem;
+  BoomSubsystem boomSubsystem;
+  IntakeSubsystem intakeSubsystem;
+  ElevatorSubsystem elevatorSubsystem;
+
+  public MidCubeTaxi(DriveSubsystem driveSubsystem, TurretSubsystem turretSubsystem, BoomSubsystem boomSubsystem, IntakeSubsystem intakeSubsystem, ElevatorSubsystem elevatorSubsystem) {
+   
+   this.driveSubsystem = driveSubsystem;
+   this.turretSubsystem = turretSubsystem;
+   this.boomSubsystem = boomSubsystem;
+   this.intakeSubsystem = intakeSubsystem;
+   this.elevatorSubsystem = elevatorSubsystem;
+
+   addRequirements(driveSubsystem, turretSubsystem, boomSubsystem, intakeSubsystem, elevatorSubsystem);
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands();
+
+    addCommands(
+      new TurretOutOfTurtleMode(turretSubsystem),
+      new ElevatorMoveAutoCommand(elevatorSubsystem, "cube", 1),
+      new ExtendBoomAuto(boomSubsystem, "cube"),
+      new DropAllAutoCommand(intakeSubsystem, "cube"),
+      new DriveTaxi(driveSubsystem),
+      new EngageTurtleMode(turretSubsystem, elevatorSubsystem, boomSubsystem)
+    );
+  
+
   }
 }

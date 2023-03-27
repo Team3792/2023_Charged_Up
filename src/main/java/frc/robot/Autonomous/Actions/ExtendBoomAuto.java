@@ -11,39 +11,45 @@ import frc.robot.subsystems.BoomSubsystem;
 public class ExtendBoomAuto extends CommandBase {
   /** Creates a new ExtendBoomAuto. */
   BoomSubsystem boomSubsystem;
-  String piece;
+
+  double desiredDistanceTicks;
 
   public ExtendBoomAuto(BoomSubsystem boomSubsystem, String piece) {
     this.boomSubsystem = boomSubsystem;
-    this.piece = piece;
 
+
+    if(piece == "cube"){
+      desiredDistanceTicks =  Constants.BoomConstants.kAutoCubeReach;
+      }else {
+      desiredDistanceTicks =  Constants.BoomConstants.kAutoConeReach;
+      }
     addRequirements(boomSubsystem);
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    boomSubsystem.doneMoving = false;
+    //boomSubsystem.doneMoving = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(piece == "cube"){
-    boomSubsystem.setPosition(Constants.BoomConstants.kAutoCubeReach);
-    }else {
-    boomSubsystem.setPosition(Constants.BoomConstants.kAutoConeReach);
-    }
+    boomSubsystem.setVoltage(Constants.BoomConstants.kAutoCruiseVoltage);
+   
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    boomSubsystem.setVoltage(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return boomSubsystem.doneMoving;
+    return boomSubsystem.getPosition() > desiredDistanceTicks;
   }
 }

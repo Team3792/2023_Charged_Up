@@ -72,7 +72,7 @@ System.out.println(1234);
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //if the timer has elapsed 2 seconds, stop the command
-    return timer.hasElapsed(2);
+    //if the timer has elapsed 1 second, stop the command
+    return timer.hasElapsed(1);
   }
 }

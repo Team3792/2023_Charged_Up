@@ -28,7 +28,7 @@ public class DrivePath {
         this.driveSubsystem = driveSubsystem;
     }
 
-    public SequentialCommandGroup runPath(Trajectory path){
+    public RamseteCommand runPath(Trajectory path){
 
         RamseteCommand ramseteCommand =
             new RamseteCommand(
@@ -51,6 +51,6 @@ public class DrivePath {
 driveSubsystem.resetOdometry(path.getInitialPose());
 
 // Run path following command, then stop at the end.
-return ramseteCommand.andThen(() -> driveSubsystem.stopAndBreak());
+return ramseteCommand;
     }
 }

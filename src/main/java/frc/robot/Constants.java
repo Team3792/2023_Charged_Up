@@ -116,6 +116,7 @@ public final class Constants {
    //Manual voltage constants
    public static final double kMaxCruiseVoltage = 7;
    public static final double kCreepVoltage = 1.5;
+   public static final double kAutoCruiseVoltage = 5;
 
   
 

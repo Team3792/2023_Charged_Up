@@ -99,6 +99,10 @@ public class BoomSubsystem extends SubsystemBase {
   
  }
 
+ public double getPosition(){
+  return boomMotor.getSelectedSensorPosition();
+ }
+
  //this method returns whether or not the boom is within the contracted deadband
  public boolean isContracted(){
   return boomMotor.getSelectedSensorPosition() < Constants.BoomConstants.kContractedRadius;
