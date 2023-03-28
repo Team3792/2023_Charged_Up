@@ -6,22 +6,17 @@ package frc.robot.IntakePreparationCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.*;
 
-public class HighIntakeConePreparation extends CommandBase {
-  /** Creates a new HighIntakePreperation. */
-
-  
+public class AdjustForConeIntakeCommand extends CommandBase {
+  /** Creates a new AdjustForCubeIntakeCommand. */
   ElevatorSubsystem elevatorSubsystem;
 
-  public HighIntakeConePreparation(ElevatorSubsystem elevatorSubsystem) {
-   
-  
-   this.elevatorSubsystem = elevatorSubsystem;
-   
-    // Use addRequirements() here to declare subsystem dependencies.
+  public AdjustForConeIntakeCommand(ElevatorSubsystem subsystem) {
 
-    
+    elevatorSubsystem = subsystem;
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elevatorSubsystem);
   }
 
@@ -32,11 +27,13 @@ public class HighIntakeConePreparation extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // turretSubsystem.setPosition(0);
-    // boomSubsystem.setPosition(Constants.BoomConstants.kBoomIntakeReach);
-    elevatorSubsystem.setPosition(Constants.ElevatorConstants.kConeHighIntake);
+    if(RobotContainer.lastIntakeHeight == "low"){
+      elevatorSubsystem.setSetPoint(Constants.ElevatorConstants.kConeLowIntake);
+    }else if(RobotContainer.lastIntakeHeight == "high"){
 
+      elevatorSubsystem.setSetPoint(Constants.ElevatorConstants.kConeHighIntake);
 
+    }
   }
 
   // Called once the command ends or is interrupted.

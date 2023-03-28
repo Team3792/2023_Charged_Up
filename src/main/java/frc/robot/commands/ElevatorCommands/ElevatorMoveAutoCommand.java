@@ -27,7 +27,8 @@ int situationKey;
     elevatorSubsystem = subsystem;
     addRequirements(elevatorSubsystem);
     //Default to cone height
-    situationKey = (intakeStatus == "Cube")? 0:3 + height;
+    situationKey = (intakeStatus == "cube")? 0:3 + height;
+   
 
   }
 
@@ -61,8 +62,9 @@ int situationKey;
         break;
 
     }
+System.out.println(goalHeightEncoder);
 
-    elevatorSubsystem.setPosition(goalHeightEncoder);
+    elevatorSubsystem.setSetPoint(Constants.ElevatorConstants.kCubeMiddleHeight);
 
   }
 
@@ -73,6 +75,6 @@ int situationKey;
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return elevatorSubsystem.arrived;
   }
 }

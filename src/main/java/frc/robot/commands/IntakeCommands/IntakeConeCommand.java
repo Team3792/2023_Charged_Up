@@ -41,7 +41,7 @@ public class IntakeConeCommand extends CommandBase {
     intakeSubsystem.slewRateLimiter.reset(0);
 
     //Update intake status to intaking
-    RobotContainer.intakeStatus = "intaking cube";
+    RobotContainer.LEDIntakeStatus = "intaking cube";
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -54,8 +54,9 @@ public class IntakeConeCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    SmartDashboard.putString("Intake", "Cube");
-    RobotContainer.intakeStatus = "cube";
+   // SmartDashboard.putString("Intake", "Cube");
+   RobotContainer.LEDIntakeStatus = "cone";
+    RobotContainer.lastPieceHeld = "cone";
     intakeSubsystem.stopIntake();
   }
 
