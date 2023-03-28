@@ -60,9 +60,9 @@ public class AutoAimCommand extends CommandBase {
   public void execute() {
     
     turretPose = new Pose2d(0, 0, new Rotation2d(0));
-    if(RobotContainer.lastPieceHeld == "cube"){
+    if(RobotContainer.intakeStatus == "cube"){
      target = cubeTargetFinder.getTarget(RobotContainer.elevatorHeight, turretPose.getY());
-    }else if(RobotContainer.lastPieceHeld == "cone"){
+    }else if(RobotContainer.intakeStatus == "cone"){
      target = coneTargetFinder.getTarget(RobotContainer.elevatorHeight, turretPose.getY());
     }
     Pose2d targetPose2d = new Pose2d(target.getX(), target.getY(), new Rotation2d(0));
@@ -89,7 +89,7 @@ public class AutoAimCommand extends CommandBase {
 
     //setting turret to that angle
     //Note: add 
-    turretSubsystem.setSetPointDegrees(turretRelativeTargetAngleDegrees);
+    turretSubsystem.setPosition(turretRelativeTargetAngleDegrees);
 
     //Finding absolute distance from turret center to target
 

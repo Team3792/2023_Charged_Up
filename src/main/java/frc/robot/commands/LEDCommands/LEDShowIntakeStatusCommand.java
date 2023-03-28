@@ -26,7 +26,7 @@ public class LEDShowIntakeStatusCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    String intakeStatus = RobotContainer.LEDIntakeStatus;
+    String intakeStatus = RobotContainer.intakeStatus;
 //figure out the right codes later, work with Julie - maybe put these in constants?
 
     switch(intakeStatus){
@@ -36,7 +36,7 @@ public class LEDShowIntakeStatusCommand extends CommandBase {
       case "cone":
       ledSubsystem.sendCode(1);
         break;
-      case "intaking cube":
+      case "intake cube":
       ledSubsystem.sendCode(2);
         break;
       case "intaking cone":
@@ -48,13 +48,6 @@ public class LEDShowIntakeStatusCommand extends CommandBase {
       case "none":
       ledSubsystem.sendCode(5);
         break;
-      case "dropping cube":
-        ledSubsystem.sendCode(6);
-          break;
-      case "dropping cone":
-          ledSubsystem.sendCode(7);
-            break;
-        
     }
 
 

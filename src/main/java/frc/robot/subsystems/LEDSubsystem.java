@@ -32,9 +32,9 @@ public class LEDSubsystem extends SubsystemBase {
     int twosDigit = (decimalProgram % 4 - onesDigit)/2;
     int foursDigit = (decimalProgram % 8 - twosDigit)/4;
 
-    digitalOutput0.set(onesDigit == 1);
-    digitalOutput1.set(twosDigit == 1);
-    digitalOutput2.set(foursDigit == 1);
+    digitalOutput0.set((onesDigit == 1)? true:false);
+    digitalOutput1.set((twosDigit == 1)? true:false);
+    digitalOutput2.set((foursDigit == 1)? true:false);
 
 
   }

@@ -61,7 +61,7 @@ public class VisionOdemetryPoseEstimator {
         //     );
 
         // chassisLocation = turretLocation.plus(chassisToTurretCurrent);
-        chassisLocation = driveSubsystem.getPose();
+        chassisLocation = driveSubsystem.robotPose;
      
     }
 

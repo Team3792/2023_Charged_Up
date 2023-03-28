@@ -5,8 +5,6 @@
 package frc.robot;
 
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,10 +12,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.HelperClasses.VisionOdemetryPoseEstimator;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.ejml.simple.AutomaticSimpleMatrixConvert;
-
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -29,8 +23,6 @@ public class Robot extends TimedRobot {
   private Command autonomousCommand;
  
   private RobotContainer robotContainer;
-//This is used for resetting encoder on teleop init if auto didn't run (ie. when practicing etc)
-  private boolean autoRan;
 
   //Backend vision + odemetry calulation
  // private  VisionOdemetryPoseEstimator visionOdemetryPoseEstimator; 
@@ -47,18 +39,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
    // SmartDashboard.putData("Field", field);
-
-
-
-     robotContainer = new RobotContainer();
-     robotContainer.zeroSensors();
-     
-     autoRan = false;
-
-     //Camera streaming
-    UsbCamera cameraServer = CameraServer.startAutomaticCapture();
-    cameraServer.setResolution(100, 65);
-    cameraServer.setFPS(15);
+    robotContainer = new RobotContainer();
     //visionOdemetryPoseEstimator = new VisionOdemetryPoseEstimator(robotContainer.driveSubsystem, robotContainer.visionSubsystem);
  
   }
@@ -98,19 +79,13 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-
-
-
     
-    
-   autonomousCommand = robotContainer.getAutonomousCommand();
+   // autonomousCommand = robotContainer.getAutonomousCommand();
 
    // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
     }
-
-    autoRan = true;
   }
 
   /** This function is called periodically during autonomous. */
@@ -119,9 +94,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-
-
-    
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -131,16 +103,9 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
-//If auto was not run (which is when encoders get reset), reset encoders
-    // if(!autoRan){
-    //   robotContainer.boomSubsystem.boomMotor.setSelectedSensorPosition(0);
-    //   robotContainer.turretSubsystem.turretMotor.setSelectedSensorPosition(0);
-    //   robotContainer.elevatorSubsystem.elevatorMotor.setSelectedSensorPosition(0);
-    // }
 
-    
-
-   
+    robotContainer.turretSubsystem.turretMotor.setSelectedSensorPosition(0);
+    robotContainer.elevatorSubsystem.elevatorMotor.setSelectedSensorPosition(0);
   }
 
   /** This function is called periodically during operator control. */

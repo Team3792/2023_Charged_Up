@@ -11,7 +11,6 @@ import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -29,28 +28,42 @@ public class DrivePath {
     }
 
     public RamseteCommand runPath(Trajectory path){
+        //Find the initial pose of the trajectory, and set the to the robot position
+        Pose2d initialPose = path.getInitialPose();
 
-        RamseteCommand ramseteCommand =
-            new RamseteCommand(
-             path,
-                driveSubsystem::getPose,
-                new RamseteController(),
-                new SimpleMotorFeedforward(
-                 0.22,
-                 1.98,
-                 0.2),
-             driveSubsystem.differentialDriveKinematics,
-                driveSubsystem::getWheelSpeeds,
-                new PIDController(2, 0, 0),
-                new PIDController(2, 0, 0),
-        // RamseteCommand passes volts to the callback
-                driveSubsystem::setVoltage,
-                driveSubsystem);
+        driveSubsystem.zeroSensors();
+        driveSubsystem.differentialDriveOdometry.resetPosition(
+            new Rotation2d(0), 
+            0, 
+            0, 
+            initialPose);
 
-// Reset odometry to the starting pose of the trajectory.
-driveSubsystem.resetOdometry(path.getInitialPose());
+        RamseteCommand ramseteCommand = new RamseteCommand
+        (path, 
+        driveSubsystem::getPose, 
+        new RamseteController(), 
+        new SimpleMotorFeedforward(
+            Constants.DriveConstants.kDriveKS, 
+            Constants.DriveConstants.kDriveKS, 
+            Constants.DriveConstants.kDriveKS), 
+        driveSubsystem.differentialDriveKinematics, 
+        driveSubsystem::getWheelSpeeds, 
+        new PIDController(
+            Constants.DriveConstants.kDrivekP, 
+            Constants.DriveConstants.kDrivekI, 
+            Constants.DriveConstants.kDrivekD
+            ), 
+            new PIDController(
+                Constants.DriveConstants.kDrivekP, 
+                Constants.DriveConstants.kDrivekI, 
+                Constants.DriveConstants.kDrivekD
+                ), 
+        driveSubsystem::setVoltage, 
+        driveSubsystem);
 
-// Run path following command, then stop at the end.
-return ramseteCommand;
+        return ramseteCommand;
+
+
+
     }
 }

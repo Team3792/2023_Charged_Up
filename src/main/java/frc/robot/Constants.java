@@ -36,7 +36,7 @@ public final class Constants {
       //Elevator
     
       public static final int kGroundElevatorButton = 9;
-      public static final int kMiddleElevatorButton = 10;
+      public static final int kMiddleElevatorButton = 11;
       public static final int kHighElevatorButton = 12;
     
       //Intake Elevator buttons
@@ -48,19 +48,15 @@ public final class Constants {
 
       public static final int kFlipperToggleButton = 0;
 
-      //Turtle Mode buttons
-
-      public static final int kEngageTurtleModeButton = 2;
-
     }
 
   public static final class MotorID
     {
       //Drive Train (Talon FX/Falcon)
-      public static final int kLeftDriveLeadMotor = 12;
-      public static final int kLeftDriveFollowMotor = 13;
-      public static final int kRightDriveLeadMotor = 17;
-      public static final int kRightDriveFollowMotor = 10;
+      public static final int kLeftDriveLeadMotor = 10;
+      public static final int kLeftDriveFollowMotor = 11;
+      public static final int kRightDriveLeadMotor = 12;
+      public static final int kRightDriveFollowMotor = 13;
 
 
       //Gyro
@@ -74,7 +70,7 @@ public final class Constants {
 
       //Arm/Intake
       public static final int kBoomMotor = 40;
- 
+      //public static final int kArmMotor2 = 0;  //might not exist
       public static final int kIntakeMotor = 50;
 
       public static final int kFlipperMotor = 60;
@@ -106,27 +102,10 @@ public final class Constants {
     public static final double kBoomkI = 0;
     public static final double kBoomkD = 0;
 
-    //Reach limiting constraints
+
     //For now, this is interpreted as being in encoder ticks. We might want to make a conversion function later if it helps with the math of positioning or other things
-    public static final double kBooomMaxReach = 200000;
-    public static final double kBoomCreepRadius = 20000;
-    public static final double kContractedRadius = 40000;
-   // public static final double kBoomIntakeReach = 0;
-
-   //Manual voltage constants
-   public static final double kMaxCruiseVoltage = 7;
-   public static final double kCreepVoltage = 1.5;
-   public static final double kAutoCruiseVoltage = 5;
-
-  
-
-    public static final double kStopDeadzone = 50;
-    public static final double kStopVelocityMax = 100;
-
-    //Auto reach constants
-
-    public static final double kAutoCubeReach = 0;
-    public static final double kAutoConeReach = 0;
+    public static final double kBooomMaxReach = 0;
+    public static final double kBoomIntakeReach = 0;
   }
 
 
@@ -134,8 +113,7 @@ public final class Constants {
   public static final class DriveConstants
     {
       //Drive Kinematics
-      public static final double kDriveTrainWidthMeters = 0.69
-      ;
+      public static final double kDriveTrainWidthMeters = 0.72;
     
       //Drivetrain PID Vars
       public static final double kDrivekP = 2.4;
@@ -153,26 +131,14 @@ public final class Constants {
 
       //Deadzone
       public static final int kDriveDeadzone = 0;
-
-      //Auto taxi and climb constants
-
-      public static final double kAutoTaxiDistanceMeters = 3;
-      public static final double kAutoClimbDistanceMeters = 3;
-
     }
 
   public static final class ElevatorConstants
     {
       //Elevator PID Vars
-      public static final double kElevatorkP = 0.0002;
-      public static final double kElevatorkI = 0.0;
-      public static final double kElevatorkD = 0.0;
-
-      //Voltage constraints
-      public static final double kMaxVoltage = 10;
-
-      //Manual adjustment constants
-      public static final double kManualVoltage = 6;
+      public static final double kElevatorkP = 0.001;
+      public static final double kElevatorkI = 0;
+      public static final double kElevatorkD = 0;
 
       //Elevator Speed Constants
       public static final double kMaxElevatorSpeed = 0;     //meters per second
@@ -182,7 +148,7 @@ public final class Constants {
 
       //Heights for placing, in ENCODER TICKS
       public static final int kCubeHighHeight = 0;
-      public static final int kCubeMiddleHeight = 70000;
+      public static final int kCubeMiddleHeight = 1000;
       public static final int kCubeGroundHeight = 0;
 
       public static final int kConeHighHeight = 0;
@@ -192,15 +158,8 @@ public final class Constants {
       //Intake heights
       public static final double kConeHighIntake = 0;
       public static final double kCubeHighIntake = 0;
-      public static final double kConeLowIntake = -85000;
-      public static final double kCubeLowIntake = -85000;
-
-      //The amount of encoder tick error until the elevator stops stops
-      public static final double kStopDeadzone = 10;//this is a stricter deadzone where the motor will break and "relax"
-      public static final double kArrivedDeadzone = 50; //this is a looser deadzone where sequential commands will move on
-      public static final double kStopVelocityMax = 100;
-
-      public static final double kTurtleModeHeight = 0;
+      public static final double kConeLowIntake = 0;
+      public static final double kCubeLowIntake = 0;
 
     }
 
@@ -221,8 +180,8 @@ public final class Constants {
   public static final class TurretConstants
     {
       //TurretConstants PID Vars
-      public static final double kTurretkP = 0.025;
-      public static final double kTurretkI = 0.00;
+      public static final double kTurretkP = 0.01;
+      public static final double kTurretkI = 0;
       public static final double kTurretkD = 0;
 
       //Turret Speed Constants
@@ -230,15 +189,10 @@ public final class Constants {
       public static final double kMaxTurretAngularSpeed = 0;     //rotations per second
 
       //Deadzone
-      public static final int kTurretArrivedDeadzone = 100;
-      
+      public static final int kTurretDeadzone = 0;
 
       //Maximum turret angle, where 0 is straight ahead. (this is for both sides)
       public static final double kMaxTurretAngle = 60;
-
-       //The amount of encoder tick error until the turret stops stops
-       public static final double kStopDeadzone = 50;
-       public static final double kStopVelocityMax = 100;
 
   
       
@@ -395,18 +349,7 @@ public final class Constants {
 
   public static final class ChargeStationStabilizeConstants
   {
-
-    //TODO: Tune these at competition
-    //PID constants that the the pitch angle goes into, outputting a drive voltage
-    public static double kP = 1;
-    public static double kI = 0.0;
-    public static double kD = -0.00;
-
-    //This is the minimum absolute voltage required to move up on the charge station
-    public static double kMinVoltage = 0;
-
-    //Deadband, in degrees, of pitch where the robot should stop and break
-    public static double kPitchDeadband = 10;
+    public static double kPIDkP = 1;
   }
 
 }
