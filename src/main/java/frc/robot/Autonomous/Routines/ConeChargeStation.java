@@ -57,7 +57,7 @@ public class ConeChargeStation extends SequentialCommandGroup {
 
    Trajectory overChargeStationAndBack = new Trajectory();
    try {
-    Path  overChargeStationAndBackPath= Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/ChargeStationCone.wpilib.json");
+    Path  overChargeStationAndBackPath= Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/OverChargeStationAndBack.wpilib.json");
     overChargeStationAndBack = TrajectoryUtil.fromPathweaverJson(overChargeStationAndBackPath);
   } catch (IOException ex) {
     DriverStation.reportError("Unable to open trajectory: " + "pathplanner/generatedJSON/ChargeStationCone.wpilib.json", ex.getStackTrace());

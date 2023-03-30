@@ -30,7 +30,7 @@ public class EngageTurtleMode extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-    new ElevatorToTurtleMode(elevatorSubsystem),
+   // new ElevatorToTurtleMode(elevatorSubsystem),
     new ParallelCommandGroup(
       new TurretToTurtleMode(turretSubsystem),
       new BoomToTurtleMode(boomSubsystem)

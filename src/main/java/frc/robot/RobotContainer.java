@@ -13,7 +13,6 @@ import frc.robot.commands.Sequences.ToElevatorLevel;
 import frc.robot.Autonomous.Actions.DropAllAutoCommand;
 import frc.robot.Autonomous.Routines.ConeChargeStation;
 import frc.robot.Autonomous.Routines.ConeSideTaxi;
-import frc.robot.Autonomous.Routines.Unused.TwoConeAutoMantis;
 import frc.robot.IntakePreparationCommands.AdjustForConeIntakeCommand;
 import frc.robot.IntakePreparationCommands.HighIntakeCubePreparation;
 import frc.robot.commands.AutoAimingCommands.AutoAimCommand;
