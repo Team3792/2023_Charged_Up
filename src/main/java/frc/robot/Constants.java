@@ -407,6 +407,8 @@ public final class Constants {
     public static double kI = 0.0;
     public static double kD = -0.00;
 
+    public static double kMaxVoltage = 6;
+
     //This is the minimum absolute voltage required to move up on the charge station
     public static double kMinVoltage = 0;
 

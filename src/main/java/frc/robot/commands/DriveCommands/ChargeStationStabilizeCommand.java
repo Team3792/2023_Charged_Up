@@ -58,10 +58,10 @@ if(Math.abs(pitch) < Constants.ChargeStationStabilizeConstants.kPitchDeadband){
 //       outputVoltage = -Constants.ChargeStationStabilizeConstants.kMinVoltage;
 //     }
 
-if(outputVoltage > 6){
-  outputVoltage = 6;
-}else if(outputVoltage < -6){
-  outputVoltage = -6;
+if(outputVoltage > Constants.ChargeStationStabilizeConstants.kMaxVoltage){
+  outputVoltage = Constants.ChargeStationStabilizeConstants.kMaxVoltage;
+}else if(outputVoltage < -Constants.ChargeStationStabilizeConstants.kMaxVoltage){
+  outputVoltage = -Constants.ChargeStationStabilizeConstants.kMaxVoltage;
 }
 
     //Put this voltage on the motors
