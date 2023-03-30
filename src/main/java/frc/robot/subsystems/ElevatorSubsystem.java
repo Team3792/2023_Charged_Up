@@ -126,6 +126,8 @@ public void checkArrival(){
     if(!manualMode){
     setPosition();
     }
+
+    System.out.print("Elevator Location = " + elevatorMotor.getSelectedSensorPosition());
   }
 
   @Override

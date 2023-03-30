@@ -77,6 +77,14 @@ public class TurretSubsystem extends SubsystemBase {
 
   }
 
+  public void lockToFront(){
+    setRelativeMark(180);
+  }
+
+  public void lockToBack(){
+    setRelativeMark(0);
+  }
+
 
   public void setPosition(){
   

@@ -1,0 +1,9 @@
+{
+  "lengthUnit": "Inch",
+  "exportUnit": "Same as Project",
+  "maxVelocity": 45.0,
+  "maxAcceleration": 100.0,
+  "trackWidth": 21.0,
+  "gameName": "Charged Up",
+  "outputDir": "../src/main/deploy/pathplanner/generatedJSON"
+}

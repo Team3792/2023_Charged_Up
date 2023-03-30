@@ -11,8 +11,9 @@ import frc.robot.commands.LEDCommands.LEDShowIntakeStatusCommand;
 import frc.robot.commands.Sequences.EngageTurtleMode;
 import frc.robot.commands.Sequences.ToElevatorLevel;
 import frc.robot.Autonomous.Actions.DropAllAutoCommand;
-import frc.robot.Autonomous.Routines.CubeTaxi;
-import frc.robot.Autonomous.Routines.TwoConeAutoMantis;
+import frc.robot.Autonomous.Routines.ConeChargeStation;
+import frc.robot.Autonomous.Routines.ConeSideTaxi;
+import frc.robot.Autonomous.Routines.Unused.TwoConeAutoMantis;
 import frc.robot.IntakePreparationCommands.AdjustForConeIntakeCommand;
 import frc.robot.IntakePreparationCommands.HighIntakeCubePreparation;
 import frc.robot.commands.AutoAimingCommands.AutoAimCommand;
@@ -35,7 +36,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import frc.robot.Autonomous.Routines.TwoConeAutoMantis;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -94,13 +96,15 @@ public class RobotContainer {
   final Trigger engageTurtleMode = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kEngageTurtleModeButton);
 
   //manual elevator controls
-  final Trigger elevatorUp = new POVButton(operatorJoystick, 0);
-  final Trigger elevatorDown = new POVButton(operatorJoystick, 180);
+  final Trigger elevatorUp = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kElevatorUp);
+  final Trigger elevatorDown = new JoystickButton(operatorJoystick, Constants.ButtonConstant.kElevatorDown);
 
   //left and right drop buttons
  
   final Trigger leftLockButton = new POVButton(operatorJoystick, 270);
   final Trigger rightLockButton = new POVButton(operatorJoystick, 90);
+  final Trigger frontLockButton = new POVButton(operatorJoystick, 0);
+  final Trigger backLockButton = new POVButton(operatorJoystick, 180);
 
   //Programmer mode/zero sensors triggers
 
@@ -126,7 +130,9 @@ public class RobotContainer {
    * 2 = high
    */
 
-
+  //auto SendableChooser setup
+  // A chooser for autonomous commands
+  SendableChooser<Command> m_chooser = new SendableChooser<>(); 
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -169,8 +175,12 @@ public class RobotContainer {
     ledSubsystem.setDefaultCommand(new LEDShowIntakeStatusCommand(ledSubsystem));
 
     
-
-    
+    // Add commands to the autonomous command chooser
+    m_chooser.setDefaultOption("ConeSideTaxi", new ConeSideTaxi(driveSubsystem, turretSubsystem, boomSubsystem, intakeSubsystem, elevatorSubsystem));
+    m_chooser.addOption("ConeChargeStation", new ConeChargeStation(driveSubsystem, turretSubsystem, boomSubsystem, intakeSubsystem, elevatorSubsystem));
+  
+    // Put the chooser on the dashboard
+    SmartDashboard.putData(m_chooser);
     
     
   }
@@ -211,6 +221,17 @@ public class RobotContainer {
     turretSubsystem::lockToLeft,
     turretSubsystem
    ));
+
+   frontLockButton.onTrue(new InstantCommand(
+    turretSubsystem::lockToFront,
+    turretSubsystem
+   ));
+   
+   backLockButton.onTrue(new InstantCommand(
+    turretSubsystem::lockToBack,
+    turretSubsystem
+   ));
+   
 
    //button bindings for programmer mode
 
@@ -294,8 +315,9 @@ public class RobotContainer {
    // return new SequentialCommandGroup(new Dri);
 
 
- return new CubeTaxi(driveSubsystem, turretSubsystem, boomSubsystem, intakeSubsystem, elevatorSubsystem);
+    //return new ConeChargeStation(driveSubsystem, turretSubsystem, boomSubsystem, intakeSubsystem, elevatorSubsystem);
 
+    return m_chooser.getSelected();
 
   }
 

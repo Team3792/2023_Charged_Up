@@ -42,7 +42,8 @@ public class IntakeSubsystem extends SubsystemBase {
   public void cubeIntake(){
     double output =  slewRateLimiter.calculate(Constants.IntakeConstants.kCubeIntakeVoltage);
 
-    intakeMotor.setVoltage(output); 
+    intakeMotor.setVoltage(output); ;
+    System.out.println("this is the output" + output);
   }
 
 

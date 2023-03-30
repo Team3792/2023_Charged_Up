@@ -39,8 +39,7 @@ public class DriveTaxi extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return 
-    driveSubsystem.getTotalDistance() > 4
-    ;
+    System.out.println(driveSubsystem.getTotalDistance());
+    return driveSubsystem.getTotalDistance() > 4;
   }
 }

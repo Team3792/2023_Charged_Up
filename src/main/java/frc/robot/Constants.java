@@ -35,14 +35,17 @@ public final class Constants {
     
       //Elevator
     
-      public static final int kGroundElevatorButton = 9;
+      public static final int kGroundElevatorButton = 12;
       public static final int kMiddleElevatorButton = 10;
-      public static final int kHighElevatorButton = 12;
+      public static final int kHighElevatorButton = 8;
+
+      public static final int kElevatorUp = 4;
+      public static final int kElevatorDown = 6;
     
       //Intake Elevator buttons
     
-      public static final int kConeIntakeHigh = 6;
-      public static final int kConeIntakeLow = 4;
+      public static final int kConeIntakeHigh = 11;
+      public static final int kConeIntakeLow = 9;
 
       //Flipper toggle buttons
 
@@ -57,10 +60,10 @@ public final class Constants {
   public static final class MotorID
     {
       //Drive Train (Talon FX/Falcon)
-      public static final int kLeftDriveLeadMotor = 12;
-      public static final int kLeftDriveFollowMotor = 13;
-      public static final int kRightDriveLeadMotor = 17;
-      public static final int kRightDriveFollowMotor = 10;
+      public static final int kLeftDriveLeadMotor = 10;
+      public static final int kLeftDriveFollowMotor = 11;
+      public static final int kRightDriveLeadMotor = 12;
+      public static final int kRightDriveFollowMotor = 13;
 
 
       //Gyro
@@ -108,7 +111,7 @@ public final class Constants {
 
     //Reach limiting constraints
     //For now, this is interpreted as being in encoder ticks. We might want to make a conversion function later if it helps with the math of positioning or other things
-    public static final double kBooomMaxReach = 200000;
+    public static final double kBoomMaxReach = 116000;
     public static final double kBoomCreepRadius = 20000;
     public static final double kContractedRadius = 40000;
    // public static final double kBoomIntakeReach = 0;
@@ -229,7 +232,7 @@ public final class Constants {
       public static final double kMaxTurretAngularSpeed = 0;     //rotations per second
 
       //Deadzone
-      public static final int kTurretArrivedDeadzone = 100;
+      public static final int kTurretArrivedDeadzone = 80;
       
 
       //Maximum turret angle, where 0 is straight ahead. (this is for both sides)
@@ -247,13 +250,13 @@ public final class Constants {
     {
       //Setting intake and extake (I know that's not a word) velocities
       //Notice that if we need to spin backward, 
-      public static final double kCubeIntakeVoltage = 8;
-      public static final double kConeIntakeVoltage = -8;
-      public static final double kCubeExtakeVoltage = -8;
-      public static final double kConeExtakeVoltage = 8;
+      public static final double kCubeIntakeVoltage = 12;
+      public static final double kConeIntakeVoltage = -12;
+      public static final double kCubeExtakeVoltage = -12;
+      public static final double kConeExtakeVoltage = 12;
 
       //How many seconds it should take for the slew rate limiter to ramp up
-      public static final double kIntakeRampTime = 0.5;
+      public static final double kIntakeRampTime = 0.1;
 
 
     }

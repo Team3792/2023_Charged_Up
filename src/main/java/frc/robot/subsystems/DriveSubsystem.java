@@ -112,7 +112,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public double getTotalDistance(){
     //return average distance traveled by each wheel
-    return (toMeters(-rightLead.getSelectedSensorPosition()) + toMeters(leftLead.getSelectedSensorPosition()))/2;
+    return Math.abs((toMeters(-rightLead.getSelectedSensorPosition()) + toMeters(leftLead.getSelectedSensorPosition()))/2);
   }
   
   //returns the pitch of the gryo

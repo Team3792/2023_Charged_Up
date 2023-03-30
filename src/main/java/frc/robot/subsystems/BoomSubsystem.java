@@ -20,8 +20,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.math.controller.PIDController;
 
-import org.apache.commons.collections4.functors.ConstantFactory;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -31,6 +29,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 public class BoomSubsystem extends SubsystemBase {
   //Assuming Talon_FX
   public WPI_TalonFX boomMotor = new WPI_TalonFX(Constants.MotorID.kBoomMotor);
+
+  public boolean doneMoving = false;
 
   PIDController boomPidController = new PIDController(
     Constants.BoomConstants.kBoomkP, 
@@ -71,12 +71,13 @@ public class BoomSubsystem extends SubsystemBase {
   double outputVoltage = voltage;
 
  double positionTicks = boomMotor.getSelectedSensorPosition();
+ System.out.println("positionTicks: " + positionTicks + "");
 
  if(voltage > 0){ //if going forward
   //first check if beyond the max reach, then, if not, check if in the creep zone
-  if(positionTicks >= Constants.BoomConstants.kBooomMaxReach){
+  if(positionTicks >= Constants.BoomConstants.kBoomMaxReach){
     outputVoltage = 0;
-  }else if(positionTicks > Constants.BoomConstants.kBooomMaxReach - Constants.BoomConstants.kBoomCreepRadius){ //if in the creep zone on the extended phase
+  }else if(positionTicks > Constants.BoomConstants.kBoomMaxReach - Constants.BoomConstants.kBoomCreepRadius){ //if in the creep zone on the extended phase
     outputVoltage = Constants.BoomConstants.kCreepVoltage; //use the creep voltage if in this zone;
   }
  }else if(voltage < 0){ //if going backward
@@ -84,7 +85,7 @@ public class BoomSubsystem extends SubsystemBase {
   if(positionTicks <= 0){
     outputVoltage = 0;
   }else if(positionTicks < 0 + Constants.BoomConstants.kBoomCreepRadius){ //if in the creep zone on the contraction phase
-    outputVoltage = Constants.BoomConstants.kCreepVoltage; //use the creep voltage if in this zone;
+    outputVoltage = -Constants.BoomConstants.kCreepVoltage; //use the creep voltage if in this zone;
   }
  }
  return outputVoltage;

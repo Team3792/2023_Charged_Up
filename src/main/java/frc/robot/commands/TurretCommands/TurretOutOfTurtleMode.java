@@ -44,6 +44,8 @@ Timer timer = new Timer();
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    System.out.println("has arrived:" + turretSubsystem.arrived);
+    System.out.println("has elapsed:" + timer.hasElapsed(5));
     return turretSubsystem.arrived||timer.hasElapsed(5);
   }
 }

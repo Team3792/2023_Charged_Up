@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Autonomous.Routines;
+package frc.robot.Autonomous.Routines.Unused;
 
 import org.ejml.dense.row.decomposition.BaseDecomposition_FDRB_to_FDRM;
 
@@ -12,17 +12,19 @@ import frc.robot.Constants.TurretConstants;
 import frc.robot.commands.BoomCommands.BoomFromTurtleMode;
 import frc.robot.commands.Sequences.EngageTurtleMode;
 import frc.robot.commands.Sequences.ToElevatorLevel;
+import frc.robot.commands.TurretCommands.TurretOutOfTurtleMode;
+import frc.robot.commands.TurretCommands.TurretToTurtleMode;
 import frc.robot.subsystems.BoomSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.Autonomous.Actions.DriveTaxi;
+import frc.robot.Autonomous.Actions.*;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ConeTaxi extends SequentialCommandGroup {
+public class ConeClimb extends SequentialCommandGroup {
   /** Creates a new ConeTaxi. */
   DriveSubsystem driveSubsystem;
   TurretSubsystem turretSubsystem;
@@ -30,7 +32,7 @@ public class ConeTaxi extends SequentialCommandGroup {
   IntakeSubsystem intakeSubsystem;
   ElevatorSubsystem elevatorSubsystem;
 
-  public ConeTaxi(DriveSubsystem driveSubsystem, TurretSubsystem turretSubsystem, BoomSubsystem boomSubsystem, IntakeSubsystem intakeSubsystem, ElevatorSubsystem elevatorSubsystem) {
+  public ConeClimb(DriveSubsystem driveSubsystem, TurretSubsystem turretSubsystem, BoomSubsystem boomSubsystem, IntakeSubsystem intakeSubsystem, ElevatorSubsystem elevatorSubsystem) {
    
    this.driveSubsystem = driveSubsystem;
    this.turretSubsystem = turretSubsystem;
@@ -42,10 +44,11 @@ public class ConeTaxi extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ToElevatorLevel(elevatorSubsystem, turretSubsystem, boomSubsystem, 1, "cone"),
+     // new ToElevatorLevel(elevatorSubsystem, turretSubsystem, boomSubsystem, 1, "cone"),
+      new TurretOutOfTurtleMode(turretSubsystem),
       new DropAllAutoCommand(intakeSubsystem, "cone"),
-      new EngageTurtleMode(turretSubsystem, elevatorSubsystem, boomSubsystem),
-      new DriveTaxi(driveSubsystem)
+      new TurretToTurtleMode(turretSubsystem),
+      new DriveClimb(driveSubsystem)
     );
   }
 }
