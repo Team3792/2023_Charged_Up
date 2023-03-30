@@ -32,8 +32,8 @@ public class ToElevatorLevel extends SequentialCommandGroup {
     this.boomSubsystem = boomSubsystem;
 
     addCommands(
-      new TurretOutOfTurtleMode(turretSubsystem)
-      //new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, elevatorIntendedHeight)
+      new TurretOutOfTurtleMode(turretSubsystem),
+      new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, elevatorIntendedHeight)
     );
   }
 }

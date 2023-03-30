@@ -76,11 +76,13 @@ public void checkArrival(){
 
  //This is a temperary method used to test elevator and find setpoints
  public void setVoltage(double voltage){
-  //Check if voltage is out of the max voltage bound, and put it there if so
+//First, check if hitting the virtual limits in the direction moving it out more
   if((voltage > 0 && elevatorMotor.getSelectedSensorPosition()>Constants.ElevatorConstants.kMaxHeight)
     ||(voltage < 0 && elevatorMotor.getSelectedSensorPosition() < Constants.ElevatorConstants.kMinHeight)){
       stop();
-    }else {
+    }
+      //Check if voltage is out of the max voltage bound, and put it there if so
+    else {
   if(voltage > Constants.ElevatorConstants.kMaxVoltage){
     elevatorMotor.setVoltage(Constants.ElevatorConstants.kMaxVoltage);
  }else if (voltage < -Constants.ElevatorConstants.kMaxVoltage){

@@ -236,7 +236,7 @@ public class RobotContainer {
 
    programmerModeButton7.and(programmerModeButton8).and(programmerModeButton9).and(programmerModeButton10).onTrue(
    new InstantCommand(
-      this::zeroSensors,
+      this::zeroElevatorAndEngageManualMode,
       turretSubsystem,
       elevatorSubsystem,
       boomSubsystem
@@ -324,6 +324,11 @@ public class RobotContainer {
     turretSubsystem.turretMotor.setSelectedSensorPosition(0);
     boomSubsystem.boomMotor.setSelectedSensorPosition(0);
     elevatorSubsystem.elevatorMotor.setSelectedSensorPosition(0);
+  }
+
+  public void zeroElevatorAndEngageManualMode(){
+    elevatorSubsystem.elevatorMotor.setSelectedSensorPosition(0);
+    elevatorSubsystem.engageManualMode();
   }
 
 }
