@@ -156,7 +156,7 @@ public final class Constants {
 
       //Auto taxi and climb constants
 
-      public static final double kAutoTaxiDistanceMeters = 3;
+      public static final double kAutoTaxiDistanceMeters = 4;
       public static final double kAutoClimbDistanceMeters = 3;
 
     }

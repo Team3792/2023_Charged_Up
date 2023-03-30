@@ -310,8 +310,7 @@ public class RobotContainer {
    // return new SequentialCommandGroup(new Dri);
 
 
- return new CubeTaxi(driveSubsystem, turretSubsystem, boomSubsystem, intakeSubsystem, elevatorSubsystem);
-
+ return autonomousChooser.getSelected();
 
   }
 
