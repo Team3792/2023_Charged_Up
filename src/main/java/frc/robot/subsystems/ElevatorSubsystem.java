@@ -77,6 +77,10 @@ public void checkArrival(){
  //This is a temperary method used to test elevator and find setpoints
  public void setVoltage(double voltage){
   //Check if voltage is out of the max voltage bound, and put it there if so
+  if((voltage > 0 && elevatorMotor.getSelectedSensorPosition()>Constants.ElevatorConstants.kMaxHeight)
+    ||(voltage < 0 && elevatorMotor.getSelectedSensorPosition() < Constants.ElevatorConstants.kMinHeight)){
+      stop();
+    }else {
   if(voltage > Constants.ElevatorConstants.kMaxVoltage){
     elevatorMotor.setVoltage(Constants.ElevatorConstants.kMaxVoltage);
  }else if (voltage < -Constants.ElevatorConstants.kMaxVoltage){
@@ -84,6 +88,7 @@ public void checkArrival(){
  }else {
   elevatorMotor.setVoltage(voltage);
  }
+}
  }
 
  public void setSetPoint(double setPoint){
@@ -126,6 +131,8 @@ public void checkArrival(){
     if(!manualMode){
     setPosition();
     }
+
+    SmartDashboard.putNumber("", elevatorMotor.getSelectedSensorPosition());
 
     System.out.print("Elevator Location = " + elevatorMotor.getSelectedSensorPosition());
   }

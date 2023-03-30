@@ -116,7 +116,7 @@ public class RobotContainer {
 
    public static String LEDIntakeStatus = "none";
 
-   public static String lastPieceHeld = "none";
+   public static String lastPieceHeld = "cone";
   
   //"none" "cube" "cone" "intaking cube" "intaking cone" "dropping"
 
@@ -265,7 +265,7 @@ public class RobotContainer {
     
 
      groundElevatorButton.onTrue(new ToElevatorLevel(elevatorSubsystem, turretSubsystem, boomSubsystem, 0, lastPieceHeld));
-     middleElevatorButton.whileTrue(new ToElevatorLevel(elevatorSubsystem, turretSubsystem, boomSubsystem, 1, lastPieceHeld));
+     middleElevatorButton.onTrue(new ToElevatorLevel(elevatorSubsystem, turretSubsystem, boomSubsystem, 1, lastPieceHeld));
    //  highElevatorButton.onTrue(new ElevatorMoveAutoCommand(elevatorSubsystem, intakeStatus, 2));
 
      //Intake Levels
@@ -282,7 +282,7 @@ public class RobotContainer {
 
      ));
 
-    coneIntakeButton.onTrue(new AdjustForConeIntakeCommand(elevatorSubsystem));
+   // coneIntakeButton.onTrue(new AdjustForConeIntakeCommand(elevatorSubsystem));
 
    engageTurtleMode.onTrue(new EngageTurtleMode(turretSubsystem, elevatorSubsystem, boomSubsystem));
 

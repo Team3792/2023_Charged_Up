@@ -199,10 +199,13 @@ public final class Constants {
 
       //The amount of encoder tick error until the elevator stops stops
       public static final double kStopDeadzone = 10;//this is a stricter deadzone where the motor will break and "relax"
-      public static final double kArrivedDeadzone = 50; //this is a looser deadzone where sequential commands will move on
+      public static final double kArrivedDeadzone = 1000; //this is a looser deadzone where sequential commands will move on
       public static final double kStopVelocityMax = 100;
 
       public static final double kTurtleModeHeight = 0;
+
+      public static final double kMaxHeight = 1000000000;
+      public static final double kMinHeight = -10000000;
 
     }
 
