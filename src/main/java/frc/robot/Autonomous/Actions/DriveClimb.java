@@ -29,6 +29,7 @@ public class DriveClimb extends CommandBase {
   @Override
   public void execute() {
    // driveSubsystem.differentialDrive.arcadeDrive(0.3, 0);
+   driveSubsystem.differentialDrive.arcadeDrive(0.5, 0);
   }
 
   // Called once the command ends or is interrupted.
@@ -43,7 +44,7 @@ public class DriveClimb extends CommandBase {
   public boolean isFinished() {
    // driveSubsystem.pigeon.getRawGyro(xyz_degreePerSecond);
     
-    return false;
+    return driveSubsystem.getTotalDistance() > 2;
     
   }
 }

@@ -21,6 +21,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.Autonomous.Actions.DrivePath;
 import frc.robot.Autonomous.Actions.DriveTaxi;
+import frc.robot.Autonomous.Actions.DriveClimb;
 import frc.robot.commands.DriveCommands.ChargeStationStabilizeCommand;
 import java.nio.file.Path;
 
@@ -69,9 +70,10 @@ public class ConeChargeStation extends SequentialCommandGroup {
     addCommands(
      // new ToElevatorLevel(elevatorSubsystem, turretSubsystem, boomSubsystem, 1, "cube"),
      new DropAllAutoCommand(intakeSubsystem, "cone"),
+     new DriveClimb(driveSubsystem),
      //new TurretOutOfTurtleMode(turretSubsystem),
      // new EngageTurtleMode(turretSubsystem, elevatorSubsystem, boomSubsystem),
-     drivePath.runPath(overChargeStationAndBack),
+     //drivePath.runPath(overChargeStationAndBack),
      new ChargeStationStabilizeCommand(driveSubsystem)
     );
   }
