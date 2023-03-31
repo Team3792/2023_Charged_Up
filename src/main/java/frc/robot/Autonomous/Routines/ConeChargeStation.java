@@ -8,6 +8,7 @@ import org.ejml.dense.row.decomposition.BaseDecomposition_FDRB_to_FDRM;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Autonomous.Actions.DropAllAutoCommand;
+import frc.robot.Autonomous.Actions.OverChargeStation;
 import frc.robot.Constants.TurretConstants;
 import frc.robot.commands.BoomCommands.BoomFromTurtleMode;
 import frc.robot.commands.DriveCommands.ChargeStationStabilizeCommand;
@@ -33,6 +34,8 @@ import java.nio.file.FileSystem;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Filesystem;
+
+import frc.robot.Autonomous.Actions.BackwardsOverChargeStation;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -70,7 +73,9 @@ public class ConeChargeStation extends SequentialCommandGroup {
     addCommands(
      // new ToElevatorLevel(elevatorSubsystem, turretSubsystem, boomSubsystem, 1, "cube"),
      new DropAllAutoCommand(intakeSubsystem, "cone"),
-     new DriveClimb(driveSubsystem),
+     //new DriveClimb(driveSubsystem),
+     new OverChargeStation(driveSubsystem),
+     new BackwardsOverChargeStation(driveSubsystem),
      //new TurretOutOfTurtleMode(turretSubsystem),
      // new EngageTurtleMode(turretSubsystem, elevatorSubsystem, boomSubsystem),
      //drivePath.runPath(overChargeStationAndBack),

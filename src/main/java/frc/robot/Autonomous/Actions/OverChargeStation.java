@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class DriveClimb extends CommandBase {
+public class OverChargeStation extends CommandBase {
   /** Creates a new DriveTaxi. */
 
   DriveSubsystem driveSubsystem;
-  public DriveClimb(DriveSubsystem driveSubsystem) {
+  public OverChargeStation(DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
 
     addRequirements(driveSubsystem);
@@ -44,7 +44,7 @@ public class DriveClimb extends CommandBase {
   public boolean isFinished() {
    // driveSubsystem.pigeon.getRawGyro(xyz_degreePerSecond);
     
-    return driveSubsystem.getTotalDistance() > 2;
+    return driveSubsystem.getTotalDistance() > 4;
     
   }
 }

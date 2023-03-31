@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class DriveClimb extends CommandBase {
+public class BackwardsOverChargeStation extends CommandBase {
   /** Creates a new DriveTaxi. */
 
   DriveSubsystem driveSubsystem;
-  public DriveClimb(DriveSubsystem driveSubsystem) {
+  public BackwardsOverChargeStation(DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
 
     addRequirements(driveSubsystem);
@@ -29,7 +29,7 @@ public class DriveClimb extends CommandBase {
   @Override
   public void execute() {
    // driveSubsystem.differentialDrive.arcadeDrive(0.3, 0);
-   driveSubsystem.differentialDrive.arcadeDrive(0.5, 0);
+   driveSubsystem.differentialDrive.arcadeDrive(-0.5, 0);
   }
 
   // Called once the command ends or is interrupted.
