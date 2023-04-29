@@ -120,6 +120,10 @@ public class DriveSubsystem extends SubsystemBase {
     return pigeon.getPitch();
   }
 
+  public double getYaw(){
+    return pigeon.getYaw();
+  }
+
   public double toMeters(double ticks){
     double motorRotations = ticks/2048;
     double wheelRotations = motorRotations/Constants.RobotDimensionConstants.kMotorToWheelShaftGearRatio;
@@ -159,6 +163,8 @@ public class DriveSubsystem extends SubsystemBase {
       toMeters(leftLead.getSelectedSensorPosition()), 
       toMeters(-rightLead.getSelectedSensorPosition())
       );
+
+      SmartDashboard.putNumber("yaw", getYaw());
 
 
  

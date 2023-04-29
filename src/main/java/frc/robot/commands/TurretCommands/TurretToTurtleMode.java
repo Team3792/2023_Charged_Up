@@ -27,6 +27,7 @@ public class TurretToTurtleMode extends CommandBase {
   @Override
   public void initialize() {
     turretSubsystem.arrived = false;
+    turretSubsystem.locked = true;
     turretSubsystem.setRelativeMark(0);
     turretSubsystem.setSetPointDegrees(0);
 

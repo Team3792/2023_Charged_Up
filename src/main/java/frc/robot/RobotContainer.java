@@ -16,6 +16,7 @@ import frc.robot.Autonomous.Routines.ConeSideTaxi;
 import frc.robot.IntakePreparationCommands.AdjustForConeIntakeCommand;
 import frc.robot.IntakePreparationCommands.HighIntakeCubePreparation;
 import frc.robot.commands.AutoAimingCommands.AutoAimCommand;
+import frc.robot.commands.BoomCommands.ManualBoomPositionControl;
 import frc.robot.commands.BoomCommands.ManualExtendBoomCommand;
 import frc.robot.commands.DriveCommands.DriveCommand;
 import frc.robot.commands.ElevatorCommands.ElevatorMoveAutoCommand;
@@ -31,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.TurretCommands.ManualTurnTurretCommand;
 import frc.robot.commands.TurretCommands.TurretOutOfTurtleMode;
+import frc.robot.commands.TurretCommands.TurretToTurtleMode;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -154,7 +156,7 @@ public class RobotContainer {
     () -> -operatorJoystick.getRawAxis(2)
     ));
 
-    boomSubsystem.setDefaultCommand(new ManualExtendBoomCommand(boomSubsystem, 
+    boomSubsystem.setDefaultCommand(new ManualBoomPositionControl(boomSubsystem, 
     () -> -operatorJoystick.getRawAxis(1)
     ));
 
@@ -284,7 +286,7 @@ public class RobotContainer {
 
    // coneIntakeButton.onTrue(new AdjustForConeIntakeCommand(elevatorSubsystem));
 
-   engageTurtleMode.onTrue(new EngageTurtleMode(turretSubsystem, elevatorSubsystem, boomSubsystem));
+   engageTurtleMode.onTrue(new TurretToTurtleMode(turretSubsystem));
 
     elevatorUp.whileTrue(
       new StartEndCommand(
@@ -324,11 +326,14 @@ public class RobotContainer {
     turretSubsystem.turretMotor.setSelectedSensorPosition(0);
     boomSubsystem.boomMotor.setSelectedSensorPosition(0);
     elevatorSubsystem.elevatorMotor.setSelectedSensorPosition(0);
+    turretSubsystem.locked = true;
+   // driveSubsystem.differentialDriveOdometry.resetPosition(null, elevatorHeight, elevatorHeight, null);
   }
 
   public void zeroElevatorAndEngageManualMode(){
-    elevatorSubsystem.elevatorMotor.setSelectedSensorPosition(0);
-    elevatorSubsystem.engageManualMode();
+   // elevatorSubsystem.elevatorMotor.setSelectedSensorPosition(0);
+    //elevatorSubsystem.engageManualMode();
+    //boomSubsystem.boomMotor.setSelectedSensorPosition(100000);
   }
 
 }

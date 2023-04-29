@@ -12,13 +12,14 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import frc.robot.Constants;
 import frc.robot.HelperClasses.*;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 
 public class ManualTurnTurretCommand extends CommandBase {
   /** Creates a new ManualTurnTurretCommand. */
   private TurretSubsystem turretSubsystem;
   Supplier<Double> joystickZRotation, joystickSlider;
   SignalProcessor signalProcessor = new SignalProcessor(Constants.TurretConstants.kMaxTurretAngle, 0, 0);
-  
+  SlewRateLimiter srl = new SlewRateLimiter(200,-200,0);
 
   public ManualTurnTurretCommand(TurretSubsystem subsystem, Supplier<Double> joystickZRotation) {
 
@@ -40,7 +41,7 @@ public class ManualTurnTurretCommand extends CommandBase {
 //Note: It might be benificial to use max angle as the max angle for joystick, so there is a better physical connection for operator
     double rawInput = joystickZRotation.get();
     
-    double processedInput = signalProcessor.getOutput(rawInput);
+    double processedInput = srl.calculate(signalProcessor.getOutput(rawInput));
   
 
     turretSubsystem.setSetPointDegrees(processedInput);

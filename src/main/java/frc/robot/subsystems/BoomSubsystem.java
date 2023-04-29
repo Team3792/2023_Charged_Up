@@ -19,6 +19,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -33,7 +34,7 @@ public class BoomSubsystem extends SubsystemBase {
   public boolean doneMoving = false;
 
   PIDController boomPidController = new PIDController(
-    Constants.BoomConstants.kBoomkP, 
+    0.0005, 
     Constants.BoomConstants.kBoomkI, 
     Constants.BoomConstants.kBoomkD
     );
@@ -55,8 +56,8 @@ public class BoomSubsystem extends SubsystemBase {
     // &&
     // Math.abs(boomMotor.getSelectedSensorVelocity()) < Constants.BoomConstants.kStopVelocityMax;
     // if(!doneMoving){
-    // double output = boomPidController.calculate(boomMotor.getSelectedSensorPosition(),encoderTicks);
-    // boomMotor.setVoltage(output);
+    double output = boomPidController.calculate(boomMotor.getSelectedSensorPosition(), encoderTicks);
+     boomMotor.setVoltage(getSetVoltage(output));
     // }else{
     //   boomMotor.setVoltage(0);
      
@@ -109,7 +110,8 @@ public class BoomSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 
-    //System.out.println(boomMotor.getSelectedSensorPosition());
+    System.out.println(boomMotor.getSelectedSensorPosition());
+    SmartDashboard.putNumber("boom", boomMotor.getSelectedSensorPosition());
     // This method will be called once per scheduler run
   }
 

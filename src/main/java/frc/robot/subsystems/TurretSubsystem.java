@@ -19,9 +19,13 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.robot.Constants;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import edu.wpi.first.wpilibj.Timer;
 
 
 
@@ -34,18 +38,43 @@ public class TurretSubsystem extends SubsystemBase {
     Constants.TurretConstants.kTurretkI, 
     Constants.TurretConstants.kTurretkD);
 
+    PIDController turretPidControllerAbsolute = new PIDController(
+    Constants.TurretConstants.kTurretkP, 
+    Constants.TurretConstants.kTurretkI, 
+    Constants.TurretConstants.kTurretkD);
+
+    Timer timer = new Timer();
+    double previousTime = 0;
+    double previousSetpoint = 0;
+
+    
+
     public double relativeMark = 0;
     public double setPointDegrees = 0;
+    
 
     //booleans for arrived (move on to next action in auto/an auto sequence)
     public boolean arrived = false;
+    public boolean locked = true;
+
+    PIDController pid = new PIDController(0, 0, 0);
+    PIDController pid2 = new PIDController(0, 0, 0);
+    SlewRateLimiter srl = new SlewRateLimiter(100,-100,0);
 
   public TurretSubsystem() {
 
     turretMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
     turretMotor.setSelectedSensorPosition(0);
     turretMotor.setNeutralMode(NeutralMode.Brake);
+    timer.reset();
+    timer.start();
     
+
+    turretPidController.enableContinuousInput(-degreesToTicks(180), degreesToTicks(180));
+    SmartDashboard.putNumber("Vel Constant", 0.01);
+    SmartDashboard.putNumber("Yaw Vel Constant", 0.075);
+    SmartDashboard.putNumber("TurretPID", 0.01);
+
   }
 
   public void checkArrival(){
@@ -54,6 +83,7 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void setSetPointDegrees(double setPointDegrees){
+    previousSetpoint = this.setPointDegrees;
     this.setPointDegrees = setPointDegrees;
     arrived = false;
   }
@@ -70,33 +100,64 @@ public class TurretSubsystem extends SubsystemBase {
   public void lockToLeft(){
     System.out.println(1);
     setRelativeMark(270);
+    locked = false;
   }
   
   public void lockToRight(){
     setRelativeMark(90);
+    locked = false;
 
   }
 
   public void lockToFront(){
     setRelativeMark(180);
+    locked = false;
   }
 
-  public void lockToBack(){
+  public void lockToBack(){ 
     setRelativeMark(0);
+    locked = false;
   }
 
 
   public void setPosition(){
-  
-    double setPointTicks = degreesToTicks(setPointDegrees + relativeMark);
+    double setPointTicks, output;
+     output = 0;
+    double velocity = pid.getVelocityError();
 
+
+    pid.calculate(-setPointDegrees);
+
+
+
+
+    output = velocity * SmartDashboard.getNumber("Vel Constant", 0);
+    SmartDashboard.putNumber("repeat", SmartDashboard.getNumber("Vel Constant", 0));
+    turretPidController.setP(SmartDashboard.getNumber("TurretPID", 0));
+    
+
+   SmartDashboard.putNumber("setPoint ROC", velocity);
+  if(!locked &&Math.abs(ticksToDegrees(turretMotor.getSelectedSensorPosition())) < 360*3 ){
+    setPointTicks = degreesToTicks(setPointDegrees + relativeMark - SmartDashboard.getNumber("yaw", 0));
+    pid2.calculate(SmartDashboard.getNumber("yaw", 0));
+    SmartDashboard.putNumber("yaw roc", pid2.getVelocityError());
+    output += pid2.getVelocityError()*SmartDashboard.getNumber("Yaw Vel Constant", 0);
+    output += turretPidController.calculate(turretMotor.getSelectedSensorPosition(), setPointTicks);
+    output = srl.calculate(output);
+  }else{
+     setPointTicks = degreesToTicks(relativeMark);
+     output = turretPidControllerAbsolute.calculate(turretMotor.getSelectedSensorPosition(),setPointTicks);
+
+  }
+
+  
     
 
 
     
     
     //Calculate and set PID voltage
-      double output = turretPidController.calculate(turretMotor.getSelectedSensorPosition(), setPointTicks);
+      
      
       if(output > 10){
         turretMotor.setVoltage(-10);
